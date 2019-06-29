@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Qian的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="单例模式单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。 单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。 简言之，单例模式的意图如下：  确保类只有一个对象被创建 为对象提供一个访问点，以使程序可以全局访问该对象 控制共享资源的并行访问   实现单例模式的一个简">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qian的博客">
+<meta property="og:url" content="http://yoursite.com/2019/06/22/单例模式/index.html">
+<meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="单例模式单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。 单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。 简言之，单例模式的意图如下：  确保类只有一个对象被创建 为对象提供一个访问点，以使程序可以全局访问该对象 控制共享资源的并行访问   实现单例模式的一个简">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-23T05:11:43.362Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:description" content="单例模式单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。 单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。 简言之，单例模式的意图如下：  确保类只有一个对象被创建 为对象提供一个访问点，以使程序可以全局访问该对象 控制共享资源的并行访问   实现单例模式的一个简">
+  
+    <link rel="alternate" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Qian的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-单例模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/22/单例模式/" class="article-date">
+  <time datetime="2019-06-23T05:07:40.000Z" itemprop="datePublished">2019-06-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。</p>
+<p>单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。</p>
+<p>简言之，单例模式的意图如下：</p>
+<ul>
+<li>确保类只有一个对象被创建</li>
+<li>为对象提供一个访问点，以使程序可以全局访问该对象</li>
+<li>控制共享资源的并行访问</li>
+</ul>
+<hr>
+<h4 id="实现单例模式的一个简单方法是，是构造函数私有化，并创建一个静态方法来完成对象的初始化。"><a href="#实现单例模式的一个简单方法是，是构造函数私有化，并创建一个静态方法来完成对象的初始化。" class="headerlink" title="实现单例模式的一个简单方法是，是构造函数私有化，并创建一个静态方法来完成对象的初始化。"></a>实现单例模式的一个简单方法是，是构造函数私有化，并创建一个静态方法来完成对象的初始化。</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls,<span class="string">'instance'</span>):</span><br><span class="line">            cls.instance = super(Singleton,cls).__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line">s = Singleton()</span><br><span class="line">print(<span class="string">"object created"</span>,s)</span><br><span class="line"></span><br><span class="line">s1 = Singleton()</span><br><span class="line">print(<span class="string">"object created"</span>,s1)</span><br><span class="line">help(Singleton.__new__)</span><br><span class="line"><span class="comment"># help(type)</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>object created &lt;__main__.Singleton object at 0x000001C75E466160&gt;
+object created &lt;__main__.Singleton object at 0x000001C75E466160&gt;
+Help on function __new__ in module __main__:
+
+__new__(cls)
+    Create and return a new object.  See help(type) for accurate signature.</code></pre><hr>
+<h4 id="单例模式中的懒汉式实例化"><a href="#单例模式中的懒汉式实例化" class="headerlink" title="单例模式中的懒汉式实例化"></a>单例模式中的懒汉式实例化</h4><p>懒汉式实例化确保在实际需要时才创建对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    __instance = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> Singleton.__instance:</span><br><span class="line">            print(<span class="string">"__init__method called..."</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">"Instance already created:"</span>,self.getInstance())</span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getInstance</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls.__instance:</span><br><span class="line">            cls.__instance = Singleton()</span><br><span class="line">        <span class="keyword">return</span> cls.__instance</span><br><span class="line"></span><br><span class="line">s = Singleton()</span><br><span class="line">print(<span class="string">"object created"</span>,Singleton.getInstance())</span><br><span class="line">s1 = Singleton()</span><br><span class="line">help(Singleton.getInstance)</span><br><span class="line">help(Singleton.__init__)</span><br></pre></td></tr></table></figure>
+
+<pre><code>__init__method called...
+__init__method called...
+object created &lt;__main__.Singleton object at 0x000001C75E45AF28&gt;
+Instance already created: &lt;__main__.Singleton object at 0x000001C75E45AF28&gt;
+Help on method getInstance in module __main__:
+
+getInstance() method of builtins.type instance
+
+Help on function __init__ in module __main__:
+
+__init__(self)
+    Initialize self.  See help(type(self)) for accurate signature.</code></pre><hr>
+<h4 id="单例与元类"><a href="#单例与元类" class="headerlink" title="单例与元类"></a>单例与元类</h4><p>元类是一个类的类，即一个类是他的元类的一个类。我们可以通过元类从预定义的pyhon类中创建自己类型的类。<br>在python中一切皆对象，类的定义由他的元类决定，所以当我们用类A创建一个类时，python通过A=type(name,bases,dict)创建他。</p>
+<ul>
+<li>name：类的名称</li>
+<li>bases：基类</li>
+<li>dict：属性变量</li>
+</ul>
+<p>现在，如果一个类有预定义的元类(名为Metals),那么python可以通过A=MetaKls(name,bases,dict)来创建类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInt</span><span class="params">(type)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(cls,*args,**kwds)</span>:</span></span><br><span class="line">        print(<span class="string">"***** Here's My Int *****"</span>,args)</span><br><span class="line">        print(<span class="string">"Now do whatever you want with these objects..."</span>)</span><br><span class="line">        <span class="keyword">return</span> type.__call__(cls,*args,**kwds)</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">int</span><span class="params">(metaclass=MyInt)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,x,y)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        </span><br><span class="line">i = int(<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">help(MyInt.__call__)</span><br></pre></td></tr></table></figure>
+
+<pre><code>***** Here&apos;s My Int ***** (4, 5)
+Now do whatever you want with these objects...
+Help on function __call__ in module __main__:
+
+__call__(cls, *args, **kwds)
+    Call self as a function.</code></pre><p>上述代码表示当使用int（4，5）实例化int类时，MyInt元类的<strong>call</strong>方法被调用，这意味着现在元类控制着对象的实例化。<br>这样的思路同样适合单例模式，可以使用元类创建单例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MetaSingleton</span><span class="params">(type)</span>:</span></span><br><span class="line">    __instances = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(cls,*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> cls.__instances:</span><br><span class="line">            cls.__instances[cls] = super(MetaSingleton,\</span><br><span class="line">                                        cls).__call__(*args,**kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls.__instances[cls]</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span><span class="params">(metaclass=MetaSingleton)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">logger1 = Logger()</span><br><span class="line">logger2 = Logger()</span><br><span class="line"></span><br><span class="line">print(logger1,logger2)</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;__main__.Logger object at 0x000001EC13B83DA0&gt; &lt;__main__.Logger object at 0x000001EC13B83DA0&gt;</code></pre><hr>
+<p>单例模式的缺点</p>
+<ul>
+<li>全局变量可能在某处已被修改，但开发人员仍认为其没有发生变化，从而该变量在其他应用程序中依然被调用</li>
+<li>可能对同一对象创建多个引用</li>
+<li>所有依赖于全局变量的类都会由于一个类发生变化而紧密耦合为全局数据，从而可能在无意间影响另一个类</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/22/单例模式/" data-id="cjxh221v80003v0ubwucenr6t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/24/工厂模式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/python正则/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/24/工厂模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/22/单例模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/python正则/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/29/ubuntu服务器安装配置mysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/28/Nginx加uWSGi部署Django服务器/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 possibleit<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

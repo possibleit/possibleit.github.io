@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Qian的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Nginx加uWSGi部署Django服务器首先是使用nginx和uwsgi的优点 1.web服务器使用nginx，优点是轻量级，抗高并发，速度快2.uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制3.*关于pythonweb开发的wsgi知识推荐看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qian的博客">
+<meta property="og:url" content="http://yoursite.com/2019/05/28/Nginx加uWSGi部署Django服务器/index.html">
+<meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="Nginx加uWSGi部署Django服务器首先是使用nginx和uwsgi的优点 1.web服务器使用nginx，优点是轻量级，抗高并发，速度快2.uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制3.*关于pythonweb开发的wsgi知识推荐看">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-30T06:18:38.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:description" content="Nginx加uWSGi部署Django服务器首先是使用nginx和uwsgi的优点 1.web服务器使用nginx，优点是轻量级，抗高并发，速度快2.uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制3.*关于pythonweb开发的wsgi知识推荐看">
+  
+    <link rel="alternate" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Qian的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nginx加uWSGi部署Django服务器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/28/Nginx加uWSGi部署Django服务器/" class="article-date">
+  <time datetime="2019-05-28T15:24:40.000Z" itemprop="datePublished">2019-05-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx加uWSGi部署Django服务器"><a href="#Nginx加uWSGi部署Django服务器" class="headerlink" title="Nginx加uWSGi部署Django服务器"></a>Nginx加uWSGi部署Django服务器</h1><p>首先是使用nginx和uwsgi的优点</p>
+<p>1.<em>web服务器使用nginx，优点是轻量级，抗高并发，速度快</em><br>2.<em>uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制</em><br>3.*关于pythonweb开发的wsgi知识推荐看<a href="https://www.jianshu.com/p/679dee0a4193" " target="_blank" rel="noopener">uwsgi+nginx部署django </a></p>
+<p>之前在网上找到很多教程，帮助部署django项目到生产环境，<br>但是大多数教程都是不能用的，或者是部署过程中出错自己解<br>决不了的，后来在bilibili找到了一个视频教程，成功将项目<br>部署到服务器上，因此想将过程记录下来，一来以后再需要用<br>时不用再从头观看视频，二来也希望给大家到帮助。废话不多说，<br>开始介绍过程，在这之前，容我宣传一波<a href="https://www.bilibili.com/video/av31456425?t=2200" target="_blank">uwsgi+nginx部署django</a></p>
+<ul>
+<li>安装环境 ： 阿里云服务器，ubuntu16.04</li>
+<li>python版本 ：python3，django2.0</li>
+<li>项目位置 ：/home/</li>
+<li>项目名称 ：blog (app : MyBlog)</li>
+</ul>
+<h3 id="第一步：安装并测试uWSGI"><a href="#第一步：安装并测试uWSGI" class="headerlink" title="第一步：安装并测试uWSGI"></a>第一步：安装并测试uWSGI</h3><ol>
+<li><p>安装uwsgi<br>使用命令<br> <code>pip3 install uwsgi</code><br> 安装出错时尝试安装python开发包 </p>
+<hr>
+</li>
+<li><p>测试uwsgi<br> 进入平时工作目录例如 <code>/home</code>,新建一个python测试文件  </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    #test.py</span><br><span class="line">    def application(env,start_response):</span><br><span class="line">        start_response(&apos;200 OK&apos;,[(&apos;Content-Type&apos;,&apos;text / html&apos; )])</span><br><span class="line">        return  [b&quot;Hello World&quot;]  </span><br><span class="line">    ```  </span><br><span class="line">    之后在该目录下运行测试命令  </span><br><span class="line">    `uwsgi --http :8001 --wsgi-file test.py`  </span><br><span class="line">    若提示该端口已被占用，可使用以下命令关闭uwsgi进程  </span><br><span class="line">    `ps -aux | grep uwsgi |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9`  </span><br><span class="line">    开启服务器8001端口后，使用服务器公网ip与端口号访问，浏览器返回helloworld即表示uwsgi正常工作</span><br><span class="line">    </span><br><span class="line">    ---</span><br><span class="line">3. 测试项目连接uwsgi  </span><br><span class="line">    `uwsgi --chdir /home/blog --home /home/env --http :8001 -- module blog.wsgi:application`  </span><br><span class="line">    若部署是没有使用虚拟环境，则`--home /home/env`可以省略  </span><br><span class="line">    此时访问ip地址与端口号可以发现，项目已经可以访问，但是并没有静态内容，这是因为uwsgi不能处理静态文件，因此才需要使用nginx</span><br><span class="line">### 第二步： 安装配置nginx</span><br><span class="line">1. 安装nginx  </span><br><span class="line">    使用命令  </span><br><span class="line">    `apt-get install nginx`  </span><br><span class="line">2. 配置nginx  </span><br><span class="line">    进入nginx安装目录下，并查看文件</span><br></pre></td></tr></table></figure>
+
+<p> cd /etc/nginx/<br> ls </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">可以看到两个文件夹，分别是可用得nginx配置所在文件夹`sites-available`以及已启用配置文件夹`sites-enabled`</span><br><span class="line"></span><br><span class="line">进入可用配置目录，新建文件</span><br></pre></td></tr></table></figure>
+
+<p> cd sites-available/<br> vim mysite.conf</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">添加以下内容</span><br></pre></td></tr></table></figure>
+
+<p> server {</p>
+<pre><code>listen 端口，一般为80端口;
+server_name ip地址;
+charset utf-8;
+
+client_max_body_size 75M;
+
+location /static {
+    alias 静态文件目录;
+}
+
+location /media {
+    alias /home/blog/media;
+}
+
+location / {
+    uwsgi_pass 127.0.0.1:8001;#uwsgi使用端口
+    include /etc/nginx/uwsgi_params;
+}</code></pre><p> }</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 第三步：配置并启动uwsgi</span><br><span class="line">    </span><br><span class="line">1. 进入`/home`目录，创建文件夹并创建配置文件</span><br></pre></td></tr></table></figure>
+
+<p> cd /home<br> mkdir mysite_uwsgi<br> cd /mysite_uwsgi<br> vim mysite.ini</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 添加一下内容</span><br></pre></td></tr></table></figure>
+
+<p> [uwsgi]<br> chdir = /home/blog<br> home = /home/env #若没使用虚拟环境，去掉这一行<br> module = blog.wsgi:application</p>
+<p> master = True<br> processes = 4 #使用进程数<br> harakiri = 60<br> max-requests = 5000</p>
+<p> socket = 127.0.0.1:8001<br> uid = 1000<br> gid = 2000</p>
+<p> pidfile = /home/mysite_uwsgi/master.pid<br> daemonize = /home/mysite_uwsgi/mysite.log<br> vacuum = True<br> ```  </p>
+</li>
+<li><p>启动uwsgi<br> <code>uwsgi --ini /home/mysite_uwsgi/mysite.ini</code><br> 可以使用以下命令检查uwsgi是否启动成功<br> <code>ps -aux | grep uwsgi</code><br> 当启动进程数为5个时，uwsgi启动成功</p>
+</li>
+</ol>
+<h3 id="第四步：启动nginx"><a href="#第四步：启动nginx" class="headerlink" title="第四步：启动nginx"></a>第四步：启动nginx</h3><ol>
+<li><p>创建软连接<br> <code>ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/mysite.conf</code><br> 使用以下命令查看配置是否有问题<br> <code>nginx -t</code>  </p>
+<hr>
+</li>
+<li><p>重启nginx服务<br> <code>service nginx restart</code><br> 此时直接使用ip地址即可访问项目  </p>
+</li>
+</ol>
+<h4 id="至此，大功告成"><a href="#至此，大功告成" class="headerlink" title="至此，大功告成"></a>至此，大功告成</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/28/Nginx加uWSGi部署Django服务器/" data-id="cjxh221v60002v0ub09r2yp4x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/29/ubuntu服务器安装配置mysql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/24/工厂模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/22/单例模式/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/03/python正则/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/29/ubuntu服务器安装配置mysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/28/Nginx加uWSGi部署Django服务器/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 possibleit<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
