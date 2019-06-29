@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>python正则表达式 | Qian的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则  - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定">
+  <meta name="description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则 - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定义">
 <meta name="keywords" content="python,正则表达式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python正则表达式">
 <meta property="og:url" content="http://yoursite.com/2019/06/02/python正则/index.html">
 <meta property="og:site_name" content="Qian的博客">
-<meta property="og:description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则  - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定">
+<meta property="og:description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则 - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定义">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-29T09:11:13.238Z">
+<meta property="og:updated_time" content="2019-06-29T09:17:33.337Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python正则表达式">
-<meta name="twitter:description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则  - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定">
+<meta name="twitter:description" content="#python正则表达式  ###python中的re模块，python正则表达式模块  正则表达式的语法规则 - 一般字符     - .     匹配除换行符&amp;apos;\n&amp;apos;之外的任意字符     - \     转义字符     - [...] 字符集(字符类)。对应位置可以是字符集中任意字符         -   示例 a[bcd]e 匹配 abe ace ade - 预定义">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -170,8 +170,7 @@
         <p>#python正则表达式</p>
 <p> ###python中的re模块，python正则表达式模块</p>
 <ul>
-<li><p>正则表达式的语法规则</p>
-<hr>
+<li>正则表达式的语法规则<hr>
 <pre><code>- 一般字符
     - .     匹配除换行符&apos;\n&apos;之外的任意字符
     - \     转义字符
@@ -190,21 +189,25 @@
     - ？    匹配前一字符0或1次
     - {m}   匹配前一字符m次
     - {m,n} 匹配前一字符m到n次</code></pre><hr>
-<pre><code>- 边界限定
-    - ^     匹配字符串开头(在多行模式中匹配每一行开头)
-    - $     匹配字符串末尾(在多行模式中匹配每一行末尾)
-    - \A    仅匹配字符串开头
-    - \Z    仅匹配字符串末尾</code></pre><hr>
-<pre><code>- 逻辑，分组
-    - |     或，代表左右表达式任意匹配一个，一般先匹配左边表达式，一旦成功则跳过右边表达式
-    - (...) 被包括起来的表达式将作为分组，从表达式左边开始,每遇到一个分组的左括号，
-            编号+1。分组作为一个整体，可以后接数量词限定
-    - (?P&lt;name&gt;) 
-            分组，除了原编号外再指定一个别名
-    - \&lt;number&gt;
-            引用编号为&lt;number&gt;的分组匹配到的字符串
-    - (?P=name)
-            引用别名为&lt;name&gt;的分组匹配到的字符串</code></pre></li>
+</li>
+</ul>
+<a id="more"></a>
+<pre><code>    - 边界限定
+        - ^     匹配字符串开头(在多行模式中匹配每一行开头)
+        - $     匹配字符串末尾(在多行模式中匹配每一行末尾)
+        - \A    仅匹配字符串开头
+        - \Z    仅匹配字符串末尾
+* * *
+    - 逻辑，分组
+        - |     或，代表左右表达式任意匹配一个，一般先匹配左边表达式，一旦成功则跳过右边表达式
+        - (...) 被包括起来的表达式将作为分组，从表达式左边开始,每遇到一个分组的左括号，
+                编号+1。分组作为一个整体，可以后接数量词限定
+        - (?P&lt;name&gt;) 
+                分组，除了原编号外再指定一个别名
+        - \&lt;number&gt;
+                引用编号为&lt;number&gt;的分组匹配到的字符串
+        - (?P=name)
+                引用别名为&lt;name&gt;的分组匹配到的字符串</code></pre><ul>
 <li><p>python的re模块</p>
 <ul>
 <li>python自带的re模块，提供了对正则的支持，主要函数如下</li>
