@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Qian的博客</title>
+  <title>Category: 服务器部署 | Qian的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/categories/服务器部署/index.html">
 <meta property="og:site_name" content="Qian的博客">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -144,528 +144,34 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Git分支详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/06/Git分支详解/">git分支详解</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/06/Git分支详解/" class="archive-article-date">
-  	<time datetime="2019-06-06T07:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-06</time>
-</a>
-        
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Git分支详解"><a href="#Git分支详解" class="headerlink" title="Git分支详解"></a>Git分支详解</h1><h3 id="git-branch命令"><a href="#git-branch命令" class="headerlink" title="git branch命令"></a>git branch命令</h3><ul>
-<li>查看分支  <code>git branch</code></li>
-<li>新建分支  <code>git branch branch_name</code></li>
-<li>切换分支  <code>git checkout branch</code></li>
-<li>删除分支  <code>git branch -d branch_name</code><br>(注意不能删除当前所在的分支)</li>
-<li>更改分支名称  <code>git branch -m old_name new_name</code></li>
-<li>创建分支并切换到新创建的分支  <code>git branch -b branch_name</code></li>
-<li>合并分支 <code>git merge branch_name</code></li>
-<li>查看工作区与暂存区差异 <code>git diff</code></li>
-<li>查看提交历史 <code>git log</code></li>
-<li>封存当前暂存区修改 <code>git stash</code></li>
-<li>查看当前保存内容  <code>git stash list</code></li>
-<li>提取暂存区  <code>git stash apply stash@{0}</code></li>
-</ul>
-<hr>
-<h3 id="git分支初步使用"><a href="#git分支初步使用" class="headerlink" title="git分支初步使用"></a>git分支初步使用</h3><ol>
-<li><p>首先查看当前目录下的git分支</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">  admin</span><br><span class="line">* master</span><br></pre></td></tr></table></figure>
-
-<p> 当前目录有两个分支，分别是master与admin分支，并且目前我们处于master分支上。<br> 当前的项目文件的内容相同，因为我们没有做修改。</p>
-</li>
-<li><p>对文件进行修改并合并<br> 在master分支下的文件里添加注释<br> <code>#this is master branch</code><br> 在admin分支下的文件中添加注释<br> <code>#this is admin branch</code><br> 使用<code>git commit -am &#39;admin branch&#39;</code>提交更改<br> 回到master分支，使用<code>git merge admin</code>命令合并分支  </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git merge admin</span><br><span class="line">Auto-merging dPro/urls.py</span><br><span class="line">CONFLICT (content): Merge conflict in dPro/urls.py</span><br><span class="line">Automatic merge failed; fix conflicts and then commit the result.</span><br></pre></td></tr></table></figure>
-
-<p> 可以看到，git提示我们合并失败，因为在文件<code>dPro/url.py</code>内有冲突，他要求我们手动合并并重新提交<br> 在<code>dPro/url.py</code>内显示了冲突的内容  </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">#这是master分支</span><br><span class="line">=======</span><br><span class="line">#this is admin branch</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; admin</span><br><span class="line">```  </span><br><span class="line">我们对文件进行修改，将admin分支的内容合并到master分支上，修改结果如下</span><br></pre></td></tr></table></figure>
-
-<p> #this is admin branch</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    git提示我们合并成功</span><br><span class="line"></span><br><span class="line">3. 查看版本差异</span><br><span class="line">    首先使用`git log`查看版本历史</span><br></pre></td></tr></table></figure>
-
-<p> commit f387cc59552544a031cbd424f3d516a2781ecbab (HEAD -&gt; master)<br> Merge: 167823b 8e554e9<br> Author: Qian <a href="mailto:&#50;&#51;&#53;&#x38;&#x39;&#55;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#x71;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#50;&#51;&#53;&#x38;&#x39;&#55;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#x71;&#x2e;&#x63;&#111;&#x6d;</a><br> Date:   Sun Jun 2 12:36:38 2019 +0800</p>
-<pre><code>mergeadmin fix conflict </code></pre><p> commit 8e554e9a334d31b5acce076d465fb398f6d9ac6c (admin)<br> Author: Qian <a href="mailto:&#50;&#51;&#53;&#x38;&#x39;&#x37;&#x39;&#51;&#50;&#54;&#64;&#x71;&#x71;&#46;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#50;&#51;&#53;&#x38;&#x39;&#x37;&#x39;&#51;&#50;&#54;&#64;&#x71;&#x71;&#46;&#99;&#x6f;&#x6d;</a><br> Date:   Sun Jun 2 12:19:52 2019 +0800</p>
-<pre><code>admin branch</code></pre><p> commit 167823b479d9c932414534bbaa6610674807f907<br> Author: Qian <a href="mailto:&#50;&#x33;&#53;&#56;&#57;&#x37;&#57;&#x33;&#50;&#x36;&#64;&#x71;&#113;&#46;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#50;&#x33;&#53;&#56;&#57;&#x37;&#57;&#x33;&#50;&#x36;&#64;&#x71;&#113;&#46;&#x63;&#x6f;&#x6d;</a><br> Date:   Sat Jun 1 23:39:58 2019 +0800</p>
-<pre><code>test</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们选择两个版本比较差异，使用`git diff 版本号1 版本号2`，一般选择版本号前8位(git使用前7位)。</span><br></pre></td></tr></table></figure>
-
-<p> $ git diff f387cc595 167823b479d<br> diff –git a/dPro/urls.py b/dPro/urls.py<br> index f12a399..7ca8aa1 100644<br> — a/dPro/urls.py<br> +++ b/dPro/urls.py<br> @@ -24,5 +24,4 @@ urlpatterns = [</p>
-<pre><code>url(r&apos;login/&apos;,views.login),
-url(r&apos;index/&apos;,views.index),</code></pre><p> ]<br> -#this is admin branch<br> -<br> +#这是master分支</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 封存暂存区  </span><br><span class="line">    我们对文件进行修改，添加`#对暂存区的修改`,并保存  </span><br><span class="line">    接着我们切换到admin分支，使用`git checkout admin`命令，出现以下错误</span><br><span class="line">    ```$ git checkout admin</span><br><span class="line">    error: Your local changes to the following files would be overwritten by checkout:</span><br><span class="line">            dPro/urls.py</span><br><span class="line">    Please commit your changes or stash them before you switch branches.</span><br><span class="line">    Aborting</span><br></pre></td></tr></table></figure>
-
-<p> git提示我们提交我们的修改，或者是在切换分支之前satsh他们。<br> 我们使用<code>git stash</code>命令暂存。<br> 此时我们的工作区已经变成了修改之前的状态，即之前做的修改已经撤销掉了，可以安全的切换分支了。  </p>
-</li>
-<li><p>提取暂存区<br> 当我们将修改暂存并切换分支后，重新回到之前暂存内容的分支时，如何提取之前stash的内容？<br> 首先使用<code>git stash list</code>查看当前保存的内容</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on master: f387cc5 mergeadmin fix conflict</span><br><span class="line">stash@&#123;1&#125;: WIP on master: f387cc5 mergeadmin fix conflict</span><br></pre></td></tr></table></figure>
-
-<p> 使用命令<code>git stash apply stash@{0}</code>，打开编辑器，可以看到之前做的修改已经提取出来了。</p>
-</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
+    
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/git//" class="article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/06/Git分支详解/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-python正则" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+        <div class="archives">
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/02/python正则/">python正则表达式</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/02/python正则/" class="archive-article-date">
-  	<time datetime="2019-06-02T22:30:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#python正则表达式</p>
-<p> ###python中的re模块，python正则表达式模块</p>
-<ul>
-<li><p>正则表达式的语法规则</p>
-<hr>
-<pre><code>- 一般字符
-    - .     匹配除换行符&apos;\n&apos;之外的任意字符
-    - \     转义字符
-    - [...] 字符集(字符类)。对应位置可以是字符集中任意字符
-        -   示例 a[bcd]e 匹配 abe ace ade</code></pre><hr>
-<pre><code>- 预定义字符集
-    - \d    数字[0-9]
-    - \D    非数字[^\d]
-    - \s    空白字符[&lt;空格&gt;\t\r\n\f\v]
-    - \S    非空白字符[^\s]
-    - \w    单词字符[A-Za-z0-9]
-    - \W    非单词字符[^\w]</code></pre><hr>
-<pre><code>- 数量词(一般用在字符后边，表示作用次数)
-    - *     匹配前一字符0或无限次
-    - +     匹配前一字符1或无限次
-    - ？    匹配前一字符0或1次
-    - {m}   匹配前一字符m次
-    - {m,n} 匹配前一字符m到n次</code></pre><hr>
-<pre><code>- 边界限定
-    - ^     匹配字符串开头(在多行模式中匹配每一行开头)
-    - $     匹配字符串末尾(在多行模式中匹配每一行末尾)
-    - \A    仅匹配字符串开头
-    - \Z    仅匹配字符串末尾</code></pre><hr>
-<pre><code>- 逻辑，分组
-    - |     或，代表左右表达式任意匹配一个，一般先匹配左边表达式，一旦成功则跳过右边表达式
-    - (...) 被包括起来的表达式将作为分组，从表达式左边开始,每遇到一个分组的左括号，
-            编号+1。分组作为一个整体，可以后接数量词限定
-    - (?P&lt;name&gt;) 
-            分组，除了原编号外再指定一个别名
-    - \&lt;number&gt;
-            引用编号为&lt;number&gt;的分组匹配到的字符串
-    - (?P=name)
-            引用别名为&lt;name&gt;的分组匹配到的字符串</code></pre></li>
-<li><p>python的re模块</p>
-<ul>
-<li>python自带的re模块，提供了对正则的支持，主要函数如下</li>
-</ul>
-<hr>
-<pre><code>#返回pattern对象
-re.compile(string[,flag])
-#以下为匹配所用函数
-re.match(pattern, string[,flags])
-re.search(pattern, string[,flags])
-re.split(pattern, string[,flags])
-re.findall(pattern, string[,flags])
-re.finditer(pattern, string[,flags])
-re.sub(pattern, repl, string[,count])
-re.subn(pattern, repl, string[,count])</code></pre></li>
-<li><p>参数flag表示匹配模式，可使用&amp;，| 等</p>
-<hr>
-<pre><code>#可选值
-re.I    忽略大小写
-re.M    多行模式
-re.S    点任意匹配符，改变‘.’的行为
-re.X    详细模式，正则表达式可以是多行，忽略空白字符，并可以加入注释</code></pre></li>
-<li><p>re.match(pattern, string[,flags])</p>
-<hr>
-<pre><code>#方法将会从字符串开头开始，尝试匹配pattern，一直向后匹配若匹配不成功
-    则返回None,匹配成功则终止
-import re
-pattern = re.compile(r&apos;hello&apos;)#r代表‘原生字符串’
-result = re.match(pattern, &apos;hello world&apos;)
-print(result.group())
-#output hello</code></pre><ul>
-<li>re,match返回一个match对象，包含了大多数这次匹配的信息，对象属性方法如下          <hr>
-<pre><code>属性
-string:匹配时使用的文本
-re：匹配时使用的pattern对象
-pos：文本中正则表达式开始搜索的索引
-endpos：正则表达式结束搜索的索引
-lastindex：最后一个捕获的分组在文本中的索引，若果没有捕获分组，将为None
-lastgroup：最后一个捕获的分组的别名，如果没有别名，将为None
-方法
-group([group1,..]):
-     获得一个或多个分组截获的字符串；指定多个参数时将以元组的形式返回。
-         编号0代表整个匹配的字符串
-groups([default])：
-     以元组形式返回全部分组截获的字符串
-groupdict([default]):
-     返回一有别名的组的别名为键、以该组截获字符串为值得字典。没有别名的组不包含在内
-start([group]):
-     返回指定的组截获的子串在string中的起始索引
-end([group]):
-     返回指定的组截获的子串在string中的结束索引(子串的最后一个字符的索引加一)
-sapn([group]):
-     返回(start(group),end(group))</code></pre></li>
-</ul>
-</li>
-<li><p>re.search(pattern, string[,flags])</p>
-<hr>
-<pre><code>search方法与match方法类似，区别在于match()只检测re是不是在string的开始位置匹配，
-search()会扫描整个string匹配，match只有在0位置匹配成功的话才有返回值，否则返回None
-同样，search返回的对象同样有match返回对象的属性和方法</code></pre></li>
-<li><p>re.split(pattern, string[,maxsplit])</p>
-<hr>
-<pre><code>按照能够匹配的子串将string分割后返回列表，maxsplit用于指定最大分割次数，不指定将全部分割。   </code></pre></li>
-<li><p>re.findall(pattern, string[,falgs])</p>
-<hr>
-<pre><code>搜索string，以列表形式返回全部能匹配的子串</code></pre></li>
-<li><p>re.finditer(pattern, string[,flags])</p>
-<hr>
-<pre><code>搜索string，返回一个能够顺序访问每一个匹配结果的迭代器</code></pre></li>
-<li><p>re.sub(pattern, repl, string[,count])</p>
-<hr>
-<pre><code>使用repl替换string中每一个匹配的子串，返回替换后的字符串</code></pre></li>
-<li><p>re.subn(pattern, repl, string[,count])  </p>
-<hr>
-<pre><code>返回(sub(repl,string[,count]),替换次数)</code></pre></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">正则表达式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/02/python正则/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Nginx加uWSGi部署Django服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">Nginx加uWSGi部署Django服务器</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/23/Nginx加uWSGi部署Django服务器/" class="archive-article-date">
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2019/05/23/ubuntu服务器安装配置mysql/" class="archive-article-date">
   	<time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
 </a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Nginx加uWSGi部署Django服务器"><a href="#Nginx加uWSGi部署Django服务器" class="headerlink" title="Nginx加uWSGi部署Django服务器"></a>Nginx加uWSGi部署Django服务器</h1><p>首先是使用nginx和uwsgi的优点</p>
-<p>1.<em>web服务器使用nginx，优点是轻量级，抗高并发，速度快</em><br>2.<em>uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制</em><br>3.*关于pythonweb开发的wsgi知识推荐看<a href="https://www.jianshu.com/p/679dee0a4193" " target="_blank" rel="noopener">uwsgi+nginx部署django </a></p>
-<p>之前在网上找到很多教程，帮助部署django项目到生产环境，<br>但是大多数教程都是不能用的，或者是部署过程中出错自己解<br>决不了的，后来在bilibili找到了一个视频教程，成功将项目<br>部署到服务器上，因此想将过程记录下来，一来以后再需要用<br>时不用再从头观看视频，二来也希望给大家到帮助。废话不多说，<br>开始介绍过程，在这之前，容我宣传一波<a href="https://www.bilibili.com/video/av31456425?t=2200" target="_blank">uwsgi+nginx部署django</a></p>
-<ul>
-<li>安装环境 ： 阿里云服务器，ubuntu16.04</li>
-<li>python版本 ：python3，django2.0</li>
-<li>项目位置 ：/home/</li>
-<li>项目名称 ：blog (app : MyBlog)</li>
-</ul>
-<h3 id="第一步：安装并测试uWSGI"><a href="#第一步：安装并测试uWSGI" class="headerlink" title="第一步：安装并测试uWSGI"></a>第一步：安装并测试uWSGI</h3><ol>
-<li><p>安装uwsgi<br>使用命令<br> <code>pip3 install uwsgi</code><br> 安装出错时尝试安装python开发包 </p>
-<hr>
-</li>
-<li><p>测试uwsgi<br> 进入平时工作目录例如 <code>/home</code>,新建一个python测试文件  </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    #test.py</span><br><span class="line">    def application(env,start_response):</span><br><span class="line">        start_response(&apos;200 OK&apos;,[(&apos;Content-Type&apos;,&apos;text / html&apos; )])</span><br><span class="line">        return  [b&quot;Hello World&quot;]  </span><br><span class="line">    ```  </span><br><span class="line">    之后在该目录下运行测试命令  </span><br><span class="line">    `uwsgi --http :8001 --wsgi-file test.py`  </span><br><span class="line">    若提示该端口已被占用，可使用以下命令关闭uwsgi进程  </span><br><span class="line">    `ps -aux | grep uwsgi |awk &apos;&#123;print $2&#125;&apos;|xargs kill -9`  </span><br><span class="line">    开启服务器8001端口后，使用服务器公网ip与端口号访问，浏览器返回helloworld即表示uwsgi正常工作</span><br><span class="line">    </span><br><span class="line">    ---</span><br><span class="line">3. 测试项目连接uwsgi  </span><br><span class="line">    `uwsgi --chdir /home/blog --home /home/env --http :8001 -- module blog.wsgi:application`  </span><br><span class="line">    若部署是没有使用虚拟环境，则`--home /home/env`可以省略  </span><br><span class="line">    此时访问ip地址与端口号可以发现，项目已经可以访问，但是并没有静态内容，这是因为uwsgi不能处理静态文件，因此才需要使用nginx</span><br><span class="line">### 第二步： 安装配置nginx</span><br><span class="line">1. 安装nginx  </span><br><span class="line">    使用命令  </span><br><span class="line">    `apt-get install nginx`  </span><br><span class="line">2. 配置nginx  </span><br><span class="line">    进入nginx安装目录下，并查看文件</span><br></pre></td></tr></table></figure>
-
-<p> cd /etc/nginx/<br> ls </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">可以看到两个文件夹，分别是可用得nginx配置所在文件夹`sites-available`以及已启用配置文件夹`sites-enabled`</span><br><span class="line"></span><br><span class="line">进入可用配置目录，新建文件</span><br></pre></td></tr></table></figure>
-
-<p> cd sites-available/<br> vim mysite.conf</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">添加以下内容</span><br></pre></td></tr></table></figure>
-
-<p> server {</p>
-<pre><code>listen 端口，一般为80端口;
-server_name ip地址;
-charset utf-8;
-
-client_max_body_size 75M;
-
-location /static {
-    alias 静态文件目录;
-}
-
-location /media {
-    alias /home/blog/media;
-}
-
-location / {
-    uwsgi_pass 127.0.0.1:8001;#uwsgi使用端口
-    include /etc/nginx/uwsgi_params;
-}</code></pre><p> }</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 第三步：配置并启动uwsgi</span><br><span class="line">    </span><br><span class="line">1. 进入`/home`目录，创建文件夹并创建配置文件</span><br></pre></td></tr></table></figure>
-
-<p> cd /home<br> mkdir mysite_uwsgi<br> cd /mysite_uwsgi<br> vim mysite.ini</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 添加一下内容</span><br></pre></td></tr></table></figure>
-
-<p> [uwsgi]<br> chdir = /home/blog<br> home = /home/env #若没使用虚拟环境，去掉这一行<br> module = blog.wsgi:application</p>
-<p> master = True<br> processes = 4 #使用进程数<br> harakiri = 60<br> max-requests = 5000</p>
-<p> socket = 127.0.0.1:8001<br> uid = 1000<br> gid = 2000</p>
-<p> pidfile = /home/mysite_uwsgi/master.pid<br> daemonize = /home/mysite_uwsgi/mysite.log<br> vacuum = True<br> ```  </p>
-</li>
-<li><p>启动uwsgi<br> <code>uwsgi --ini /home/mysite_uwsgi/mysite.ini</code><br> 可以使用以下命令检查uwsgi是否启动成功<br> <code>ps -aux | grep uwsgi</code><br> 当启动进程数为5个时，uwsgi启动成功</p>
-</li>
-</ol>
-<h3 id="第四步：启动nginx"><a href="#第四步：启动nginx" class="headerlink" title="第四步：启动nginx"></a>第四步：启动nginx</h3><ol>
-<li><p>创建软连接<br> <code>ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/mysite.conf</code><br> 使用以下命令查看配置是否有问题<br> <code>nginx -t</code>  </p>
-<hr>
-</li>
-<li><p>重启nginx服务<br> <code>service nginx restart</code><br> 此时直接使用ip地址即可访问项目  </p>
-</li>
-</ol>
-<h4 id="至此，大功告成"><a href="#至此，大功告成" class="headerlink" title="至此，大功告成"></a>至此，大功告成</h4>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">服务器部署</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">diango</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/django//" class="article-tag-list-link color2">django</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-ubuntu服务器安装配置mysql" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/23/ubuntu服务器安装配置mysql/">ubuntu服务器安装配置mysql</a>
+      <a class="archive-article-title" href="/2019/05/23/ubuntu服务器安装配置mysql/">ubuntu服务器安装配置mysql</a>
     </h1>
   
 
-        
-        <a href="/2019/05/23/ubuntu服务器安装配置mysql/" class="archive-article-date">
-  	<time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ubuntu服务器安装配置mysql"><a href="#ubuntu服务器安装配置mysql" class="headerlink" title="ubuntu服务器安装配置mysql"></a>ubuntu服务器安装配置mysql</h1><p>一般在使用django做python web开发时，在开发环境大都使用python自带的Sqlite数据库，但当要部署到服务器时，一般都会使用MySql替代Sqlite作为生产数据库。因此我们需要在服务器上安装MySql，并配置使得我们可以远程访问mysql。</p>
-<ul>
-<li>服务器镜像：ubuntu16.04</li>
-</ul>
-<h3 id="第一步：安装MySql"><a href="#第一步：安装MySql" class="headerlink" title="第一步：安装MySql"></a>第一步：安装MySql</h3><p>安装mysql<br>    <code>sudo apt-get install mysql-server mysql-client</code><br>    安装过程中会让你输入密码<br>    查看mysql是否安装成功<br>    <code>mysql -V</code><br>    安装python开发包<br>    <code>sudo apt-get install libmysqlclient-dev python3-dev</code><br>    安装mysqlclient<br>    <code>pip3 install mysqlclient</code></p>
-<h3 id="第二步：授权用户远程登陆"><a href="#第二步：授权用户远程登陆" class="headerlink" title="第二步：授权用户远程登陆"></a>第二步：授权用户远程登陆</h3><p>首先登陆mysql<br><code>mysql -u root -p</code><br>接下来授权一个用户可以远程访问  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GRANT ALL PRIVILEGES ON *.* TO &apos;username&apos;@&apos;%&apos; IDENTIFIED BY &apos;password&apos; WITH GRANT OPTION;</span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">更改mysql配置文件  </span><br><span class="line">`sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`  </span><br><span class="line">注释掉`bind-address = 127.0.0.1`  </span><br><span class="line">重启MySql服务，即可远程连接</span><br><span class="line"></span><br><span class="line">### mysql编码问题</span><br><span class="line"></span><br><span class="line">一般出现utf-8编码问题  </span><br><span class="line">修改配置文件  </span><br><span class="line">`sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf`  </span><br><span class="line">添加以下内容</span><br></pre></td></tr></table></figure>
-
-<p>[mysqld]<br>character-set-server=utf8<br>collation-server=utf8_general_ci<br>init_connect=’SET NAMES utf8’</p>
-<p>[client]<br>default-character-set=utf8<br>```  
-在django得setting.py中得database配置中添加（default里边添加）<br><code>&#39;OPTIONS&#39;: { &#39;init_command&#39;: &#39;SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;&#39; }</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -681,7 +187,7 @@ location / {
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -694,39 +200,17 @@ location / {
 	</div>
 
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/23/ubuntu服务器安装配置mysql/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
+    </div></section>
+  
+
+    
 
 
           </div>
@@ -748,11 +232,11 @@ location / {
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
