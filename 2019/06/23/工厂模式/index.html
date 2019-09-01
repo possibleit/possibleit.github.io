@@ -18,7 +18,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/06/23/工厂模式/工厂方法模式.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/06/23/工厂模式/抽象工厂模式.jpg">
-<meta property="og:updated_time" content="2019-09-01T08:41:50.571Z">
+<meta property="og:updated_time" content="2019-09-01T08:48:19.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式-工厂模式">
 <meta name="twitter:description" content="工厂模式：建立创建对象的工厂在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端  工厂使用的优点    松耦合，即对象的创建可以独立于类的实现 客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的">
@@ -187,11 +187,8 @@
 <li>抽象工厂模式</li>
 </ol>
 <hr>
-<more>
-#### 简单工厂模式
-
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Bhow Bhow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Meow Meow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## forest factory defined</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ForestFactory</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_sound</span><span class="params">(self, object_type)</span>:</span></span><br><span class="line">        <span class="comment">##根据传入参数生成对象</span></span><br><span class="line">        <span class="keyword">return</span> eval(object_type)().do_say()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## client code</span></span><br><span class="line">ff = ForestFactory()</span><br><span class="line">ff.make_sound(<span class="string">"Cat"</span>)</span><br><span class="line"></span><br><span class="line">help(eval)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Bhow Bhow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Meow Meow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## forest factory defined</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ForestFactory</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_sound</span><span class="params">(self, object_type)</span>:</span></span><br><span class="line">        <span class="comment">##根据传入参数生成对象</span></span><br><span class="line">        <span class="keyword">return</span> eval(object_type)().do_say()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## client code</span></span><br><span class="line">ff = ForestFactory()</span><br><span class="line">ff.make_sound(<span class="string">"Cat"</span>)</span><br><span class="line"></span><br><span class="line">help(eval)</span><br></pre></td></tr></table></figure>
 
 <pre><code>Meow Meow!!
 Help on built-in function eval in module builtins:
@@ -262,7 +259,7 @@ HamPizza is served with Ham on MexicanVegPizza</code></pre><hr>
 <td align="center">抽象工厂方法用于创建相关产品的系列</td>
 </tr>
 </tbody></table>
-</more>
+
       
 
       
@@ -394,7 +391,7 @@ HamPizza is served with Ham on MexicanVegPizza</code></pre><hr>
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#工厂模式：建立创建对象的工厂"><span class="toc-number">1.</span> <span class="toc-text">工厂模式：建立创建对象的工厂</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法模式"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象工厂模式"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法与抽象工厂对比"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">工厂方法与抽象工厂对比</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#工厂模式：建立创建对象的工厂"><span class="toc-number">1.</span> <span class="toc-text">工厂模式：建立创建对象的工厂</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#简单工厂模式"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">简单工厂模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法模式"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象工厂模式"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法与抽象工厂对比"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">工厂方法与抽象工厂对比</span></a></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -510,6 +507,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
               </li>
              
@@ -526,19 +531,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java集合</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>
