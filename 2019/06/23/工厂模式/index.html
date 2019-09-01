@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: ubuntu | Qian的博客</title>
+  <title>设计模式-工厂模式 | Qian的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/tags/ubuntu/index.html">
+  <meta name="description" content="工厂模式：建立创建对象的工厂在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端  工厂使用的优点    松耦合，即对象的创建可以独立于类的实现 客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式-工厂模式">
+<meta property="og:url" content="http://yoursite.com/2019/06/23/工厂模式/index.html">
 <meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="工厂模式：建立创建对象的工厂在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端  工厂使用的优点    松耦合，即对象的创建可以独立于类的实现 客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/06/23/工厂模式/工厂方法模式.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/06/23/工厂模式/抽象工厂模式.jpg">
+<meta property="og:updated_time" content="2019-09-01T08:41:50.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:title" content="设计模式-工厂模式">
+<meta name="twitter:description" content="工厂模式：建立创建对象的工厂在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端  工厂使用的优点    松耦合，即对象的创建可以独立于类的实现 客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/23/工厂模式/工厂方法模式.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -142,75 +150,270 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-工厂模式" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/23/ubuntu服务器安装配置mysql/" class="archive-article-date">
-  	<time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/23/ubuntu服务器安装配置mysql/">ubuntu服务器安装配置mysql</a>
+    <h1 class="article-title" itemprop="name">
+      设计模式-工厂模式
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/06/23/工厂模式/" class="archive-article-date">
+  	<time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="工厂模式：建立创建对象的工厂"><a href="#工厂模式：建立创建对象的工厂" class="headerlink" title="工厂模式：建立创建对象的工厂"></a>工厂模式：建立创建对象的工厂</h1><p>在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端</p>
+<hr>
+<p>工厂使用的优点  </p>
+<ul>
+<li>松耦合，即对象的创建可以独立于类的实现</li>
+<li>客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的对象</li>
+<li>可以轻松在工厂中添加其他类来创建其他类型对象，而不需要修改客户端代码</li>
+<li>工厂可以重用现有对象  </li>
+</ul>
+<hr>
+<p>Factory模式有三种变体，如下</p>
+<ol>
+<li>简单工厂模式</li>
+<li>工厂方法模式</li>
+<li>抽象工厂模式</li>
+</ol>
+<hr>
+<more>
+#### 简单工厂模式
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Bhow Bhow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_say</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Meow Meow!!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## forest factory defined</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ForestFactory</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">make_sound</span><span class="params">(self, object_type)</span>:</span></span><br><span class="line">        <span class="comment">##根据传入参数生成对象</span></span><br><span class="line">        <span class="keyword">return</span> eval(object_type)().do_say()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## client code</span></span><br><span class="line">ff = ForestFactory()</span><br><span class="line">ff.make_sound(<span class="string">"Cat"</span>)</span><br><span class="line"></span><br><span class="line">help(eval)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Meow Meow!!
+Help on built-in function eval in module builtins:
+
+eval(source, globals=None, locals=None, /)
+    Evaluate the given source in the context of globals and locals.
+
+    The source may be a string representing a Python expression
+    or a code object as returned by compile().
+    The globals must be a dictionary and locals can be any mapping,
+    defaulting to the current globals and locals.
+    If only globals is given, locals defaults to it.</code></pre><p>​    </p>
+<hr>
+<h4 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h4><p>以下几点可以帮我们理解工厂方法模式。  </p>
+<ol>
+<li>我们定义一个接口来创建对象，但是工厂本身并不负责创建对象，而是将这一任务交给子类完成，即子类决定了要实例化哪些类</li>
+<li>Factory方法的创建是通过继承而不是通过实例化完成</li>
+<li>工厂方法使设计更加具有可定制性。它可以返回相同的实例或子类，而不是某种类型的对象(就像简单工厂方法中的那样)。</li>
+</ol>
+<center>
+<img src="工厂方法模式.jpg" width="50%" height="50%">
+工厂方法模式UML图
+</center>
+
+<p>图中有一个包含factoryMethod()方法的抽象类Creator。Factory Method()方法负责创建指定类型的对象。ConcreteCreator类提供了一个实现Creator抽象类的factoryMethod()方法，这种方法可以在运行时修改已创建的对象。ConcreteCreator创建ConcreteProduct，并确保其创建的对象实现了Product类，同时为Product接口中的所有方法提供相应的实现。<br>也即，Creator接口的factoryMethod方法和ConcreteCreator类共同决定了要创建Product的哪个子类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Product类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Section</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line">    <span class="comment">#factoryMethod方法</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">describe</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#ConcreteProduct类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonalSection</span><span class="params">(Section)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">describe</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Personal Section"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlbumSection</span><span class="params">(Section)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">describe</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Album Section"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PatentSection</span><span class="params">(Section)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">describe</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Patent Section"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PublicctionSection</span><span class="params">(Section)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">describe</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Publication Section"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Creator类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Profile</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sections = []</span><br><span class="line">        self.createProfile()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#工厂方法factoryMethod</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createProfile</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getSections</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.sections</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addSection</span><span class="params">(self, section)</span>:</span></span><br><span class="line">        self.sections.append(section)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#ConcreteCreator类 与createProfile方法一并决定实现product类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">linkedin</span><span class="params">(Profile)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createProfile</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.addSection(PersonalSection())</span><br><span class="line">        self.addSection(PatentSection())</span><br><span class="line">        self.addSection(PublicctionSection())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">facebook</span><span class="params">(Profile)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createProfile</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.addSection(PersonalSection())</span><br><span class="line">        self.addSection(AlbumSection())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">profile_type = <span class="string">'Facebook'</span></span><br><span class="line">profile = eval(profile_type.lower())()</span><br><span class="line">print(<span class="string">'Creating Profile..'</span>, type(profile).__name__)</span><br><span class="line">print(<span class="string">'Profile has section --'</span>, profile.getSections())</span><br></pre></td></tr></table></figure>
+
+<pre><code>Creating Profile.. facebook
+Profile has section -- [&lt;__main__.PersonalSection object at 0x0000022A9440E5F8&gt;, &lt;__main__.AlbumSection object at 0x0000022A9440E588&gt;]</code></pre><p>工厂方法模式的优点：</p>
+<ol>
+<li>他具有更大的灵活性，使用代码更加通用，因为他不是单纯的实例化某个类。这样，实现哪些类取决于接口(Product),而不是ConcreteProduct类。</li>
+<li>他们是松耦合的，因为创建对象的代码和使用它的代码是分开的。客户端完全不需要关心传递哪些参数以及需要实例化哪些类。降低了维护成本。</li>
+</ol>
+<hr>
+<h4 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h4><p>抽象工厂模式的主要目的是提供一个接口来创建一系列相关对象，而无需指定具体的类。工厂方法将创建实例的任务委托给了子类，而抽象工厂方法的目的是创建一系列对象。</p>
+<center>
+<img src="抽象工厂模式.jpg" width="75%" height="75%">
+$ $
+抽象工厂模式UML图
+</center>
+
+<p>ConcreteFactory1和ConcreteFactory2实现了AbstractFactory，并创建实例ConcreteProduct1、ConcreteProduct2、AnotherConcreteProduct1、AnotherConcreteProduct2.</p>
+<p>我们使用下面的场景来模拟抽象工厂模式：<br>想象一下我们开办了一家pizza店，供应印式和美式披萨。为此，我们首先创建一个抽象基类PizzaFactory（AbstractFactory见上图）。PizzaFactory类有两个抽象方法即createVegPizza()和createNonVegPizza(),他们需要通过ConcentrateFactory实现。接下来我们创建两个工厂，分别命名为IndianPizzaFactory，USPizzaFactory。<br>接下来，我们进一步定义AbstractProducts。在下面的代码中，我们创建了两个抽象类：VegPizza和NonVegPizza（AbstractProduct和AnotherAbstractFactory），他们都定义了自己的方法，分别是prepare和serve。<br>这里的想法是，素食披萨配有适当的外皮、蔬菜、调味料，非素食披萨在素食饼上搭配非素食食材。<br>然后我们为每个AbstractProduct定义ConcreteProducts。即DeluxVeggiePizza，MexicanVegPizza。而ChickenPizza与HamPizza则代表上图中的AnotherConcreteProducts。</p>
+<p>当用户来到PizzaStore并要了一份美式非素食Pizza时，USPizzaFactory负责准备素食，然后加上火腿。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#AbstractFactory</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PizzaFactory</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createNonVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#ConcreteFactory</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndianPizzaFactory</span><span class="params">(PizzaFactory)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> DeluxVeggiePizza()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createNonVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> ChickenPizza()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">USPizzaFactory</span><span class="params">(PizzaFactory)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> MexicanVegPizza()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">createNonVegPizza</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> HamPizza()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#AbstractProduct</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VegPizza</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare</span><span class="params">(self, VegPizza)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#AnotherAbstractFactory</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NonVegPizza</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Perpare "</span>, type(self).__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#ConcreteProducts</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeluxVeggiePizza</span><span class="params">(VegPizza)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Prepare "</span>, type(self).__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#AnotherConcreteProducts</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChickenPizza</span><span class="params">(NonVegPizza)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve</span><span class="params">(self, VegPizza)</span>:</span></span><br><span class="line">        print(</span><br><span class="line">            type(self).__name__, <span class="string">"is served with Chicken on"</span>,</span><br><span class="line">            type(VegPizza).__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MexicanVegPizza</span><span class="params">(VegPizza)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prepare</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"Prepare "</span>, type(self).__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HamPizza</span><span class="params">(NonVegPizza)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serve</span><span class="params">(self, VegPizza)</span>:</span></span><br><span class="line">        print(</span><br><span class="line">            type(self).__name__, <span class="string">"is served with Ham on"</span>,</span><br><span class="line">            type(VegPizza).__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PizzaStore</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">makePizzas</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> factory <span class="keyword">in</span> [IndianPizzaFactory(), USPizzaFactory()]:</span><br><span class="line">            self.factory = factory</span><br><span class="line">            self.NonVegPizza = self.factory.createNonVegPizza()</span><br><span class="line">            self.VegPizza = self.factory.createVegPizza()</span><br><span class="line">            self.VegPizza.prepare()</span><br><span class="line">            self.NonVegPizza.serve(self.VegPizza)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pizza = PizzaStore()</span><br><span class="line">pizza.makePizzas()</span><br></pre></td></tr></table></figure>
+
+<pre><code>Prepare  DeluxVeggiePizza
+ChickenPizza is served with Chicken on DeluxVeggiePizza
+Prepare  MexicanVegPizza
+HamPizza is served with Ham on MexicanVegPizza</code></pre><hr>
+<h4 id="工厂方法与抽象工厂对比"><a href="#工厂方法与抽象工厂对比" class="headerlink" title="工厂方法与抽象工厂对比"></a>工厂方法与抽象工厂对比</h4><table>
+<thead>
+<tr>
+<th align="center">工厂方法</th>
+<th align="center">抽象工厂方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">它向客户端开放了创建对象的方法</td>
+<td align="center">抽象工厂方法包含了一个或多个工厂方法来创建一个系列的相关对象</td>
+</tr>
+<tr>
+<td align="center">它使用继承和子类来决定创建哪个对象</td>
+<td align="center">他使用组合将创建对象的任务委托给其他类</td>
+</tr>
+<tr>
+<td align="center">工厂方法用于创建一个产品</td>
+<td align="center">抽象工厂方法用于创建相关产品的系列</td>
+</tr>
+</tbody></table>
+</more>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ubuntu</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/服务器部署//" class="article-tag-list-link color1">服务器部署</a>
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/23/工厂模式/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2019/06/23/单例模式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          设计模式-单例模式
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2019/06/06/Git分支详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">git分支详解</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#工厂模式：建立创建对象的工厂"><span class="toc-number">1.</span> <span class="toc-text">工厂模式：建立创建对象的工厂</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法模式"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象工厂模式"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂方法与抽象工厂对比"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">工厂方法与抽象工厂对比</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -233,9 +436,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

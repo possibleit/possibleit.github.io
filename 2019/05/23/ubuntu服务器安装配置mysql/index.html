@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Qian的博客">
 <meta property="og:description" content="ubuntu服务器安装配置mysql一般在使用django做python web开发时，在开发环境大都使用python自带的Sqlite数据库，但当要部署到服务器时，一般都会使用MySql替代Sqlite作为生产数据库。因此我们需要在服务器上安装MySql，并配置使得我们可以远程访问mysql。  服务器镜像：ubuntu16.04  第一步：安装MySql安装mysql    sudo apt-">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-29T09:17:33.337Z">
+<meta property="og:updated_time" content="2019-09-01T08:37:12.244Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu服务器安装配置mysql">
 <meta name="twitter:description" content="ubuntu服务器安装配置mysql一般在使用django做python web开发时，在开发环境大都使用python自带的Sqlite数据库，但当要部署到服务器时，一般都会使用MySql替代Sqlite作为生产数据库。因此我们需要在服务器上安装MySql，并配置使得我们可以远程访问mysql。  服务器镜像：ubuntu16.04  第一步：安装MySql安装mysql    sudo apt-">
@@ -177,8 +177,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GRANT ALL PRIVILEGES ON *.* TO &apos;username&apos;@&apos;%&apos; IDENTIFIED BY &apos;password&apos; WITH GRANT OPTION;</span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">更改mysql配置文件  </span><br><span class="line">`sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`  </span><br><span class="line">注释掉`bind-address = 127.0.0.1`  </span><br><span class="line">重启MySql服务，即可远程连接</span><br><span class="line"></span><br><span class="line">### mysql编码问题</span><br><span class="line"></span><br><span class="line">一般出现utf-8编码问题  </span><br><span class="line">修改配置文件  </span><br><span class="line">`sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf`  </span><br><span class="line">添加以下内容</span><br></pre></td></tr></table></figure>
 
 <p>[mysqld]<br>character-set-server=utf8<br>collation-server=utf8_general_ci<br>init_connect=’SET NAMES utf8’</p>
-<p>[client]<br>default-character-set=utf8<br>```  
-在django得setting.py中得database配置中添加（default里边添加）<br><code>&#39;OPTIONS&#39;: { &#39;init_command&#39;: &#39;SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;&#39; }</code></p>
+<p>[client]<br>default-character-set=utf8<br>```  </p>
+<p>在django得setting.py中得database配置中添加（default里边添加）<br><code>&#39;OPTIONS&#39;: { &#39;init_command&#39;: &#39;SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;&#39; }</code></p>
 
       
 
@@ -451,6 +451,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>

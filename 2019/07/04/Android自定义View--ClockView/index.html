@@ -17,7 +17,7 @@
 <meta property="og:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：  第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(context,n">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/07/04/Android自定义View--ClockView/ClockView.png">
-<meta property="og:updated_time" content="2019-07-05T14:22:07.687Z">
+<meta property="og:updated_time" content="2019-09-01T08:25:17.926Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自定义View--ClockView">
 <meta name="twitter:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：  第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(context,n">
@@ -176,7 +176,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context,attrs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>
-<pre><code>### 第二步编写onMeasure函数</code></pre><p>​    onMeasure有两个参数，分别是宽高与对应方向上的测量模式合成的一个值，不能直接使用此参数作为宽高。我们首先使用getMode方法获取测量模式，如果测量模式为AT_MOST（表示子View具体大小没有尺寸限制，但是存在上限，上限一般为父View大小），那么我们手动设置View的宽高为MATCH_PARENT。其余情况不做修改。</p>
+
+<h3 id="第二步编写onMeasure函数"><a href="#第二步编写onMeasure函数" class="headerlink" title="第二步编写onMeasure函数"></a>第二步编写onMeasure函数</h3><p>​    onMeasure有两个参数，分别是宽高与对应方向上的测量模式合成的一个值，不能直接使用此参数作为宽高。我们首先使用getMode方法获取测量模式，如果测量模式为AT_MOST（表示子View具体大小没有尺寸限制，但是存在上限，上限一般为父View大小），那么我们手动设置View的宽高为MATCH_PARENT。其余情况不做修改。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> modeWidth  = MeasureSpec.getMode(widthMeasureSpec);</span><br><span class="line">    <span class="keyword">int</span> modeHeight = MeasureSpec.getMode(heightMeasureSpec);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//没有指定宽高,使用了wrap_content,则手动指定宽高为MATCH_PARENT</span></span><br><span class="line">    <span class="keyword">if</span> (modeWidth == AT_MOST &amp;&amp; modeHeight == AT_MOST)&#123;</span><br><span class="line">        ViewGroup.LayoutParams layoutParams = getLayoutParams();</span><br><span class="line">        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;</span><br><span class="line">        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;</span><br><span class="line">        setLayoutParams(layoutParams);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="第三步编写onSizeChanged方法"><a href="#第三步编写onSizeChanged方法" class="headerlink" title="第三步编写onSizeChanged方法"></a>第三步编写onSizeChanged方法</h3><p>​    onSizeChanged方法在View的尺寸发生变化时调用，方法有四个参数，分别代表变化之前的宽高与变化之后的宽高。我们定义两个内部变量mWidth与mHeight，并将比那花后的宽高赋给他们，方便使用。</p>
@@ -295,11 +296,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/04/ArrayList源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/08/04/HashMap源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          ArrayList源码分析
+          HashMap源码分析
         
       </div>
     </a>
@@ -333,7 +334,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android自定义View–ClockView"><span class="toc-number">1.</span> <span class="toc-text">Android自定义View–ClockView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步编写构造函数"><span class="toc-number">1.0.1.</span> <span class="toc-text">第一步编写构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三步编写onSizeChanged方法"><span class="toc-number">1.0.2.</span> <span class="toc-text">第三步编写onSizeChanged方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第四步onDraw方法"><span class="toc-number">1.0.3.</span> <span class="toc-text">第四步onDraw方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第五步提供外部接口"><span class="toc-number">1.0.4.</span> <span class="toc-text">第五步提供外部接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#至此，一个自定义的ClockView完成了，可以在布局文件中调用。当然这只是第一步，简单的绘制出View，接下来还有设置属性集，以及点击事件的方法，就要到之后的博客中了。"><span class="toc-number">1.0.5.</span> <span class="toc-text">至此，一个自定义的ClockView完成了，可以在布局文件中调用。当然这只是第一步，简单的绘制出View，接下来还有设置属性集，以及点击事件的方法，就要到之后的博客中了。</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android自定义View–ClockView"><span class="toc-number">1.</span> <span class="toc-text">Android自定义View–ClockView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步编写构造函数"><span class="toc-number">1.0.1.</span> <span class="toc-text">第一步编写构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二步编写onMeasure函数"><span class="toc-number">1.0.2.</span> <span class="toc-text">第二步编写onMeasure函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三步编写onSizeChanged方法"><span class="toc-number">1.0.3.</span> <span class="toc-text">第三步编写onSizeChanged方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第四步onDraw方法"><span class="toc-number">1.0.4.</span> <span class="toc-text">第四步onDraw方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第五步提供外部接口"><span class="toc-number">1.0.5.</span> <span class="toc-text">第五步提供外部接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#至此，一个自定义的ClockView完成了，可以在布局文件中调用。当然这只是第一步，简单的绘制出View，接下来还有设置属性集，以及点击事件的方法，就要到之后的博客中了。"><span class="toc-number">1.0.6.</span> <span class="toc-text">至此，一个自定义的ClockView完成了，可以在布局文件中调用。当然这只是第一步，简单的绘制出View，接下来还有设置属性集，以及点击事件的方法，就要到之后的博客中了。</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -474,6 +475,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>

@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Qian的博客">
 <meta property="og:description" content="Git分支详解git branch命令 查看分支  git branch 新建分支  git branch branch_name 切换分支  git checkout branch 删除分支  git branch -d branch_name(注意不能删除当前所在的分支) 更改分支名称  git branch -m old_name new_name 创建分支并切换到新创建的分支  git b">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-29T09:17:33.337Z">
+<meta property="og:updated_time" content="2019-09-01T08:29:57.118Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git分支详解">
 <meta name="twitter:description" content="Git分支详解git branch命令 查看分支  git branch 新建分支  git branch branch_name 切换分支  git checkout branch 删除分支  git branch -d branch_name(注意不能删除当前所在的分支) 更改分支名称  git branch -m old_name new_name 创建分支并切换到新创建的分支  git b">
@@ -183,6 +183,7 @@
 </ul>
 <hr>
 <a id="more"></a>
+
 <h3 id="git分支初步使用"><a href="#git分支初步使用" class="headerlink" title="git分支初步使用"></a>git分支初步使用</h3><ol>
 <li><p>首先查看当前目录下的git分支</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">  admin</span><br><span class="line">* master</span><br></pre></td></tr></table></figure>
@@ -193,14 +194,14 @@
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git merge admin</span><br><span class="line">Auto-merging dPro/urls.py</span><br><span class="line">CONFLICT (content): Merge conflict in dPro/urls.py</span><br><span class="line">Automatic merge failed; fix conflicts and then commit the result.</span><br></pre></td></tr></table></figure>
 
 <p> 可以看到，git提示我们合并失败，因为在文件<code>dPro/url.py</code>内有冲突，他要求我们手动合并并重新提交<br> 在<code>dPro/url.py</code>内显示了冲突的内容  </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">#这是master分支</span><br><span class="line">=======</span><br><span class="line">#this is admin branch</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; admin</span><br><span class="line">```  </span><br><span class="line">我们对文件进行修改，将admin分支的内容合并到master分支上，修改结果如下</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">#这是master分支</span><br><span class="line">=======</span><br><span class="line">#this is admin branch</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; admin</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">我们对文件进行修改，将admin分支的内容合并到master分支上，修改结果如下</span><br></pre></td></tr></table></figure>
 
 <p> #this is admin branch</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    git提示我们合并成功</span><br><span class="line"></span><br><span class="line">3. 查看版本差异</span><br><span class="line">    首先使用`git log`查看版本历史</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    git提示我们合并成功</span><br><span class="line"></span><br><span class="line">3. 查看版本差异</span><br><span class="line">    首先使用`git log`查看版本历史</span><br></pre></td></tr></table></figure>
 
-<p> commit f387cc59552544a031cbd424f3d516a2781ecbab (HEAD -&gt; master)<br> Merge: 167823b 8e554e9<br> Author: Qian <a href="mailto:&#50;&#51;&#x35;&#56;&#57;&#x37;&#57;&#x33;&#50;&#x36;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#50;&#51;&#x35;&#56;&#57;&#x37;&#57;&#x33;&#50;&#x36;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;</a><br> Date:   Sun Jun 2 12:36:38 2019 +0800</p>
-<pre><code>mergeadmin fix conflict </code></pre><p> commit 8e554e9a334d31b5acce076d465fb398f6d9ac6c (admin)<br> Author: Qian <a href="mailto:&#x32;&#x33;&#x35;&#x38;&#57;&#x37;&#x39;&#51;&#50;&#x36;&#64;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;" target="_blank" rel="noopener">&#x32;&#x33;&#x35;&#x38;&#57;&#x37;&#x39;&#51;&#50;&#x36;&#64;&#113;&#113;&#x2e;&#x63;&#x6f;&#109;</a><br> Date:   Sun Jun 2 12:19:52 2019 +0800</p>
-<pre><code>admin branch</code></pre><p> commit 167823b479d9c932414534bbaa6610674807f907<br> Author: Qian <a href="mailto:&#x32;&#x33;&#x35;&#x38;&#x39;&#55;&#57;&#51;&#x32;&#x36;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#x32;&#x33;&#x35;&#x38;&#x39;&#55;&#57;&#51;&#x32;&#x36;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#109;</a><br> Date:   Sat Jun 1 23:39:58 2019 +0800</p>
+<p> commit f387cc59552544a031cbd424f3d516a2781ecbab (HEAD -&gt; master)<br> Merge: 167823b 8e554e9<br> Author: Qian <a href="mailto:&#x32;&#x33;&#x35;&#x38;&#x39;&#55;&#57;&#51;&#x32;&#x36;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#x32;&#x33;&#x35;&#x38;&#x39;&#55;&#57;&#51;&#x32;&#x36;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;</a><br> Date:   Sun Jun 2 12:36:38 2019 +0800</p>
+<pre><code>mergeadmin fix conflict </code></pre><p> commit 8e554e9a334d31b5acce076d465fb398f6d9ac6c (admin)<br> Author: Qian <a href="mailto:&#x32;&#x33;&#53;&#x38;&#57;&#55;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x32;&#x33;&#53;&#x38;&#57;&#55;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;</a><br> Date:   Sun Jun 2 12:19:52 2019 +0800</p>
+<pre><code>admin branch</code></pre><p> commit 167823b479d9c932414534bbaa6610674807f907<br> Author: Qian <a href="mailto:&#x32;&#x33;&#53;&#56;&#57;&#x37;&#x39;&#x33;&#x32;&#x36;&#x40;&#x71;&#x71;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#x32;&#x33;&#53;&#56;&#57;&#x37;&#x39;&#x33;&#x32;&#x36;&#x40;&#x71;&#x71;&#x2e;&#x63;&#111;&#x6d;</a><br> Date:   Sat Jun 1 23:39:58 2019 +0800</p>
 <pre><code>test</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们选择两个版本比较差异，使用`git diff 版本号1 版本号2`，一般选择版本号前8位(git使用前7位)。</span><br></pre></td></tr></table></figure>
 
 <p> $ git diff f387cc595 167823b479d<br> diff –git a/dPro/urls.py b/dPro/urls.py<br> index f12a399..7ca8aa1 100644<br> — a/dPro/urls.py<br> +++ b/dPro/urls.py<br> @@ -24,5 +24,4 @@ urlpatterns = [</p>
@@ -310,11 +311,11 @@ url(r&apos;index/&apos;,views.index),</code></pre><p> ]<br> -#this is admin bran
   
 <nav id="article-nav">
   
-    <a href="/2019/07/04/Android自定义View/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/23/工厂模式/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Android自定义View
+          设计模式-工厂模式
         
       </div>
     </a>
@@ -489,6 +490,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>

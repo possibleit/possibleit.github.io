@@ -17,7 +17,7 @@
 <meta property="og:description" content="Android自定义View 前一阶段学习android自定义view，买了好几本Android源码分析的书，看书里边关于view的绘制过程的分析。结果看的云里雾里，感觉并没有学到什么东西，后来在github上看教程，看别人的代码，感觉有点收获，所以写了这一篇博客。同时我认为学习这方面的知识，直接去看源码分析效果不好，而应该先学习如何操作，等到有了一点经验或者说入了门之后，再去分析源码，会有更好的">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/07/04/Android自定义View/自定义view绘制流程.jpg">
-<meta property="og:updated_time" content="2019-07-05T14:22:07.672Z">
+<meta property="og:updated_time" content="2019-09-01T08:27:46.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自定义View">
 <meta name="twitter:description" content="Android自定义View 前一阶段学习android自定义view，买了好几本Android源码分析的书，看书里边关于view的绘制过程的分析。结果看的云里雾里，感觉并没有学到什么东西，后来在github上看教程，看别人的代码，感觉有点收获，所以写了这一篇博客。同时我认为学习这方面的知识，直接去看源码分析效果不好，而应该先学习如何操作，等到有了一点经验或者说入了门之后，再去分析源码，会有更好的">
@@ -177,39 +177,23 @@
 </center>
 
 <h3 id="自定义view分类"><a href="#自定义view分类" class="headerlink" title="自定义view分类"></a>自定义view分类</h3><p>主要是按照自己编写的类所继承的父类来分类，一种是自定义的ViewGroup，大多继承自ViewGroup或者是各种Layout；第二种是继承自View类或者是其他的各种view的子类</p>
-<h3 id="自定义view的各个重要的方法"><a href="#自定义view的各个重要的方法" class="headerlink" title="自定义view的各个重要的方法"></a>自定义view的各个重要的方法</h3><ol>
-<li><p>构造函数</p>
-<p>构造函数是View的入口，用于初始化view的内容，获取自定义的属性。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context,attrs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="自定义view的各个重要的方法"><a href="#自定义view的各个重要的方法" class="headerlink" title="自定义view的各个重要的方法"></a>自定义view的各个重要的方法</h3><h5 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h5><p>   构造函数是View的入口，用于初始化view的内容，获取自定义的属性。</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context,attrs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
 <a id="more"></a>
 <p>   调用一个参数的构造函数</p>
    <figure class="highlight plain"><figcaption><span>clockview </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">调用两个参数的构造函数</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">&lt;com.example.dell.MyView.DigitClockView</span><br><span class="line">    android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">    android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">    android:id=&quot;@+id/digit_clock&quot;/&gt;</span><br></pre></td></tr></table></figure>
 
 
-<ol start="2">
-<li><p>onMeasure函数</p>
-<p>onMeasure方法的作用是测量View的大小，函数有两个参数<figure class="highlight plain"><figcaption><span>void onMeasure(int widthMeasureSpec, int heightMeasureSpec)```，两个int型的参数，与宽高有关，我们能从中获取宽高的数据。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">onMeasure函数中的参数widthMeasureSpec与heightMeasureSpec是由宽、高和各自方向上对应的测量模式合成的一个值。</span><br><span class="line"></span><br><span class="line">测量模式一共有三种</span><br><span class="line"></span><br><span class="line">| 模式        | 二进制值 | 描述                                                         |</span><br><span class="line">| ----------- | -------- | ------------------------------------------------------------ |</span><br><span class="line">| UNSPECIFIED | 00       | 默认值，父控件没有给子view任何限制，子View可以设置为任意大小 |</span><br><span class="line">| EXACTLY     | 01       | 表示父控件已经确切的指定了子View的大小。                     |</span><br><span class="line">| AT_MOST     | 10       | 表示子View具体大小没有尺寸限制，但是存在上限，上限一般为父View大小。 |</span><br><span class="line"></span><br><span class="line">实际应用中使用```getSize```和```getMode```方法获取数值与模式</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">int Width  = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">int modeWidth  = MeasureSpec.getMode(widthMeasureSpec);</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>onSizeChanged方法</p>
-<p>此函数在View大小发生变化时调用，比如父控件影响view大小时</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span><span class="params">(<span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> oldw, <span class="keyword">int</span> oldh)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="onMeasure函数"><a href="#onMeasure函数" class="headerlink" title="onMeasure函数"></a>onMeasure函数</h5><p>   onMeasure方法的作用是测量View的大小，函数有两个参数<figure class="highlight plain"><figcaption><span>void onMeasure(int widthMeasureSpec, int heightMeasureSpec)```，两个int型的参数，与宽高有关，我们能从中获取宽高的数据。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">onMeasure函数中的参数widthMeasureSpec与heightMeasureSpec是由宽、高和各自方向上对应的测量模式合成的一个值。</span><br><span class="line"></span><br><span class="line">测量模式一共有三种</span><br><span class="line"></span><br><span class="line">| 模式        | 二进制值 | 描述                                                         |</span><br><span class="line">| ----------- | -------- | ------------------------------------------------------------ |</span><br><span class="line">| UNSPECIFIED | 00       | 默认值，父控件没有给子view任何限制，子View可以设置为任意大小 |</span><br><span class="line">| EXACTLY     | 01       | 表示父控件已经确切的指定了子View的大小。                     |</span><br><span class="line">| AT_MOST     | 10       | 表示子View具体大小没有尺寸限制，但是存在上限，上限一般为父View大小。 |</span><br><span class="line"></span><br><span class="line">实际应用中使用```getSize```和```getMode```方法获取数值与模式</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">int Width  = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">int modeWidth  = MeasureSpec.getMode(widthMeasureSpec);</span><br></pre></td></tr></table></figure></p>
+<h5 id="onSizeChanged方法"><a href="#onSizeChanged方法" class="headerlink" title="onSizeChanged方法"></a>onSizeChanged方法</h5><p>   此函数在View大小发生变化时调用，比如父控件影响view大小时</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span><span class="params">(<span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> oldw, <span class="keyword">int</span> oldh)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
-<p>函数参数中的w，h，即为view最终的宽高。</p>
-</li>
-<li><p>onLayout方法</p>
-<p>此方法用于确定子view的位置，在自定义GroupView中用到。</p>
-<p>在自定义的ViewGroup中，此方法一般循环取出子view，计算出子view的位置，然后使用<code>child.layout(l, t, r, b);</code>设置子view的位置。</p>
-</li>
-<li><p>onDraw方法</p>
-<p>onDraw方法实际负责图形的绘制，使用Canvas和Paint绘制。</p>
-</li>
-<li><p>提供接口</p>
-<p>最终自定义view需要给外部提供一个接口用于控制view状态或监听view变化等。</p>
-</li>
-</ol>
+<p>   函数参数中的w，h，即为view最终的宽高。</p>
+<h5 id="onLayout方法"><a href="#onLayout方法" class="headerlink" title="onLayout方法"></a>onLayout方法</h5><p>   此方法用于确定子view的位置，在自定义GroupView中用到。</p>
+<p>   在自定义的ViewGroup中，此方法一般循环取出子view，计算出子view的位置，然后使用<code>child.layout(l, t, r, b);</code>设置子view的位置。</p>
+<h5 id="onDraw方法"><a href="#onDraw方法" class="headerlink" title="onDraw方法"></a>onDraw方法</h5><p>   onDraw方法实际负责图形的绘制，使用Canvas和Paint绘制。</p>
+<h5 id="提供接口"><a href="#提供接口" class="headerlink" title="提供接口"></a>提供接口</h5><p>   最终自定义view需要给外部提供一个接口用于控制view状态或监听view变化等。</p>
 
       
 
@@ -314,8 +298,8 @@
     </a>
   
   
-    <a href="/2019/06/06/Git分支详解/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">git分支详解</div>
+    <a href="/2019/06/23/单例模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">设计模式-单例模式</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -342,7 +326,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android自定义View"><span class="toc-number">1.</span> <span class="toc-text">Android自定义View</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义view分类"><span class="toc-number">1.0.1.</span> <span class="toc-text">自定义view分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义view的各个重要的方法"><span class="toc-number">1.0.2.</span> <span class="toc-text">自定义view的各个重要的方法</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android自定义View"><span class="toc-number">1.</span> <span class="toc-text">Android自定义View</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义view分类"><span class="toc-number">1.0.1.</span> <span class="toc-text">自定义view分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义view的各个重要的方法"><span class="toc-number">1.0.2.</span> <span class="toc-text">自定义view的各个重要的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#构造函数"><span class="toc-number">1.0.2.0.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onMeasure函数"><span class="toc-number">1.0.2.0.2.</span> <span class="toc-text">onMeasure函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onSizeChanged方法"><span class="toc-number">1.0.2.0.3.</span> <span class="toc-text">onSizeChanged方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onLayout方法"><span class="toc-number">1.0.2.0.4.</span> <span class="toc-text">onLayout方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onDraw方法"><span class="toc-number">1.0.2.0.5.</span> <span class="toc-text">onDraw方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#提供接口"><span class="toc-number">1.0.2.0.6.</span> <span class="toc-text">提供接口</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -483,6 +467,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>
