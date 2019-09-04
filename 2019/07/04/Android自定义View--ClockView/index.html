@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Android自定义View--ClockView | Qian的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：     第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(contex">
+  <meta name="description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：  第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(context,n">
 <meta name="keywords" content="自定义View">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android自定义View--ClockView">
 <meta property="og:url" content="http://yoursite.com/2019/07/04/Android自定义View--ClockView/index.html">
 <meta property="og:site_name" content="Qian的博客">
-<meta property="og:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：     第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(contex">
+<meta property="og:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：  第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(context,n">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006WUTFIly1g6njifoxmej31hc0u0wfb.jpg">
-<meta property="og:updated_time" content="2019-09-04T08:02:32.383Z">
+<meta property="og:updated_time" content="2019-09-04T08:03:45.741Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自定义View--ClockView">
-<meta name="twitter:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：     第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(contex">
+<meta name="twitter:description" content="Android自定义View–ClockView前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。 实现效果图如下：  第一步编写构造函数​    通常使用的构造函数有三个，分别如下 123456789public ClockView(Context context)&amp;#123;    this(context,n">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/006WUTFIly1g6njifoxmej31hc0u0wfb.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
@@ -171,10 +171,7 @@
       
         <h1 id="Android自定义View–ClockView"><a href="#Android自定义View–ClockView" class="headerlink" title="Android自定义View–ClockView"></a>Android自定义View–ClockView</h1><p>前一篇博客中，简要介绍了关于自定义View的流程，以及一些重要的函数，接下来我会编写一个自己的CliokView（继承自View类）。</p>
 <p>实现效果图如下：</p>
-<center>
-<img src="http://ww1.sinaimg.cn/large/006WUTFIly1g6njifoxmej31hc0u0wfb.jpg" weight="60%" height="50%">
-</center>
-
+<p><img src="http://ww1.sinaimg.cn/large/006WUTFIly1g6njifoxmej31hc0u0wfb.jpg" alt="1562332349740"></p>
 <h3 id="第一步编写构造函数"><a href="#第一步编写构造函数" class="headerlink" title="第一步编写构造函数"></a>第一步编写构造函数</h3><p>​    通常使用的构造函数有三个，分别如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context,attrs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -453,19 +450,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">diango</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">diango</a>
               </li>
              
               <li class="article-tag-list-item">
