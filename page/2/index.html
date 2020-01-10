@@ -144,6 +144,99 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-python正则" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/02/python正则/">python正则表达式</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/02/python正则/" class="archive-article-date">
+  	<time datetime="2019-06-02T22:30:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="python正则表达式"><a href="#python正则表达式" class="headerlink" title="python正则表达式"></a>python正则表达式</h1><h3 id="python中的re模块，python正则表达式模块"><a href="#python中的re模块，python正则表达式模块" class="headerlink" title="python中的re模块，python正则表达式模块"></a>python中的re模块，python正则表达式模块</h3><ul>
+<li><p>正则表达式的语法规则</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- 一般字符</span><br><span class="line">    - .     匹配除换行符&apos;\n&apos;之外的任意字符</span><br><span class="line">    - \     转义字符</span><br><span class="line">    - [...] 字符集(字符类)。对应位置可以是字符集中任意字符</span><br><span class="line">        -   示例 a[bcd]e 匹配 abe ace ade</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2019/06/02/python正则/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">正则表达式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/02/python正则/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ubuntu服务器安装配置mysql" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -239,6 +332,107 @@
 
 
   
+    <article id="post-Nginx加uWSGi部署Django服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">Nginx加uWSGi部署Django服务器</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/23/Nginx加uWSGi部署Django服务器/" class="archive-article-date">
+  	<time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx加uWSGi部署Django服务器"><a href="#Nginx加uWSGi部署Django服务器" class="headerlink" title="Nginx加uWSGi部署Django服务器"></a>Nginx加uWSGi部署Django服务器</h1><p>首先是使用nginx和uwsgi的优点</p>
+<p>1.<em>web服务器使用nginx，优点是轻量级，抗高并发，速度快</em><br>2.<em>uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制</em><br>3.*关于pythonweb开发的wsgi知识推荐看<a href="https://www.jianshu.com/p/679dee0a4193" " target="_blank" rel="noopener">uwsgi+nginx部署django </a></p>
+<p>之前在网上找到很多教程，帮助部署django项目到生产环境，<br>但是大多数教程都是不能用的，或者是部署过程中出错自己解<br>决不了的，后来在bilibili找到了一个视频教程，成功将项目<br>部署到服务器上，因此想将过程记录下来，一来以后再需要用<br>时不用再从头观看视频，二来也希望给大家到帮助。废话不多说，<br>开始介绍过程，在这之前，容我宣传一波<a href="https://www.bilibili.com/video/av31456425?t=2200" target="_blank">uwsgi+nginx部署django</a></p>
+<ul>
+<li><p>安装环境 ： 阿里云服务器，ubuntu16.04</p>
+</li>
+<li><p>python版本 ：python3，django2.0</p>
+</li>
+<li><p>项目位置 ：/home/</p>
+</li>
+<li><p>项目名称 ：blog (app : MyBlog)</p>
+        
+          <a class="article-more-a" href="/2019/05/23/Nginx加uWSGi部署Django服务器/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">服务器部署</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">diango</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/django//" class="article-tag-list-link color2">django</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
@@ -253,7 +447,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 possibleit
+    		&copy; 2020 possibleit
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -340,19 +534,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">diango</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -368,11 +562,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
               </li>
             
             <div class="clearfix"></div>

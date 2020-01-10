@@ -144,6 +144,241 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-误差反向传播" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/10/误差反向传播/">误差的反向传播</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/10/误差反向传播/" class="archive-article-date">
+  	<time datetime="2020-01-10T23:47:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="误差的反向传播"><a href="#误差的反向传播" class="headerlink" title="误差的反向传播"></a>误差的反向传播</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,sys</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">sys.path.append(os.pardir)</span><br><span class="line"><span class="keyword">from</span> common.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> common.gradient <span class="keyword">import</span> numerical_gradient</span><br></pre></td></tr></table></figure>
+
+<p>反向传播的依据是复合函数的链式求导法则<br>如函数 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src=&quot;http://ww1.sinaimg.cn/large/006WUTFIly1garcfka1uej30r70byq44.jpg&quot; width = &quot;600&quot; height = &quot;600&quot; div align=center&gt;</span><br><span class="line"></span><br><span class="line">如图所示，计算图的反向传播从右往左传播信号。其计算顺序是，先将节点的输入信号乘以节点的局部导数（也就是偏导数），然后传递给下一个节点。</span><br><span class="line"></span><br><span class="line">如反向传播时，节点``` **2 ```的输入是 $ \frac&#123; \partial &#123;z&#125;&#125;&#123;\partial &#123;z&#125;&#125; $ ,将其乘以局部导数$ \frac&#123; \partial &#123;z&#125;&#125;&#123;\partial &#123;t&#125;&#125; $，然后传递给下一个节点。</span><br><span class="line"></span><br><span class="line">根据链式法则， $ \frac&#123; \partial &#123;z&#125;&#125;&#123;\partial &#123;z&#125;&#125; \frac&#123; \partial &#123;z&#125;&#125;&#123;\partial &#123;t&#125;&#125; \frac&#123; \partial &#123;t&#125;&#125;&#123;\partial &#123;x&#125;&#125;  = \frac&#123; \partial &#123;z&#125;&#125;&#123;\partial &#123;x&#125;&#125;$ 成立，对应于```z```关于```x```的导数。</span><br><span class="line"></span><br><span class="line">其结果如下</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;http://ww1.sinaimg.cn/large/006WUTFIly1garcvr0ttfj30qy0bsmy6.jpg&quot; width = &quot;600&quot; height = &quot;600&quot; div align=center&gt;</span><br><span class="line"></span><br><span class="line">#### 加法节点的反向传播</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;http://ww1.sinaimg.cn/large/006WUTFIly1gard413w9pj30r00bq0tr.jpg&quot; width = &quot;600&quot; height = &quot;600&quot; div align=center&gt;</span><br><span class="line"></span><br><span class="line">左图是正向传播，右图是反向传播。反向传播就是将上游的值原封不动的传递给下游</span><br><span class="line"></span><br><span class="line">#### 乘法节点的反向传播</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;http://ww1.sinaimg.cn/large/006WUTFIly1gard6g8wuqj30r70btab5.jpg&quot; width = &quot;600&quot; height = &quot;600&quot; div align=center&gt;</span><br><span class="line"></span><br><span class="line">乘法的反向传播。</span><br><span class="line"></span><br><span class="line">#### 激活层函数的实现</span><br><span class="line"></span><br><span class="line">首先是激活函数ReLU函数，函数表达式为$ y = \begin &#123;cases&#125; x \ \   (x &gt; 0) \\ 0  \ \   (x \leq 0)\\ \end &#123;cases&#125; $</span><br><span class="line"></span><br><span class="line">对应的导数为 $ \frac&#123; \partial &#123;y&#125;&#125;&#123;\partial &#123;x&#125;&#125; = \begin &#123;cases&#125; 1  \ \   (x &gt; 0) \\ 0  \ \   (x \leq 0)\\ \end &#123;cases&#125; $</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Relu:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.mask = None</span><br><span class="line">    </span><br><span class="line">    def forward(self,x):</span><br><span class="line">        self.mask = ( x &lt;= 0 )</span><br><span class="line">        out = x.copy()</span><br><span class="line">        out[self.mask] = 0</span><br><span class="line">        </span><br><span class="line">        return out</span><br><span class="line">    </span><br><span class="line">    def backward(self,dout):</span><br><span class="line">        doout[self.mask] = 0</span><br><span class="line">        dx = dout</span><br><span class="line">        </span><br><span class="line">        return dx</span><br></pre></td></tr></table></figure></p>
+<p>接下来是sigmoid函数，其计算图如下</p>
+<img src="http://ww1.sinaimg.cn/large/006WUTFIly1garixi6xmtj30re07d0t3.jpg" width="600" height="600" div align="center">
+
+<figure class="highlight plain"><figcaption><span>```节点表示 $ y \ </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Sigmoid:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.out = None</span><br><span class="line">    </span><br><span class="line">    def forward(self,x):</span><br><span class="line">        out = 1 / (1 + np.exp(-x))</span><br><span class="line">        self.out = out</span><br><span class="line">        </span><br><span class="line">        return out</span><br><span class="line">    </span><br><span class="line">    def backward(self,dout):</span><br><span class="line">        dx = dout * (1.0 - self.out) * self.out</span><br><span class="line">        </span><br><span class="line">        return dx</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Affine</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,W,b)</span>:</span></span><br><span class="line">        self.W = W</span><br><span class="line">        self.b = b</span><br><span class="line">        self.x = <span class="literal">None</span></span><br><span class="line">        sef.dW = <span class="literal">None</span></span><br><span class="line">        self.db = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        out = np.dot(x,self.W) + self.b</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self,dout)</span>:</span></span><br><span class="line">        dx = np.dot(dout,self.W.T)</span><br><span class="line">        self.dW = np.dot(self.x.T,dout)</span><br><span class="line">        self.db = np.sum(dout,axis=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SoftmaxWithLoss</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.loss = <span class="literal">None</span></span><br><span class="line">        self.y = <span class="literal">None</span></span><br><span class="line">        self.t = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        self.t = t</span><br><span class="line">        self.y = softmax(x)</span><br><span class="line">        self.loss = cross_entropy_error(self.y,self.t)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.loss</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self,dout=<span class="number">1</span>)</span>:</span></span><br><span class="line">        batch_size = self.t.shape[<span class="number">0</span>]</span><br><span class="line">        dx = (self.y - self.t) / batch_size</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/10/误差反向传播/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-神经网络学习" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/09/神经网络学习/">神经网络学习</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/09/神经网络学习/" class="archive-article-date">
+  	<time datetime="2020-01-09T23:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="神经网络学习"><a href="#神经网络学习" class="headerlink" title="神经网络学习"></a>神经网络学习</h3><ol>
+<li>损失函数</li>
+</ol>
+<p>均方误差损失函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squaered_error</span><span class="params">(y, t)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5</span> * np.sum((y-t)**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">t = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">y = [<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.6</span>,<span class="number">0.0</span>,<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.0</span>,<span class="number">0.1</span>,<span class="number">0.0</span>,<span class="number">0.0</span>]</span><br><span class="line">print(mean_squaered_error(np.array(y),np.array(t)))</span><br></pre></td></tr></table></figure>
+
+<pre><code>0.09750000000000003</code></pre><p>交叉熵误差损失函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_entropy_error</span><span class="params">(y,t)</span>:</span></span><br><span class="line">    delta = <span class="number">1e-7</span></span><br><span class="line">    <span class="keyword">return</span> -np.sum(t * np.log(y + delta))</span><br><span class="line"></span><br><span class="line">print(cross_entropy_error(np.array(y),np.array(t)))</span><br></pre></td></tr></table></figure>
+
+<pre><code>0.510825457099338</code></pre><p>mini-batch学习</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,sys</span><br><span class="line">sys.path.append(os.pardir)</span><br><span class="line"><span class="keyword">from</span> dataset.mnist <span class="keyword">import</span> load_mnist</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(x_train,t_train),(x_test,t_test) = load_mnist(normalize=<span class="literal">True</span>,one_hot_label=<span class="literal">True</span>)</span><br><span class="line">print(x_train.shape)</span><br><span class="line">print(t_train.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(60000, 784)
+(60000, 10)</code></pre><p>mini-batch学习是指从全体数据中选出一批数据（称为mini-batch），然后对每一个mini-batch进行学习</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">train_size = x_train.shape[<span class="number">0</span>]</span><br><span class="line">batch_size = <span class="number">10</span></span><br><span class="line">batch_mask = np.random.choice(train_size,batch_size)</span><br><span class="line">x_batch = x_train[batch_mask]</span><br><span class="line">t_batch = t_train[batch_mask]</span><br><span class="line">print(batch_mask)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[ 7023 32465 51850 46878 57780 30571 11804 27261 23265 43596]</code></pre><p>mini-batch版交叉熵误差实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_entropy_error</span><span class="params">(y,t)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> y.ndim == <span class="number">1</span>:</span><br><span class="line">        t = t.reshape(<span class="number">1</span>,t,size)</span><br><span class="line">        y = y.reshape(<span class="number">1</span>,y.size)</span><br><span class="line">    batch_size = y.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> -np.sum(t * np.log(y + <span class="number">1e-7</span>)) / batch_size</span><br></pre></td></tr></table></figure>
+
+<p>梯度的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">numerical_gradient</span><span class="params">(f,x)</span>:</span></span><br><span class="line">    h = <span class="number">1e-4</span></span><br><span class="line">    grad = np.zeros_like(x)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(x.size):</span><br><span class="line">        tmp_val = x[idx]</span><br><span class="line">        x[idx] = tmp_val + h</span><br><span class="line">        fxh1 = f(x)</span><br><span class="line">        </span><br><span class="line">        x[idx] = tmp_val - h</span><br><span class="line">        fxh2 = f(x)</span><br><span class="line">        </span><br><span class="line">        grad[idx] = (fxh1 - fxh2) / (<span class="number">2</span> * h)</span><br><span class="line">        x[idx] = tmp_val</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> grad</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function2</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x[<span class="number">0</span>]**<span class="number">2</span> + x[<span class="number">1</span>]**<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(numerical_gradient(function2,np.array([<span class="number">3.0</span>,<span class="number">4.0</span>])))</span><br></pre></td></tr></table></figure>
+
+<pre><code>[6. 8.]</code></pre><p>通过不断地沿着梯度的方向前进，逐渐减小函数值的过程就是梯度法。以下是梯度下降法的一个简单实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_descent</span><span class="params">(f,init_x,lr=<span class="number">0.01</span>,step_num=<span class="number">100</span>)</span>:</span></span><br><span class="line">    x = init_x</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(step_num):</span><br><span class="line">        grad = numerical_gradient(f,x)</span><br><span class="line">        x -= lr*grad</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>使用梯度法求函数f(x0,x1) = x0^2 + x1^2的最小值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">init_x = np.array([<span class="number">-3.0</span>,<span class="number">4.0</span>])</span><br><span class="line">print(gradient_descent(function2,init_x,lr=<span class="number">0.1</span>,step_num=<span class="number">100</span>))</span><br><span class="line">init_x = np.array([<span class="number">-3.0</span>,<span class="number">4.0</span>])</span><br><span class="line">print(gradient_descent(function2,init_x,lr=<span class="number">10.0</span>,step_num=<span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>[-6.11110793e-10  8.14814391e-10]
+[-2.58983747e+13 -1.29524862e+12]</code></pre><p>神经网络的梯度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> common.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> common.gradient <span class="keyword">import</span> numerical_gradient</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">simpleNet</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.W = np.random.randn(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> np.dot(x,self.W)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        z = self.predict(x)</span><br><span class="line">        y = softmax(z)</span><br><span class="line">        loss = cross_entropy_error(y,t)</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line">    </span><br><span class="line">net = simpleNet()</span><br><span class="line">print(net.W)</span><br><span class="line"></span><br><span class="line">x = np.array([<span class="number">0.6</span>,<span class="number">0.9</span>])</span><br><span class="line">p = net.predict(x)</span><br><span class="line">print(p)</span><br><span class="line">t = np.array([<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>])</span><br><span class="line">net.loss(x,t)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[[ 0.11680039 -0.25834704  2.62107709]
+ [ 0.63149188  1.04720524  0.13148677]]
+[0.63842292 0.78747649 1.69098434]
+
+
+
+
+
+0.5620061978533839</code></pre><p>实现两层神经网络学习</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TwoLayerNet</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,input_size,hidden_size,output_size,</span></span></span><br><span class="line"><span class="function"><span class="params">                weight_init_std=<span class="number">0.01</span>)</span>:</span></span><br><span class="line">        <span class="comment"># 初始化参数，保存在字典中</span></span><br><span class="line">        self.params = &#123;&#125;</span><br><span class="line">        self.params[<span class="string">'W1'</span>] = weight_init_std * np.random.randn(input_size,hidden_size)</span><br><span class="line">        self.params[<span class="string">'b1'</span>] = np.zeros(hidden_size)</span><br><span class="line">        self.params[<span class="string">'W2'</span>] = weight_init_std * np.random.randn(hidden_size,output_size)</span><br><span class="line">        self.params[<span class="string">'b2'</span>] = np.zeros(output_size)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        W1,W2 = self.params[<span class="string">'W1'</span>],self.params[<span class="string">'W2'</span>]</span><br><span class="line">        b1,b2 = self.params[<span class="string">'b1'</span>],self.params[<span class="string">'b2'</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 输入到第一层神经元，与第一层作用，本质是矩阵相乘（输入矩阵和权值矩阵）</span></span><br><span class="line">        a1 = np.dot(x,W1) + b1</span><br><span class="line">        <span class="comment"># 激活函数</span></span><br><span class="line">        z1 = sigmoid(a1)</span><br><span class="line">        <span class="comment"># 第二层神经元</span></span><br><span class="line">        a2 = np.dot(z1,W2) + b2</span><br><span class="line">        y = sigmoid(a2)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        y = self.predict(x)</span><br><span class="line">        <span class="comment"># 计算交叉熵损失</span></span><br><span class="line">        <span class="keyword">return</span> cross_entropy_error(y,t)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        y = self.predict(x)</span><br><span class="line">        </span><br><span class="line">        y = np.argmax(y,axis=<span class="number">1</span>)</span><br><span class="line">        t = np.argmax(t,axis=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算精确度</span></span><br><span class="line">        accuracy = np.sum(y == t) / float(x.shape[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> accuracy</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numerical_gradient</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        loss_W = <span class="keyword">lambda</span> W : self.loss(x,t)</span><br><span class="line">        </span><br><span class="line">        grads = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算并更新梯度</span></span><br><span class="line">        grads[<span class="string">'W1'</span>] = numerical_gradient(loss_W,self.params[<span class="string">'W1'</span>])</span><br><span class="line">        grads[<span class="string">'b1'</span>] = numerical_gradient(loss_W,self.params[<span class="string">'b1'</span>])</span><br><span class="line">        grads[<span class="string">'W2'</span>] = numerical_gradient(loss_W,self.params[<span class="string">'W2'</span>])</span><br><span class="line">        grads[<span class="string">'b2'</span>] = numerical_gradient(loss_W,self.params[<span class="string">'b2'</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> grads</span><br></pre></td></tr></table></figure>
+
+<p>mini-batch的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">train_loss_list = []</span><br><span class="line"></span><br><span class="line">train_acc_list = []</span><br><span class="line">test_acc_list = []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iters_num = <span class="number">10000</span></span><br><span class="line">train_size = x_train.shape[<span class="number">0</span>]</span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">learning_rate = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">iter_per_epoch = max(train_size / batch_size, <span class="number">1</span>)</span><br><span class="line">print(iter_per_epoch)</span><br><span class="line"></span><br><span class="line">network = TwoLayerNet(input_size=<span class="number">784</span>,hidden_size=<span class="number">50</span>,output_size=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(iters_num):</span><br><span class="line">    batch_mask = np.random.choice(train_size,batch_size)</span><br><span class="line">    x_batch = x_train[batch_mask]</span><br><span class="line">    t_batch = t_train[batch_mask]</span><br><span class="line">    </span><br><span class="line">    grad = network.numerical_gradient(x_batch,t_batch)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> (<span class="string">'W1'</span>,<span class="string">'b1'</span>,<span class="string">'W2'</span>,<span class="string">'b2'</span>):</span><br><span class="line">        network.params[key] -= learning_rate * grad[key]</span><br><span class="line">    </span><br><span class="line">    loss = network.loss(x_batch,t_batch)</span><br><span class="line">    train_loss_list.append(loss)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> i % iter_per_epoch == <span class="number">0</span>:</span><br><span class="line">        train_acc = network.accuracy(x_train,t_train)</span><br><span class="line">        test_acc = network.accuracy(x_test, t_test)</span><br><span class="line">        train_acc_list.append(train_acc)</span><br><span class="line">        test_acc_list.append(test_acc)</span><br><span class="line">        </span><br><span class="line">        print(<span class="string">"train acc, test acc |"</span> + str(train_acc) + <span class="string">","</span> + str(test_acc))</span><br></pre></td></tr></table></figure>
+
+<pre><code>600.0
+train acc, test acc |0.09751666666666667,0.0974</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/09/神经网络学习/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-排序算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -609,101 +844,6 @@
 
 
   
-    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/单例模式/">设计模式-单例模式</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/23/单例模式/" class="archive-article-date">
-  	<time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。</p>
-<p>单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。</p>
-<p>简言之，单例模式的意图如下：</p>
-<ul>
-<li>确保类只有一个对象被创建</li>
-<li>为对象提供一个访问点，以使程序可以全局访问该对象</li>
-<li>控制共享资源的并行访问</li>
-</ul>
-<hr>
-        
-          <a class="article-more-a" href="/2019/06/23/单例模式/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/23/单例模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -778,6 +918,101 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/06/23/工厂模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/23/单例模式/">设计模式-单例模式</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/23/单例模式/" class="archive-article-date">
+  	<time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。</p>
+<p>单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。</p>
+<p>简言之，单例模式的意图如下：</p>
+<ul>
+<li>确保类只有一个对象被创建</li>
+<li>为对象提供一个访问点，以使程序可以全局访问该对象</li>
+<li>控制共享资源的并行访问</li>
+</ul>
+<hr>
+        
+          <a class="article-more-a" href="/2019/06/23/单例模式/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/23/单例模式/">展开全文 >></a>
         </p>
       
 
@@ -908,200 +1143,6 @@
 
 
   
-    <article id="post-python正则" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/02/python正则/">python正则表达式</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/02/python正则/" class="archive-article-date">
-  	<time datetime="2019-06-02T22:30:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="python正则表达式"><a href="#python正则表达式" class="headerlink" title="python正则表达式"></a>python正则表达式</h1><h3 id="python中的re模块，python正则表达式模块"><a href="#python中的re模块，python正则表达式模块" class="headerlink" title="python中的re模块，python正则表达式模块"></a>python中的re模块，python正则表达式模块</h3><ul>
-<li><p>正则表达式的语法规则</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- 一般字符</span><br><span class="line">    - .     匹配除换行符&apos;\n&apos;之外的任意字符</span><br><span class="line">    - \     转义字符</span><br><span class="line">    - [...] 字符集(字符类)。对应位置可以是字符集中任意字符</span><br><span class="line">        -   示例 a[bcd]e 匹配 abe ace ade</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2019/06/02/python正则/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">正则表达式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/02/python正则/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Nginx加uWSGi部署Django服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">Nginx加uWSGi部署Django服务器</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/23/Nginx加uWSGi部署Django服务器/" class="archive-article-date">
-  	<time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Nginx加uWSGi部署Django服务器"><a href="#Nginx加uWSGi部署Django服务器" class="headerlink" title="Nginx加uWSGi部署Django服务器"></a>Nginx加uWSGi部署Django服务器</h1><p>首先是使用nginx和uwsgi的优点</p>
-<p>1.<em>web服务器使用nginx，优点是轻量级，抗高并发，速度快</em><br>2.<em>uWSGI优点是性能块，内存占用低，详尽的日志功能与高度可定制</em><br>3.*关于pythonweb开发的wsgi知识推荐看<a href="https://www.jianshu.com/p/679dee0a4193" " target="_blank" rel="noopener">uwsgi+nginx部署django </a></p>
-<p>之前在网上找到很多教程，帮助部署django项目到生产环境，<br>但是大多数教程都是不能用的，或者是部署过程中出错自己解<br>决不了的，后来在bilibili找到了一个视频教程，成功将项目<br>部署到服务器上，因此想将过程记录下来，一来以后再需要用<br>时不用再从头观看视频，二来也希望给大家到帮助。废话不多说，<br>开始介绍过程，在这之前，容我宣传一波<a href="https://www.bilibili.com/video/av31456425?t=2200" target="_blank">uwsgi+nginx部署django</a></p>
-<ul>
-<li><p>安装环境 ： 阿里云服务器，ubuntu16.04</p>
-</li>
-<li><p>python版本 ：python3，django2.0</p>
-</li>
-<li><p>项目位置 ：/home/</p>
-</li>
-<li><p>项目名称 ：blog (app : MyBlog)</p>
-        
-          <a class="article-more-a" href="/2019/05/23/Nginx加uWSGi部署Django服务器/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">服务器部署</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">diango</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/django//" class="article-tag-list-link color2">django</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/23/Nginx加uWSGi部署Django服务器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1116,7 +1157,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 possibleit
+    		&copy; 2020 possibleit
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1203,19 +1244,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">diango</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1231,11 +1272,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
               </li>
             
             <div class="clearfix"></div>
