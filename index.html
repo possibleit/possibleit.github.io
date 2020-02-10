@@ -144,6 +144,218 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-django-restframework教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/10/django-restframework教程/">DRF- Django Restframework</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/10/django-restframework教程/" class="archive-article-date">
+  	<time datetime="2020-02-10T23:47:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="DRF-Django-Restframework"><a href="#DRF-Django-Restframework" class="headerlink" title="DRF- Django Restframework"></a>DRF- Django Restframework</h3><ol>
+<li><p>Restful API</p>
+<p>REST全称是Representational State Transfer，中文意思是表述（编者注：通常译为表征）性状态转移。</p>
+<p>RESTful是一种定义Web API接口的设计风格，尤其适用于前后端分离的应用模式中。</p>
+<p>这种风格的理念认为后端开发任务就是提供数据的，对外提供的是数据资源的访问接口，所以在定义接口时，客户端访问的URL路径就表示这种要操作的数据资源。</p>
+<p>而对于数据资源分别使用POST、DELETE、GET、UPDATE等请求动作来表达对数据的增删查改。</p>
+<p>Django REST framework是一个建立在Django基础之上的Web 应用开发框架，可以快速的开发REST API接口应用。在REST framework中，提供了序列化器Serialzier的定义，可以帮助我们简化序列化与反序列化的过程，不仅如此，还提供丰富的类视图、扩展类、视图集来简化视图的编写工作。REST framework还提供了认证、权限、限流、过滤、分页、接口文档等功能支持。REST framework提供了一个API 的Web可视化界面来方便查看测试接口。</p>
+<p>drf的中文文档地址：<a href="https://q1mi.github.io/Django-REST-framework-documentation/#django-rest-framework" target="_blank" rel="noopener">https://q1mi.github.io/Django-REST-framework-documentation/#django-rest-framework</a></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li><p>创建序列化器<br>假设你已经熟练运用python语言，并对django有了初步的了解。那么接下来你需要创建一个django项目，使用django命令<code>django-admin startproject Test</code>创建一个名为Test的项目。并创建一个名为UpImage的app，使用命令<code>python manage.py startapp UpImage</code>。</p>
+<p>接下来创建模型，在<code>models.py</code>文件里，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">manage_directory</span><span class="params">(instance,filename)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> os.path.join(BASE_DIR, <span class="string">'static/'</span> + filename)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageModel</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    image = models.ImageField(blank=<span class="literal">False</span>,upload_to=manage_directory)</span><br><span class="line">    upload_method = models.CharField(max_length=<span class="number">30</span>, blank=<span class="literal">False</span>)</span><br><span class="line">    upload_time = models.TimeField(auto_now_add=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>方法<code>manage_directory</code>是用来指定图片存储的路径，如果不指定这个路径，图片会默认存储到项目主文件夹下。<br>创建完模型后，创建对应的序列化器。在app的目录下建立文件<code>serializers.py</code>，里边存放序列化器。<br>序列化器的作用有两个，分别是序列化，反序列化。序列化会把模型对象转化为字典，再转化为json字符串，供客户端使用。反序列化时将客户端发过来的数据转化为字典，再将字典转化为模型对象保存下来。<br>DRF中的序列化器需要继承<code>rest_framework.serializers.Serializer</code>类，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageSerializers</span><span class="params">(serializers.Serializer)</span>:</span></span><br><span class="line">    id = serializers.IntegerField()</span><br><span class="line">    image = serializers.ImageField()</span><br><span class="line">    upload_method = serializers.CharField()</span><br><span class="line">    upload_time = serializers.TimeField()</span><br></pre></td></tr></table></figure>
+
+<p>使用时需要先获取一个数据对象实例，构造序列化器对象，获取序列化数据，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image = ImageModel.objects.get(id = <span class="number">3</span>)</span><br><span class="line">serializer = ImageSerializers(instance=image)</span><br><span class="line">serializer.data</span><br><span class="line"><span class="comment">#image = ImageModel.objects.all()</span></span><br><span class="line"><span class="comment">#serializer = ImageSerializers(instance=image,many=True)</span></span><br><span class="line"><span class="comment">#serializer.data</span></span><br></pre></td></tr></table></figure>
+
+<p>DRF还提供了一个快速创建ModelSerializer模型类序列化器，帮助我们快速创建Serializer类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageSerializer</span><span class="params">(serializers.ModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = ImageModel</span><br><span class="line">        fields = <span class="string">'__all__'</span></span><br><span class="line"><span class="comment"># model 指明参照哪个模型</span></span><br><span class="line"><span class="comment"># fields 指明模型类的字段，例如fields = ('id','image','upload_time')</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在这里我们先使用ModelSerializer类，如果你的序列化器需要高度自定化，那么可以继承Serializer类</p>
+<hr>
+<ol start="3">
+<li><p>DRF提供的视图基类和扩展类</p>
+<p>使用视图集ViewSet，可以将一系列的逻辑相关的动作放到一个类中，其中包括：<br>​    - list（）提供一组数据<br>​    - retrieve（）提供单个数据<br>​    - create（）创建数据<br>​    - update（）保存（更新）数据<br>​    - destory（）删除数据<br>视图集使用as_view方法时，会将action动作与具体的请求方法对应上，使用映射的方式，例如（{‘get’ : ‘list’}）。<br>同时DRF还提供了一些Mixin扩展类，在这些类中提供了诸如list，create，update之类的方法，我们可以通过类继承，将GenericViewSet（ViewSet的子类）与Mixin扩展类搭配使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CreateImageView(GenericViewSet,ListModelMixin,CreateModelMixin,UpdateModelMixin,RetrieveModelMixin,DestroyModelMixin):</span><br><span class="line">       queryset = Image_Detail.objects.all()</span><br><span class="line">       serializer_class = ImageDetailSerializer</span><br></pre></td></tr></table></figure>
+
+<p>DRF还提供了其他ViewSet子类</p>
+<ul>
+<li>ModelViewSet：同时包括了List，Create，Retrieve，Update，Destroy</li>
+<li>ReadOnlyModelViewSet：List，Retrieve</li>
+</ul>
+</li>
+<li><p>路由<br>对于视图集ViewSet，我们除了可以自己手动指明请求方式和动作action之间的对应关系之外，还可以使用Routers路由来帮助我们快速实现路由信息。DRF提供了两个router</p>
+<ul>
+<li><p>SimpleRouter</p>
+</li>
+<li><p>DefaultRouter<br>我们首先创建一个router对象，然后注册视图集，如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">router = routers.DefaultRouter()</span><br><span class="line">router.register(<span class="string">r'imagedetail'</span>,CreateImageView, base_name=<span class="string">'imagedetail'</span>)</span><br><span class="line"><span class="comment">#register(prefix,viewset,basename)</span></span><br><span class="line"><span class="comment">#添加路由</span></span><br><span class="line">urlpatterns += router.urls</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>prefix视图集的路由前缀</p>
+</li>
+<li><p>viewset视图集</p>
+</li>
+<li><p>basename路由别名前缀</p>
+</li>
+</ul>
+</li>
+<li><p>认证<br>DRF提供了内置的认证模块，可以在配置文件中配置全局默认的认证方案</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: (</span><br><span class="line">        <span class="string">'rest_framework.authentication.SessionAuthentication'</span>,  <span class="comment"># session认证</span></span><br><span class="line">        <span class="string">'rest_framework.authentication.BasicAuthentication'</span>,   <span class="comment"># 基本认证</span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以在每个视图中通过authentication_classess属性来设置单个试图的认证方案。属性对应的值可以是元组或列表，当为空时即代表覆盖默认的全局认证方案。</p>
+</li>
+<li><p>自动生成接口文档</p>
+<p>首先安装依赖，DRF自动生成文档需要<code>coreapi</code>库的支持。<br><code>pip install coreapi</code></p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">django</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/10/django-restframework教程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-IDEA常用插件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="IDEA常用插件介绍"><a href="#IDEA常用插件介绍" class="headerlink" title="IDEA常用插件介绍"></a>IDEA常用插件介绍</h3><p>一周前电脑重装了系统，很多软件都又重新安装下载了。当时安装了IDEA2019之后就没再动过它。昨天突然需要用到IDEA查看一些代码，忽然发现并没有激活，而试用的话，每次IDEA只能开启30分钟，很不方便。于是在网上找了教程，破解了IDEA，之后想着反正已经打开了，就干脆把以前的插件也安装上。但是发现以前导出的<code>setting.jar</code>不见了，瞬间感觉不好了。只能一个个凭回忆去找，去下载。这也让我察觉到做一个备份的重要性，所以我就在这里来为自己常用的插件做一个备份。</p>
+<hr>
+<ol>
+<li><p>Material Theme UI</p>
+<p>这是我第一个想到的插件，我几乎所有的IDE都用了这个插件。这是一款美化编辑器UI界面的插件，可以设置界面背景颜色，字体颜色，图标icon主题等许许多多方面。当之无愧的最受欢迎的IDEA主题插件。</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1580960617970.png" alt="1580960617970"></p>
+</li>
+<li><p>IdeaVim</p>
+<p>熟悉linux的同学应该都熟悉vim这个编辑器，vim对于初学者并不太友好，但是当你熟练掌握了之后，你会发现这是一个极大提高生产力的工具。vim最大的优点就是，他让你在开发过程中远离了鼠标，从而大大提高了编写代码的速度。IdeaVim是将vim集成到了IDEA中，当然如果你对vim不太熟悉，还是不推荐使用这个插件。</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5CPVH2uRGAlM.gif" alt="1580960617970"></p>
+</li>
+<li><p>Key Promoter X</p>
+<p>这一款插件的作用是当你在IDEA中执行一个操作时，他会在右下角显示这个操作对应的快捷键。这对于学习IDEA快捷键还是挺有帮助的，但是又是胡还是会比较烦人的。</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1580961417445.png" alt="1580961417445"></p>
+</li>
+<li></li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/05/IDEA常用插件/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-误差反向传播" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -848,109 +1060,6 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
 
 
   
-    <article id="post-工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/23/工厂模式/">设计模式-工厂模式</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/23/工厂模式/" class="archive-article-date">
-  	<time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="工厂模式：建立创建对象的工厂"><a href="#工厂模式：建立创建对象的工厂" class="headerlink" title="工厂模式：建立创建对象的工厂"></a>工厂模式：建立创建对象的工厂</h1><p>在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端</p>
-<hr>
-<p>工厂使用的优点  </p>
-<ul>
-<li>松耦合，即对象的创建可以独立于类的实现</li>
-<li>客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的对象</li>
-<li>可以轻松在工厂中添加其他类来创建其他类型对象，而不需要修改客户端代码</li>
-<li>工厂可以重用现有对象  </li>
-</ul>
-<hr>
-<p>Factory模式有三种变体，如下</p>
-<ol>
-<li>简单工厂模式</li>
-<li>工厂方法模式</li>
-<li>抽象工厂模式</li>
-</ol>
-<hr>
-        
-          <a class="article-more-a" href="/2019/06/23/工厂模式/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/23/工厂模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1017,107 +1126,6 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/06/23/单例模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Git分支详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/06/Git分支详解/">git分支详解</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/06/Git分支详解/" class="archive-article-date">
-  	<time datetime="2019-06-06T07:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Git分支详解"><a href="#Git分支详解" class="headerlink" title="Git分支详解"></a>Git分支详解</h1><h3 id="git-branch命令"><a href="#git-branch命令" class="headerlink" title="git branch命令"></a>git branch命令</h3><ul>
-<li>查看分支  <code>git branch</code></li>
-<li>新建分支  <code>git branch branch_name</code></li>
-<li>切换分支  <code>git checkout branch</code></li>
-<li>删除分支  <code>git branch -d branch_name</code><br>(注意不能删除当前所在的分支)</li>
-<li>更改分支名称  <code>git branch -m old_name new_name</code></li>
-<li>创建分支并切换到新创建的分支  <code>git branch -b branch_name</code></li>
-<li>合并分支 <code>git merge branch_name</code></li>
-<li>查看工作区与暂存区差异 <code>git diff</code></li>
-<li>查看提交历史 <code>git log</code></li>
-<li>封存当前暂存区修改 <code>git stash</code></li>
-<li>查看当前保存内容  <code>git stash list</code></li>
-<li>提取暂存区  <code>git stash apply stash@{0}</code></li>
-</ul>
-<hr>
-        
-          <a class="article-more-a" href="/2019/06/06/Git分支详解/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/git//" class="article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/06/Git分支详解/">展开全文 >></a>
         </p>
       
 
@@ -1248,15 +1256,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">diango</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1276,11 +1284,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
