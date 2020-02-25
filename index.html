@@ -66,7 +66,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/public/img/photo.png" class="js-avatar">
+			<img src="/img/photo.png" class="js-avatar">
 		</a>
 		<hgroup>
 			<h1 class="header-author"><a href="/">possibleit</a></h1>
@@ -147,7 +147,7 @@
 		<header id="header" class="inner">
 			<div class="profilepic">
 				<a href="/">
-					<img src="/public/img/photo.png" class="js-avatar">
+					<img src="/img/photo.png" class="js-avatar">
 				</a>
 			</div>
 			<hgroup>
@@ -1220,7 +1220,7 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
 
 
   
-    <article id="post-单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -1228,7 +1228,7 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2019/06/23/单例模式/" target="_blank">设计模式-单例模式</a>
+	  <a class="article-title" href="/2019/06/23/工厂模式/" target="_blank">设计模式-工厂模式</a>
   
     </h1>
   
@@ -1236,7 +1236,7 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
 
   
   
-<a href="/2019/06/23/单例模式/" class="archive-article-date">
+<a href="/2019/06/23/工厂模式/" class="archive-article-date">
         <time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
 </a>
 
@@ -1249,17 +1249,25 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>单例模式提供了这样一个机制，即确保类有且只有一个特定类型的对象，并提供全局访问点。</p>
-<p>单例模式通常用于下列情形，例如日志记录或数据库操作、打印机后台处理程序，以及其它程序–该程序运行过程中只能生成一个实例，以避免对同一资源产生冲突请求。</p>
-<p>简言之，单例模式的意图如下：</p>
+    <h1 id="工厂模式：建立创建对象的工厂"><a href="#工厂模式：建立创建对象的工厂" class="headerlink" title="工厂模式：建立创建对象的工厂"></a>工厂模式：建立创建对象的工厂</h1><p>在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端</p>
+<hr>
+<p>工厂使用的优点  </p>
 <ul>
-<li>确保类只有一个对象被创建</li>
-<li>为对象提供一个访问点，以使程序可以全局访问该对象</li>
-<li>控制共享资源的并行访问</li>
+<li>松耦合，即对象的创建可以独立于类的实现</li>
+<li>客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的对象</li>
+<li>可以轻松在工厂中添加其他类来创建其他类型对象，而不需要修改客户端代码</li>
+<li>工厂可以重用现有对象  </li>
 </ul>
 <hr>
+<p>Factory模式有三种变体，如下</p>
+<ol>
+<li>简单工厂模式</li>
+<li>工厂方法模式</li>
+<li>抽象工厂模式</li>
+</ol>
+<hr>
     
-    <a class="article-more-a" href="/2019/06/23/单例模式/#more">more >></a>
+    <a class="article-more-a" href="/2019/06/23/工厂模式/#more">more >></a>
     
     
 
@@ -1297,7 +1305,7 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/2019/06/23/单例模式/">展开全文 >></a>
+      <a class="article-more-a" href="/2019/06/23/工厂模式/">展开全文 >></a>
     </p>
     
 
@@ -1464,6 +1472,10 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">服务器部署</a>
               </li>
              
@@ -1472,15 +1484,15 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1501,10 +1513,6 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
