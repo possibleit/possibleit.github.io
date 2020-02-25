@@ -288,9 +288,9 @@
 <p> #this is admin branch</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    git提示我们合并成功</span><br><span class="line"></span><br><span class="line">3. 查看版本差异</span><br><span class="line">    首先使用`git log`查看版本历史</span><br></pre></td></tr></table></figure>
 
-<p> commit f387cc59552544a031cbd424f3d516a2781ecbab (HEAD -&gt; master)<br> Merge: 167823b 8e554e9<br> Author: Qian <a href="mailto:&#x32;&#x33;&#53;&#56;&#57;&#55;&#57;&#x33;&#50;&#54;&#x40;&#113;&#113;&#46;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#x32;&#x33;&#53;&#56;&#57;&#55;&#57;&#x33;&#50;&#54;&#x40;&#113;&#113;&#46;&#99;&#111;&#x6d;</a><br> Date:   Sun Jun 2 12:36:38 2019 +0800</p>
-<pre><code>mergeadmin fix conflict </code></pre><p> commit 8e554e9a334d31b5acce076d465fb398f6d9ac6c (admin)<br> Author: Qian <a href="mailto:&#50;&#x33;&#x35;&#56;&#57;&#55;&#57;&#51;&#50;&#54;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#50;&#x33;&#x35;&#56;&#57;&#55;&#57;&#51;&#50;&#54;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;</a><br> Date:   Sun Jun 2 12:19:52 2019 +0800</p>
-<pre><code>admin branch</code></pre><p> commit 167823b479d9c932414534bbaa6610674807f907<br> Author: Qian <a href="mailto:&#x32;&#x33;&#53;&#x38;&#57;&#x37;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x32;&#x33;&#53;&#x38;&#57;&#x37;&#x39;&#x33;&#50;&#x36;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#x6d;</a><br> Date:   Sat Jun 1 23:39:58 2019 +0800</p>
+<p> commit f387cc59552544a031cbd424f3d516a2781ecbab (HEAD -&gt; master)<br> Merge: 167823b 8e554e9<br> Author: Qian <a href="mailto:&#50;&#x33;&#53;&#56;&#57;&#55;&#x39;&#x33;&#x32;&#54;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#50;&#x33;&#53;&#56;&#57;&#55;&#x39;&#x33;&#x32;&#54;&#64;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;</a><br> Date:   Sun Jun 2 12:36:38 2019 +0800</p>
+<pre><code>mergeadmin fix conflict </code></pre><p> commit 8e554e9a334d31b5acce076d465fb398f6d9ac6c (admin)<br> Author: Qian <a href="mailto:&#x32;&#x33;&#x35;&#56;&#57;&#55;&#57;&#x33;&#x32;&#x36;&#64;&#113;&#113;&#46;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#x32;&#x33;&#x35;&#56;&#57;&#55;&#57;&#x33;&#x32;&#x36;&#64;&#113;&#113;&#46;&#99;&#x6f;&#109;</a><br> Date:   Sun Jun 2 12:19:52 2019 +0800</p>
+<pre><code>admin branch</code></pre><p> commit 167823b479d9c932414534bbaa6610674807f907<br> Author: Qian <a href="mailto:&#50;&#51;&#53;&#56;&#x39;&#55;&#57;&#51;&#50;&#x36;&#64;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#109;" target="_blank" rel="noopener">&#50;&#51;&#53;&#56;&#x39;&#55;&#57;&#51;&#50;&#x36;&#64;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#109;</a><br> Date:   Sat Jun 1 23:39:58 2019 +0800</p>
 <pre><code>test</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们选择两个版本比较差异，使用`git diff 版本号1 版本号2`，一般选择版本号前8位(git使用前7位)。</span><br></pre></td></tr></table></figure>
 
 <p> $ git diff f387cc595 167823b479d<br> diff –git a/dPro/urls.py b/dPro/urls.py<br> index f12a399..7ca8aa1 100644<br> — a/dPro/urls.py<br> +++ b/dPro/urls.py<br> @@ -24,5 +24,4 @@ urlpatterns = [</p>
@@ -626,14 +626,6 @@ url(r&apos;index/&apos;,views.index),</code></pre><p> ]<br> -#this is admin bran
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">django</a>
               </li>
              
@@ -646,6 +638,14 @@ url(r&apos;index/&apos;,views.index),</code></pre><p> ]<br> -#this is admin bran
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
@@ -655,6 +655,10 @@ url(r&apos;index/&apos;,views.index),</code></pre><p> ]<br> -#this is admin bran
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
