@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="Qian的博客">
 <meta property="og:description" content="神经网络学习 损失函数  均方误差损失函数 1234567import numpy as npdef mean_squaered_error(y, t):    return 0.5 * np.sum((y-t)**2)t = [0,0,1,0,0,0,0,0,0,0]y = [0.1,0.05,0.6,0.0,0.05,0.1,0.0,0.1,0.0,0.0]print(mean_squaere">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-10T09:01:43.394Z">
+<meta property="og:updated_time" content="2020-02-25T08:05:06.938Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络学习">
 <meta name="twitter:description" content="神经网络学习 损失函数  均方误差损失函数 1234567import numpy as npdef mean_squaered_error(y, t):    return 0.5 * np.sum((y-t)**2)t = [0,0,1,0,0,0,0,0,0,0]y = [0.1,0.05,0.6,0.0,0.05,0.1,0.0,0.1,0.0,0.0]print(mean_squaere">
@@ -260,7 +260,9 @@
 <p>均方误差损失函数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_squaered_error</span><span class="params">(y, t)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5</span> * np.sum((y-t)**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">t = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">y = [<span class="number">0.1</span>,<span class="number">0.05</span>,<span class="number">0.6</span>,<span class="number">0.0</span>,<span class="number">0.05</span>,<span class="number">0.1</span>,<span class="number">0.0</span>,<span class="number">0.1</span>,<span class="number">0.0</span>,<span class="number">0.0</span>]</span><br><span class="line">print(mean_squaered_error(np.array(y),np.array(t)))</span><br></pre></td></tr></table></figure>
 
-<pre><code>0.09750000000000003</code></pre><p>交叉熵误差损失函数</p>
+<pre><code>0.09750000000000003</code></pre><a id="more"></a>
+
+<p>交叉熵误差损失函数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_entropy_error</span><span class="params">(y,t)</span>:</span></span><br><span class="line">    delta = <span class="number">1e-7</span></span><br><span class="line">    <span class="keyword">return</span> -np.sum(t * np.log(y + delta))</span><br><span class="line"></span><br><span class="line">print(cross_entropy_error(np.array(y),np.array(t)))</span><br></pre></td></tr></table></figure>
 
 <pre><code>0.510825457099338</code></pre><p>mini-batch学习</p>
@@ -650,6 +652,14 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -662,19 +672,11 @@ train acc, test acc |0.09751666666666667,0.0974</code></pre>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
