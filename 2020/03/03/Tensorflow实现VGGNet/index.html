@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 服务器部署 | Qian的博客</title>
+  <title>Tensorflow实现VGGNet | Qian的博客</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/tags/服务器部署/index.html">
+  <meta name="description" content="Tensorflow实现VGGNetVGGNet是2014年由牛津大学计算机视觉组(Visual Geometry Group)和Google DeepMind研究员一起研发的深度卷积网络。取得了 ILSVRC2014 比赛分类项目的第二名和定位项目的第一名。VGGNet 探索了卷积神经网络的深度与其性能之间的关系，成功地构筑了 16~19 层深的卷积神经网络，证明了增加网络的深度能够在一定程度上">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow实现VGGNet">
+<meta property="og:url" content="http://yoursite.com/2020/03/03/Tensorflow实现VGGNet/index.html">
 <meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="Tensorflow实现VGGNetVGGNet是2014年由牛津大学计算机视觉组(Visual Geometry Group)和Google DeepMind研究员一起研发的深度卷积网络。取得了 ILSVRC2014 比赛分类项目的第二名和定位项目的第一名。VGGNet 探索了卷积神经网络的深度与其性能之间的关系，成功地构筑了 16~19 层深的卷积神经网络，证明了增加网络的深度能够在一定程度上">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2020/03/03/Tensorflow实现VGGNet/VGG%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:updated_time" content="2020-03-03T08:14:20.769Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:title" content="Tensorflow实现VGGNet">
+<meta name="twitter:description" content="Tensorflow实现VGGNetVGGNet是2014年由牛津大学计算机视觉组(Visual Geometry Group)和Google DeepMind研究员一起研发的深度卷积网络。取得了 ILSVRC2014 比赛分类项目的第二名和定位项目的第一名。VGGNet 探索了卷积神经网络的深度与其性能之间的关系，成功地构筑了 16~19 层深的卷积神经网络，证明了增加网络的深度能够在一定程度上">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/03/Tensorflow实现VGGNet/VGG%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -196,80 +203,298 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Tensorflow实现VGGNet" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/05/23/Nginx加uWSGi部署Django服务器/" class="archive-article-date">
-        <time datetime="2019-05-23T19:30:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/05/23/Nginx加uWSGi部署Django服务器/" target="_blank">Nginx加uWSGi部署Django服务器</a>
   
+    <h1 class="article-title" itemprop="name">
+      Tensorflow实现VGGNet
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/03/03/Tensorflow实现VGGNet/" class="archive-article-date">
+        <time datetime="2020-03-04T00:10:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-03</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">953字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">4分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h3 id="Tensorflow实现VGGNet"><a href="#Tensorflow实现VGGNet" class="headerlink" title="Tensorflow实现VGGNet"></a>Tensorflow实现VGGNet</h3><p>VGGNet是2014年由牛津大学计算机视觉组(Visual Geometry Group)和Google DeepMind研究员一起研发的深度卷积网络。取得了 ILSVRC2014 比赛分类项目的第二名和定位项目的第一名。<br>VGGNet 探索了卷积神经网络的深度与其性能之间的关系，成功地构筑了 16~19 层深的卷积神经网络，证明了增加网络的深度能够在一定程度上影响网络最终的性能，使错误率大幅下降，同时拓展性又很强，迁移到其它图片数据上的泛化性也非常好。到目前为止，VGG 仍然被广泛用来提取图像特征。</p>
+<a id="more"></a>
+
+<p>VGGNet论文地址为<a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">论文地址</a>。
+VGGNet得网络结构图如下，论文中提出了两个效果比较好的网络，分别是16层得VGG16和19层得VGG19。下面我们实现VGG16。<br><img src="VGG%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png" alt="image.png"></p>
+<p>通过上边的结构图我们可以得到网络的结构信息</p>
+<ul>
+<li>输入图片尺寸为224x224，3通道的RGB图像</li>
+<li>卷积核的尺寸为3x3</li>
+<li>卷积步长为1</li>
+<li>最大池化尺寸为2x2</li>
+<li>13层卷积层，3层全连接层，最后用softmax分类</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers,models,Model,Sequential</span><br><span class="line">print(<span class="string">"Tensorflow版本为:%s"</span> % tf.__version__)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Tensorflow版本为:2.1.0</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">model=Sequential(name=<span class="string">"VGG16"</span>)</span><br><span class="line"><span class="comment"># 添加卷积层</span></span><br><span class="line">model.add(layers.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>,input_shape=(<span class="number">224</span>,<span class="number">224</span>,<span class="number">3</span>), name=<span class="string">"block1_conv1"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block1_conv2"</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>, name=<span class="string">"block1maxpool"</span>))</span><br><span class="line"></span><br><span class="line">model.add(layers.Conv2D(<span class="number">128</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block2_conv1"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">128</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block2_conv2"</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>, name=<span class="string">"block2maxpool"</span>))</span><br><span class="line"></span><br><span class="line">model.add(layers.Conv2D(<span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block3_conv1"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block3_conv2"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block3_conv3"</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>, name=<span class="string">"block3maxpool"</span>))</span><br><span class="line"></span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block4_conv1"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block4_conv2"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block4_conv3"</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>, name=<span class="string">"block4maxpool"</span>))</span><br><span class="line"></span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block5_conv1"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block5_conv2"</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">512</span>, kernel_size=<span class="number">3</span>, padding=<span class="string">"SAME"</span>, activation=<span class="string">"relu"</span>, name=<span class="string">"block5_conv3"</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>, name=<span class="string">"block5maxpool"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加全连接层</span></span><br><span class="line">model.add(layers.Flatten(name=<span class="string">'flatten'</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">4096</span>, activation=<span class="string">'relu'</span>, name=<span class="string">"FC1"</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">4096</span>, activation=<span class="string">'relu'</span>, name=<span class="string">"FC2"</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">1000</span>, activation=<span class="string">'softmax'</span>, name=<span class="string">"SoftMax1"</span>))</span><br><span class="line"></span><br><span class="line">model.summary()</span><br><span class="line">model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=<span class="number">0.001</span>),</span><br><span class="line">              loss=tf.keras.losses.CategoricalCrossentropy(from_logits=<span class="literal">False</span>),</span><br><span class="line">              metrics=[<span class="string">"accuracy"</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>Model: &quot;VGG16&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+block1_conv1 (Conv2D)        (None, 224, 224, 64)      1792      
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 224, 224, 64)      36928     
+_________________________________________________________________
+block1maxpool (MaxPooling2D) (None, 112, 112, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 112, 112, 128)     73856     
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 112, 112, 128)     147584    
+_________________________________________________________________
+block2maxpool (MaxPooling2D) (None, 56, 56, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 56, 56, 256)       295168    
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 56, 56, 256)       590080    
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 56, 56, 256)       590080    
+_________________________________________________________________
+block3maxpool (MaxPooling2D) (None, 28, 28, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 28, 28, 512)       1180160   
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 28, 28, 512)       2359808   
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 28, 28, 512)       2359808   
+_________________________________________________________________
+block4maxpool (MaxPooling2D) (None, 14, 14, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 14, 14, 512)       2359808   
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 14, 14, 512)       2359808   
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 14, 14, 512)       2359808   
+_________________________________________________________________
+block5maxpool (MaxPooling2D) (None, 7, 7, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 25088)             0         
+_________________________________________________________________
+FC1 (Dense)                  (None, 4096)              102764544 
+_________________________________________________________________
+FC2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+SoftMax1 (Dense)             (None, 1000)              4097000   
+=================================================================
+Total params: 138,357,544
+Trainable params: 138,357,544
+Non-trainable params: 0
+_________________________________________________________________</code></pre><p>上边我们创建的网络参数一共有138357544个参数，并且参数主要集中在第一个全连接层。VGG网络使用的卷积核全都是3x3的，多个较小的卷积核结合可以达到大卷积核的感受野，比如两个3x3的卷积核的感受野和5x5的卷积核感受野相同，但是参数变少了，从5x5=25减少到3x3x2=18,并且两个卷积核使用了两个relu激活函数，可以学习更多的线性变换，从而更好地提取特征。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">服务器部署</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">diango</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tensorflow</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/django//" class="article-tag-list-link color2">django</a>
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+    
 
     
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/03/Tensorflow实现VGGNet/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/26/随笔/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">随笔</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tensorflow实现VGGNet"><span class="toc-number">1.</span> <span class="toc-text">Tensorflow实现VGGNet</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+  
+  <div id="gitment-ctn"></div>
+  
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "Tensorflow实现VGGNet" -->
+    var gitment = new Gitment({
+      id: "20200303161024",
+      owner: 'possibleit',
+      repo: 'possibleit-githib-io-comment',
+      oauth: {
+        client_id: '10481ce5346c44852c48',
+        client_secret: '4f91e953e7e64bb77ef8c001f0e4ad1bfa23571c',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
+  
+
 
 
           </div>
@@ -310,9 +535,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

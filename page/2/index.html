@@ -203,7 +203,7 @@
             
 
   
-    <article id="post-工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Android自定义View" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -211,7 +211,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2019/06/23/工厂模式/" target="_blank">设计模式-工厂模式</a>
+	  <a class="article-title" href="/2019/07/04/Android自定义View/" target="_blank">Android自定义View</a>
   
     </h1>
   
@@ -219,8 +219,8 @@
 
   
   
-<a href="/2019/06/23/工厂模式/" class="archive-article-date">
-        <time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
+<a href="/2019/07/04/Android自定义View/" class="archive-article-date">
+        <time datetime="2019-07-05T05:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
 </a>
 
   
@@ -232,25 +232,18 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="工厂模式：建立创建对象的工厂"><a href="#工厂模式：建立创建对象的工厂" class="headerlink" title="工厂模式：建立创建对象的工厂"></a>工厂模式：建立创建对象的工厂</h1><p>在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端</p>
+    <h1 id="Android自定义View"><a href="#Android自定义View" class="headerlink" title="Android自定义View"></a>Android自定义View</h1><hr>
+<p>前一阶段学习android自定义view，买了好几本Android源码分析的书，看书里边关于view的绘制过程的分析。结果看的云里雾里，感觉并没有学到什么东西，后来在github上看教程，看别人的代码，感觉有点收获，所以写了这一篇博客。同时我认为学习这方面的知识，直接去看源码分析效果不好，而应该先学习如何操作，等到有了一点经验或者说入了门之后，再去分析源码，会有更好的效果。</p>
 <hr>
-<p>工厂使用的优点  </p>
-<ul>
-<li>松耦合，即对象的创建可以独立于类的实现</li>
-<li>客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的对象</li>
-<li>可以轻松在工厂中添加其他类来创建其他类型对象，而不需要修改客户端代码</li>
-<li>工厂可以重用现有对象  </li>
-</ul>
-<hr>
-<p>Factory模式有三种变体，如下</p>
-<ol>
-<li>简单工厂模式</li>
-<li>工厂方法模式</li>
-<li>抽象工厂模式</li>
-</ol>
-<hr>
+<center>
+<img src="http://ww1.sinaimg.cn/large/006WUTFIly1g6njek8tsnj30fc0heaay.jpg" weight="60%" height="50%">
+</center>
+
+<h3 id="自定义view分类"><a href="#自定义view分类" class="headerlink" title="自定义view分类"></a>自定义view分类</h3><p>主要是按照自己编写的类所继承的父类来分类，一种是自定义的ViewGroup，大多继承自ViewGroup或者是各种Layout；第二种是继承自View类或者是其他的各种view的子类</p>
+<h3 id="自定义view的各个重要的方法"><a href="#自定义view的各个重要的方法" class="headerlink" title="自定义view的各个重要的方法"></a>自定义view的各个重要的方法</h3><h5 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h5><p>   构造函数是View的入口，用于初始化view的内容，获取自定义的属性。</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context,attrs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     
-    <a class="article-more-a" href="/2019/06/23/工厂模式/#more">more >></a>
+    <a class="article-more-a" href="/2019/07/04/Android自定义View/#more">more >></a>
     
     
 
@@ -267,7 +260,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">自定义View</a>
         		</li>
       		
 		</ul>
@@ -279,7 +272,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
         		</li>
       		
 		</ul>
@@ -288,7 +281,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/2019/06/23/工厂模式/">展开全文 >></a>
+      <a class="article-more-a" href="/2019/07/04/Android自定义View/">展开全文 >></a>
     </p>
     
 
@@ -396,6 +389,121 @@
     
     <p class="article-more-link">
       <a class="article-more-a" href="/2019/06/23/单例模式/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2019/06/23/工厂模式/" target="_blank">设计模式-工厂模式</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2019/06/23/工厂模式/" class="archive-article-date">
+        <time datetime="2019-06-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="工厂模式：建立创建对象的工厂"><a href="#工厂模式：建立创建对象的工厂" class="headerlink" title="工厂模式：建立创建对象的工厂"></a>工厂模式：建立创建对象的工厂</h1><p>在面向对象编程中，术语‘工厂’表示一个负责创建其他其他类型对象的类。通常情况下，作为一个工厂的类有一个对象以及与他关联的多个方法。客户端会使用某些参数调用此方法，之后，工厂会据此创建所需类型的对象，然后将他们返回给客户端</p>
+<hr>
+<p>工厂使用的优点  </p>
+<ul>
+<li>松耦合，即对象的创建可以独立于类的实现</li>
+<li>客户端只需要知道需要传递的接口、方法和参数，而无需了解创建对象的类，即可创建所需类型的对象</li>
+<li>可以轻松在工厂中添加其他类来创建其他类型对象，而不需要修改客户端代码</li>
+<li>工厂可以重用现有对象  </li>
+</ul>
+<hr>
+<p>Factory模式有三种变体，如下</p>
+<ol>
+<li>简单工厂模式</li>
+<li>工厂方法模式</li>
+<li>抽象工厂模式</li>
+</ol>
+<hr>
+    
+    <a class="article-more-a" href="/2019/06/23/工厂模式/#more">more >></a>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2019/06/23/工厂模式/">展开全文 >></a>
     </p>
     
 
@@ -1175,15 +1283,7 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1195,7 +1295,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1204,6 +1312,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
