@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: python | Qian的博客</title>
+  <title>特征图计算与反卷积 | Qian的博客</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/categories/python/index.html">
+  <meta name="description" content="[TOC] 1. 特征图计算在卷积操作中，常见的填充方式有两种，分别是”SAME”和”VALID”。    当填充方式为”SAME”时，卷积的特征图计算公式如下  $$out_{size} = (in_{size} - kernel_{size} + 2*padding) / stride + 1 .$$   举例如VGGNet中，输入为224x224，卷积核大小为3x3,padding为1，st">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征图计算与反卷积">
+<meta property="og:url" content="http://yoursite.com/2020/03/04/特征图计算与反卷积/index.html">
 <meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="[TOC] 1. 特征图计算在卷积操作中，常见的填充方式有两种，分别是”SAME”和”VALID”。    当填充方式为”SAME”时，卷积的特征图计算公式如下  $$out_{size} = (in_{size} - kernel_{size} + 2*padding) / stride + 1 .$$   举例如VGGNet中，输入为224x224，卷积核大小为3x3,padding为1，st">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="attachment:image.png">
+<meta property="og:updated_time" content="2020-03-04T04:01:32.041Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:title" content="特征图计算与反卷积">
+<meta name="twitter:description" content="[TOC] 1. 特征图计算在卷积操作中，常见的填充方式有两种，分别是”SAME”和”VALID”。    当填充方式为”SAME”时，卷积的特征图计算公式如下  $$out_{size} = (in_{size} - kernel_{size} + 2*padding) / stride + 1 .$$   举例如VGGNet中，输入为224x224，卷积核大小为3x3,padding为1，st">
+<meta name="twitter:image" content="attachment:image.png">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -196,144 +203,302 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-特征图计算与反卷积" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/10/django-restframework教程/" class="archive-article-date">
-        <time datetime="2020-02-10T23:47:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-10</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/10/django-restframework教程/" target="_blank">DRF- Django Restframework</a>
   
+    <h1 class="article-title" itemprop="name">
+      特征图计算与反卷积
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/03/04/特征图计算与反卷积/" class="archive-article-date">
+        <time datetime="2020-03-04T20:00:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-04</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">835字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>[TOC]</p>
+<h4 id="1-特征图计算"><a href="#1-特征图计算" class="headerlink" title="1. 特征图计算"></a>1. 特征图计算</h4><p>在卷积操作中，常见的填充方式有两种，分别是”SAME”和”VALID”。  </p>
+<hr>
+<p>当填充方式为”SAME”时，卷积的特征图计算公式如下 </p>
+<p>$$out_{size} = (in_{size} - kernel_{size} + 2*padding) / stride + 1 .$$  </p>
+<p>举例如VGGNet中，输入为224x224，卷积核大小为3x3,padding为1，stride为1，可以得到经过一层卷积后，输出的特征图大小为（224 - 3 + 2）/ 1 + 1 = 224，即经过一个卷积层之后特征图大小没有变化。</p>
+<hr>
+<a id="more"></a>
+
+
+<p>当填充方式为”VALID”时，卷积特征图计算公式如下</p>
+<p>$$out_{size} = (in_{size} - kernel_{size}) / stride + 1 .$$  </p>
+<h4 id="2-反卷积（转置卷积）"><a href="#2-反卷积（转置卷积）" class="headerlink" title="2. 反卷积（转置卷积）"></a>2. 反卷积（转置卷积）</h4><p>在基于深度学习的计算机视觉应用中，一般图片经过卷积神经网络提取特征时，自身尺寸往往会缩小，但有时我们需要原始尺寸大小的图片进行进一步计算，而将图片由小尺寸到大尺寸转变的操作叫做上采样，反卷积是上采样的一种方法。  </p>
+<p>反卷积是卷积操作的逆操作，卷积操作我们用矩阵来表示。假设有两个矩阵，分别是4x4的输入矩阵和3x3的卷积核矩阵。<br>$ input = \begin{bmatrix} x_1 &amp; x_2 &amp; x_3 &amp; x_4 \ x_5 &amp; x_6 &amp; x_7 &amp; x_8\ x_9 &amp; x_{10} &amp; x_{11} &amp; x_{12} \ x_{13} &amp; x_{14} &amp; x_{15} &amp; x_{16} \end{bmatrix}$<br>$ kernel = \begin{bmatrix} w_{0,0} &amp; w_{0,1} &amp; w_{0,2} \ w_{1,0} &amp; w_{1,1} &amp; w_{1,2} \ w_{2,0} &amp; w_{2,1} &amp; w_{2,2} \end{bmatrix}$<br>步长为1，填充为0，根据特征图计算公式，输出的尺寸为2x2。  </p>
+<p>我们把input矩阵展开成一个列向量X（16x1），把输出矩阵展开成一个列向量Y（4x1），则用户矩阵描述卷积操作：$ Y = CX $</p>
+<p><img src="attachment:image.png" alt="image.png"></p>
+<p>反卷积就是对这个操作进行逆操作，通过C和Y得到X，即$ X = C^TY $。但事实上反卷积操作只恢复了矩阵X的尺寸，并不能恢复X的每个元素值。</p>
+<p>反卷积输出尺寸计算公式</p>
+<hr>
+<p>情况1： $ ( output_{size} + 2padding - kernel_{size} ) % stride = 0 $<br>此时反卷积输出尺寸为 $ output_{size} = stride(input_{size} - 1) - 2padding + kernel_{size} $  </p>
+<p>情况2： $ ( output_{size} + 2padding - kernel_{size} ) % stride \neq 0 $<br>此时反卷积输出尺寸为 $ output_{size} = stride(input_{size} - 1) - 2padding + kernel_{size} + （output_{size} + 2padding - kernel_{size}）% stride $  </p>
+<h3 id="3-反卷积的tensorflow实现"><a href="#3-反卷积的tensorflow实现" class="headerlink" title="3. 反卷积的tensorflow实现"></a>3. 反卷积的tensorflow实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ [<span class="string">"TF_CPP_MIN_LOG_LEVEL"</span>]=<span class="string">'3'</span> <span class="comment"># 只显示 Error</span></span><br><span class="line"></span><br><span class="line">img = tf.Variable(tf.constant([<span class="number">1.</span>,<span class="number">2.</span>,<span class="number">3.</span>,<span class="number">4.</span>,<span class="number">5.</span>,<span class="number">6.</span>,<span class="number">7.</span>,<span class="number">8.</span>,<span class="number">9.</span>,<span class="number">10.</span>,<span class="number">11.</span>,<span class="number">12.</span>,<span class="number">13.</span>,<span class="number">14.</span>,<span class="number">15.</span>,<span class="number">16.</span>],shape=[<span class="number">1</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">1</span>]))</span><br><span class="line">kernel =tf.Variable(tf.constant([<span class="number">1.</span>,<span class="number">0.</span>,<span class="number">0.</span>,<span class="number">0.</span>,<span class="number">1.</span>,<span class="number">0.</span>,<span class="number">0.</span>,<span class="number">0.</span>,<span class="number">1.</span>],shape=[<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>]))</span><br><span class="line">print(img)</span><br><span class="line">print(kernel)</span><br><span class="line">conv =  tf.nn.conv2d(img,kernel,strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'VALID'</span>)</span><br><span class="line">cons =  tf.nn.conv2d(img,kernel,strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line">print(conv.shape)</span><br><span class="line">print(cons.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再进行反卷积操作</span></span><br><span class="line">contv = tf.nn.conv2d_transpose(conv,kernel,[<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'VALID'</span>)</span><br><span class="line">conts = tf.nn.conv2d_transpose(cons,kernel,[<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(<span class="string">'kernel:'</span>,sess.run(kernel))</span><br><span class="line">    print(<span class="string">'conv:'</span>,sess.run(conv))</span><br><span class="line">    print(<span class="string">'cons:'</span>,sess.run(cons))</span><br><span class="line">    print(<span class="string">'contv:'</span>,sess.run(contv))</span><br><span class="line">    print(<span class="string">'conts:'</span>,sess.run(conts))</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;tf.Variable &apos;Variable_16:0&apos; shape=(1, 4, 4, 1) dtype=float32_ref&gt;
+&lt;tf.Variable &apos;Variable_17:0&apos; shape=(3, 3, 1, 1) dtype=float32_ref&gt;
+(1, 1, 1, 1)
+(1, 2, 2, 1)
+kernel: [[[[1.]]
+
+  [[0.]]
+
+  [[0.]]]
+
+
+ [[[0.]]
+
+  [[1.]]
+
+  [[0.]]]
+
+
+ [[[0.]]
+
+  [[0.]]
+
+  [[1.]]]]
+conv: [[[[18.]]]]
+cons: [[[[18.]
+   [11.]]
+
+  [[23.]
+   [27.]]]]
+contv: [[[[18.]
+   [ 0.]
+   [ 0.]]
+
+  [[ 0.]
+   [18.]
+   [ 0.]]
+
+  [[ 0.]
+   [ 0.]
+   [18.]]]]
+conts: [[[[18.]
+   [ 0.]
+   [11.]]
+
+  [[ 0.]
+   [45.]
+   [ 0.]]
+
+  [[23.]
+   [ 0.]
+   [27.]]]]</code></pre>
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">django</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tensorflow</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/04/特征图计算与反卷积/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
+
+
+<nav id="article-nav">
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
+  
+    <a href="/2020/03/03/Tensorflow实现VGGNet/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Tensorflow实现VGGNet</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/06/02/python正则/" class="archive-article-date">
-        <time datetime="2019-06-02T22:30:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-02</time>
-</a>
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-特征图计算"><span class="toc-number">1.</span> <span class="toc-text">1. 特征图计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-反卷积（转置卷积）"><span class="toc-number">2.</span> <span class="toc-text">2. 反卷积（转置卷积）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-反卷积的tensorflow实现"><span class="toc-number"></span> <span class="toc-text">3. 反卷积的tensorflow实现</span></a>
+                    </div>
+                </span>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/06/02/python正则/" target="_blank">python正则表达式</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">正则表达式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/python//" class="article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
+
+
+
+
+
+
   
+  <div id="gitment-ctn"></div>
   
-    </div></section>
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "特征图计算与反卷积" -->
+    var gitment = new Gitment({
+      id: "20200304120005",
+      owner: 'possibleit',
+      repo: 'possibleit-githib-io-comment',
+      oauth: {
+        client_id: '53b4e5237efe492395c7',
+        client_secret: '2d229af5b6fbe09e811ef9446bbe1ccfb842c7ff',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
   
 
-    
 
 
           </div>
@@ -374,10 +539,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
