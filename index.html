@@ -235,42 +235,9 @@
     <h3 id="VSCode常用插件"><a href="#VSCode常用插件" class="headerlink" title="VSCode常用插件"></a>VSCode常用插件</h3><hr>
 <p>在vscode未发布之前，轻量编辑器一直用的是sublime text，但是使用总是有些问题，可能是因为用的是未激活的吧，总之不太舒服。使用了VSCode之后，发现vscode不仅能够替代之前的sublime text，甚至要好很多倍。因此把常用的插件整理下，记录在博客上。</p>
 <hr>
-<h4 id="前端用插件"><a href="#前端用插件" class="headerlink" title="前端用插件"></a>前端用插件</h4><ol>
-<li>CSS Peek</li>
-</ol>
-<p>CSS Peek插件作用是能够查看和修改html中id和class等的定义，而不用转到对应的文件中。</p>
-<img src="./img/v2-247271ae745aaffee6497624e335b7b9_b.webp">
-
-
-
-<ol start="2">
-<li><p>HTML CSS Support</p>
-<p>这个插件让开发者在写html标签中的class时，智能提示当前项目的样式文件中支持的样式。</p>
-<p>与这个插件作用类似的还有<code>IntelliSense for CSS class names in HTML</code>  </p>
-<img src="./img/html-css-support.gif">
-</li>
-<li><p>Live Server</p>
-<p>这个插件可以把vscode中对html的修改实时显示在浏览器中，而不需要刷新浏览器。默认使用的时5500端口。</p>
-<img src="./img/Live-server-1.png">
-</li>
-<li><p>Path Intellisense</p>
-<p>Path Intellisense插件可以在输入路径时，自动补全。</p>
-</li>
-<li><p>Remote-SSH</p>
-<p>这个插件可以使用vscode远程连接服务器，十分方便，比我之前用的MobaXterm_Personal好用的多，之前的那个软件链接远程服务器，修改文件和上传文件总是会出现编码错误，能气死个人。相比之下vscode做的就很好，至少使用了这么长时间还没出过问题。</p>
-<p>使用方法是要首先在<code>C:\Users\Administrator\.ssh</code>文件夹下创建一个config文件，在文件中可以添加</p>
-<img src="./img/remote-ssh.png">
-
-<p>然后点击SSH TARGET上边的add new按钮</p>
-<img src="./img/remote-ssh-2.png">
-
-<p>然后使用刚才的设置文件即可。</p>
-</li>
-<li><p>TODO HighLight</p>
-<p>这个插件许多编辑器都有，作用是标注出所有的TODO注释。</p>
-</li>
-</ol>
-
+    
+    <a class="article-more-a" href="/2020/03/10/VSCode常用插件/#more">more >></a>
+    
     
 
     
@@ -1113,7 +1080,7 @@
 
 
   
-    <article id="post-HashMap源码分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-ArrayList源码分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -1121,7 +1088,7 @@
   
     <h1 itemprop="name">
 	
-	  <a class="article-title" href="/2019/08/04/HashMap源码分析/" target="_blank">HashMap源码分析</a>
+	  <a class="article-title" href="/2019/08/04/ArrayList源码分析/" target="_blank">ArrayList源码分析</a>
   
     </h1>
   
@@ -1129,7 +1096,7 @@
 
   
   
-<a href="/2019/08/04/HashMap源码分析/" class="archive-article-date">
+<a href="/2019/08/04/ArrayList源码分析/" class="archive-article-date">
         <time datetime="2019-08-05T05:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-04</time>
 </a>
 
@@ -1142,13 +1109,15 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="HashMap源码分析"><a href="#HashMap源码分析" class="headerlink" title="HashMap源码分析"></a>HashMap源码分析</h1><hr>
-<p>java version 10.0.1</p>
+    <h1 id="ArrayList源码分析"><a href="#ArrayList源码分析" class="headerlink" title="ArrayList源码分析"></a>ArrayList源码分析</h1><hr>
+<p>java version ： 10.0.1</p>
 <hr>
-<h3 id="1-概览"><a href="#1-概览" class="headerlink" title="1. 概览"></a>1. 概览</h3><p>在IDEA中双击Shift键，调出search everywhere框，搜索HashMap，点击进去即可阅读源码。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">Map</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt;, <span class="title">Cloneable</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">4</span>; <span class="comment">//默认大小16</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;<span class="comment">//最大的大小</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> DEFAULT_LOAD_FACTOR = <span class="number">0.75f</span>;<span class="comment">//负载因子</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TREEIFY_THRESHOLD = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNTREEIFY_THRESHOLD = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_TREEIFY_CAPACITY = <span class="number">64</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="1-概览"><a href="#1-概览" class="headerlink" title="1. 概览"></a>1. 概览</h3><p>在IDEA中双击Shift键，调出search everywhere框，搜索ArrayList，点击进去即可阅读源码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">RandomAccess</span>, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
+
+<p>ArrayList是基于数组实现的，因此支持快速访问。继承自AbstractList类，并实现了RandomAccess，Cloneable，Serializable接口。<br>ArrayList的默认大小是10。<code>private static final int DEFAULT_CAPACITY = 10</code></p>
     
-    <a class="article-more-a" href="/2019/08/04/HashMap源码分析/#more">more >></a>
+    <a class="article-more-a" href="/2019/08/04/ArrayList源码分析/#more">more >></a>
     
     
 
@@ -1186,7 +1155,7 @@
 
     
     <p class="article-more-link">
-      <a class="article-more-a" href="/2019/08/04/HashMap源码分析/">展开全文 >></a>
+      <a class="article-more-a" href="/2019/08/04/ArrayList源码分析/">展开全文 >></a>
     </p>
     
 
@@ -1382,19 +1351,11 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">vscode</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1406,15 +1367,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1423,6 +1380,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
