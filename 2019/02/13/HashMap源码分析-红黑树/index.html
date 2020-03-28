@@ -6,17 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 自定义View | Qian的博客</title>
+  <title>HashMap源码分析-红黑树 | Qian的博客</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/tags/自定义View/index.html">
+  <meta name="description" content="之前几篇博客写了关于HashMap源码的分析，到现在就只剩关于红黑树的部">
+<meta name="keywords" content="java集合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap源码分析-红黑树">
+<meta property="og:url" content="http://yoursite.com/2019/02/13/HashMap源码分析-红黑树/index.html">
 <meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="之前几篇博客写了关于HashMap源码的分析，到现在就只剩关于红黑树的部">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/11788140-5c29250ef1625083?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/11788140-5daa3e9b97b7845e?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2020-03-28T05:11:45.416Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:title" content="HashMap源码分析-红黑树">
+<meta name="twitter:description" content="之前几篇博客写了关于HashMap源码的分析，到现在就只剩关于红黑树的部">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/11788140-5c29250ef1625083?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -196,130 +204,275 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-HashMap源码分析-红黑树" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/07/04/Android自定义View--ClockView/" class="archive-article-date">
-        <time datetime="2019-07-05T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/07/04/Android自定义View--ClockView/" target="_blank">Android自定义View--ClockView</a>
   
+    <h1 class="article-title" itemprop="name">
+      HashMap源码分析-红黑树
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2019/02/13/HashMap源码分析-红黑树/" class="archive-article-date">
+        <time datetime="2019-02-13T18:25:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-13</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">1.9k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">9分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>之前几篇博客写了关于HashMap源码的分析，到现在就只剩关于红黑树的部<a id="more"></a>红黑树是一种数据结构，它是基于二叉查找树的。红黑树很好的继承了二叉查找树快速插入删除以及查找元素的特性，又因为红黑树自平衡，所以又克服了二叉查找树在输入线性数据时退化为链表的缺点，因此被广泛使用。</p>
+<hr>
+<p>java version  1.8</p>
+<hr>
+<!--more-->
+
+<h3 id="1-红黑树的特性"><a href="#1-红黑树的特性" class="headerlink" title="1. 红黑树的特性"></a>1. 红黑树的特性</h3><p>红黑树，顾名思义，有一个特征就是树的节点要么是红色，要么是黑色。而其本身又是自平衡的二叉查找树，除了满足二叉查找树的特征之外，还应满足以下特征，来保证自平衡性。</p>
+<ul>
+<li>根节点为黑色</li>
+<li>叶子节点为黑色的null节点</li>
+<li>红色节点的子节点必为黑色，反之则未必</li>
+<li>从叶子节点到根节点的每条路径上的黑色节点数目相同</li>
+</ul>
+<p>红黑树在插入节点时，通过这些特性来保持自身的平衡性。而保持平衡性的操作主要有三个，改变节点颜色，左旋，右旋。</p>
+<ul>
+<li>左旋<br><img src="https://upload-images.jianshu.io/upload_images/11788140-5c29250ef1625083?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="左旋示意图"></li>
+<li>右旋<br><img src="https://upload-images.jianshu.io/upload_images/11788140-5daa3e9b97b7845e?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="右旋示意图"><br>红黑树插入节点时默认插入的节点为红色，这是因为插入红色节点破坏自平衡特性的概率要比插入黑色节点破坏的概率低。</li>
+</ul>
+<h3 id="2-链表转红黑树"><a href="#2-链表转红黑树" class="headerlink" title="2. 链表转红黑树"></a>2. 链表转红黑树</h3><p>惯例，先看源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">LinkedHashMap</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">        TreeNode&lt;K,V&gt; parent;  <span class="comment">// red-black tree links</span></span><br><span class="line">        TreeNode&lt;K,V&gt; left;</span><br><span class="line">        TreeNode&lt;K,V&gt; right;</span><br><span class="line">        TreeNode&lt;K,V&gt; prev;    <span class="comment">// needed to unlink next upon deletion</span></span><br><span class="line">        <span class="keyword">boolean</span> red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TreeNode是HashMap的内部类，继承自LinkedHashMap.Entry，而LinkedHashMap.Entry继承自HashMap的Node类。它的几个属性parent指向红黑树中的父节点，left和right分别指向左右孩子节点，prev指向原链表中的上一个节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">treeifyBin</span><span class="params">(Node&lt;K,V&gt;[] tab, <span class="keyword">int</span> hash)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> n, index; Node&lt;K,V&gt; e;</span><br><span class="line">       <span class="keyword">if</span> (tab == <span class="keyword">null</span> || (n = tab.length) &lt; MIN_TREEIFY_CAPACITY)</span><br><span class="line">           resize();</span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> ((e = tab[index = (n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">           TreeNode&lt;K,V&gt; hd = <span class="keyword">null</span>, tl = <span class="keyword">null</span>;</span><br><span class="line">           <span class="keyword">do</span> &#123;</span><br><span class="line">               TreeNode&lt;K,V&gt; p = replacementTreeNode(e, <span class="keyword">null</span>);</span><br><span class="line">               <span class="keyword">if</span> (tl == <span class="keyword">null</span>)</span><br><span class="line">                   hd = p;</span><br><span class="line">               <span class="keyword">else</span> &#123;</span><br><span class="line">                   p.prev = tl;</span><br><span class="line">                   tl.next = p;</span><br><span class="line">               &#125;</span><br><span class="line">               tl = p;</span><br><span class="line">           &#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</span><br><span class="line">           <span class="keyword">if</span> ((tab[index] = hd) != <span class="keyword">null</span>)</span><br><span class="line">               hd.treeify(tab);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>当hashmap数组中某位置链表的长度大于等于7时，该链表就被转化为红黑树，使用treeifyBin方法。<br>这个方法的作用是将链表的每个节点都转化为红黑树节点，并将单链表转化为双链表。之后使用treeify方法将双链表转化为红黑树。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">treeify</span><span class="params">(Node&lt;K,V&gt;[] tab)</span> </span>&#123;</span><br><span class="line">       TreeNode&lt;K,V&gt; root = <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">for</span> (TreeNode&lt;K,V&gt; x = <span class="keyword">this</span>, next; x != <span class="keyword">null</span>; x = next) &#123;</span><br><span class="line">           next = (TreeNode&lt;K,V&gt;)x.next;</span><br><span class="line">           x.left = x.right = <span class="keyword">null</span>;</span><br><span class="line">           <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">            	x.parent = <span class="keyword">null</span>;</span><br><span class="line">               x.red = <span class="keyword">false</span>;</span><br><span class="line">               root = x;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span> &#123;</span><br><span class="line">               K k = x.key;</span><br><span class="line">               <span class="keyword">int</span> h = x.hash;</span><br><span class="line">               Class&lt;?&gt; kc = <span class="keyword">null</span>;</span><br><span class="line">               <span class="keyword">for</span> (TreeNode&lt;K,V&gt; p = root;;) &#123;</span><br><span class="line">                   <span class="keyword">int</span> dir, ph;</span><br><span class="line">                   K pk = p.key;</span><br><span class="line">                   <span class="keyword">if</span> ((ph = p.hash) &gt; h)</span><br><span class="line">                       dir = -<span class="number">1</span>;</span><br><span class="line">                   <span class="keyword">else</span> <span class="keyword">if</span> (ph &lt; h)</span><br><span class="line">                       dir = <span class="number">1</span>;</span><br><span class="line">                   <span class="keyword">else</span> <span class="keyword">if</span> ((kc == <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                             (kc = comparableClassFor(k)) == <span class="keyword">null</span>) ||</span><br><span class="line">                            (dir = compareComparables(kc, k, pk)) == <span class="number">0</span>)</span><br><span class="line">                       dir = tieBreakOrder(k, pk);</span><br><span class="line">                   TreeNode&lt;K,V&gt; xp = p;</span><br><span class="line">                   <span class="keyword">if</span> ((p = (dir &lt;= <span class="number">0</span>) ? p.left : p.right) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                       x.parent = xp;</span><br><span class="line">                       <span class="keyword">if</span> (dir &lt;= <span class="number">0</span>)</span><br><span class="line">                           xp.left = x;</span><br><span class="line">                       <span class="keyword">else</span></span><br><span class="line">                           xp.right = x;</span><br><span class="line">                       root = balanceInsertion(root, x);</span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       moveRootToFront(tab, root);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>treeify方法遍历双链表的每个节点，将每个节点插入到二叉查找树中，每插入一个节点，调用一次balanceInsertion方法，为红黑树做插入平衡处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;K,V&gt; <span class="function">TreeNode&lt;K,V&gt; <span class="title">balanceInsertion</span><span class="params">(TreeNode&lt;K,V&gt; root,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                   TreeNode&lt;K,V&gt; x)</span> </span>&#123;</span><br><span class="line">           x.red = <span class="keyword">true</span>;</span><br><span class="line">           <span class="keyword">for</span> (TreeNode&lt;K,V&gt; xp, xpp, xppl, xppr;;) &#123;</span><br><span class="line">               <span class="keyword">if</span> ((xp = x.parent) == <span class="keyword">null</span>) &#123;</span><br><span class="line">               <span class="comment">// 当前红黑树为空，插入的节点作为根节点</span></span><br><span class="line">                   x.red = <span class="keyword">false</span>;</span><br><span class="line">                   <span class="keyword">return</span> x;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (!xp.red || (xpp = xp.parent) == <span class="keyword">null</span>)</span><br><span class="line">               	<span class="comment">// 当前插入节点的祖父节点为根节点，父节点为黑色。直接插入即可</span></span><br><span class="line">                   <span class="keyword">return</span> root;</span><br><span class="line">               <span class="keyword">if</span> (xp == (xppl = xpp.left)) &#123;</span><br><span class="line">               	<span class="comment">// 父节点是祖父节点的左子节点</span></span><br><span class="line">                   <span class="keyword">if</span> ((xppr = xpp.right) != <span class="keyword">null</span> &amp;&amp; xppr.red) &#123;</span><br><span class="line">                   	<span class="comment">// xppr是叔叔节点，父节点和叔叔节点均为红色，给节点变色，然后将其祖父节点置为当前节点</span></span><br><span class="line">                       xppr.red = <span class="keyword">false</span>;</span><br><span class="line">                       xp.red = <span class="keyword">false</span>;</span><br><span class="line">                       xpp.red = <span class="keyword">true</span>;</span><br><span class="line">                       x = xpp;</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="keyword">else</span> &#123;</span><br><span class="line">                       <span class="keyword">if</span> (x == xp.right) &#123;</span><br><span class="line">                       	<span class="comment">// 父节点为红色，叔叔节点为黑色，当前节点为右子节点时，对父节点做左旋操作</span></span><br><span class="line">                           root = rotateLeft(root, x = xp);</span><br><span class="line">                           xpp = (xp = x.parent) == <span class="keyword">null</span> ? <span class="keyword">null</span> : xp.parent;</span><br><span class="line">                       &#125;</span><br><span class="line">                       <span class="keyword">if</span> (xp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                           xp.red = <span class="keyword">false</span>;</span><br><span class="line">                           <span class="keyword">if</span> (xpp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                           <span class="comment">// 此时当前节点父节点为红色，祖父节点为黑色，当前节点为左子节点</span></span><br><span class="line">                           <span class="comment">// 将父节点涂黑，祖父节点涂红，对祖父节点做右旋</span></span><br><span class="line">                               xpp.red = <span class="keyword">true</span>;</span><br><span class="line">                               root = rotateRight(root, xpp);</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> &#123;</span><br><span class="line">               	<span class="comment">// 父节点是祖父节点的右子节点，具体情况与上边类似</span></span><br><span class="line">                   <span class="keyword">if</span> (xppl != <span class="keyword">null</span> &amp;&amp; xppl.red) &#123;</span><br><span class="line">                       xppl.red = <span class="keyword">false</span>;</span><br><span class="line">                       xp.red = <span class="keyword">false</span>;</span><br><span class="line">                       xpp.red = <span class="keyword">true</span>;</span><br><span class="line">                       x = xpp;</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="keyword">else</span> &#123;</span><br><span class="line">                       <span class="keyword">if</span> (x == xp.left) &#123;</span><br><span class="line">                           root = rotateRight(root, x = xp);</span><br><span class="line">                           xpp = (xp = x.parent) == <span class="keyword">null</span> ? <span class="keyword">null</span> : xp.parent;</span><br><span class="line">                       &#125;</span><br><span class="line">                       <span class="keyword">if</span> (xp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                           xp.red = <span class="keyword">false</span>;</span><br><span class="line">                           <span class="keyword">if</span> (xpp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                               xpp.red = <span class="keyword">true</span>;</span><br><span class="line">                               root = rotateLeft(root, xpp);</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<p>balanceInsertion方法参数中root是红黑树的根节点，x是当前插入的节点。从源码中可以看出，插入的节点默认置为红色。</p>
+<h3 id="3-红黑树删除节点"><a href="#3-红黑树删除节点" class="headerlink" title="3. 红黑树删除节点"></a>3. 红黑树删除节点</h3><p>惯例，先看代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">removeTreeNode</span><span class="params">(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab,</span></span></span><br><span class="line"><span class="function"><span class="params">                                 <span class="keyword">boolean</span> movable)</span> </span>&#123;</span><br><span class="line">           <span class="keyword">int</span> n;</span><br><span class="line">           <span class="keyword">if</span> (tab == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">           	<span class="comment">// 判空</span></span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">           <span class="keyword">int</span> index = (n - <span class="number">1</span>) &amp; hash;</span><br><span class="line">           <span class="comment">// first是红黑树的第一个节点，succ是当前节点在hashmap链表中的后一个节点</span></span><br><span class="line">           <span class="comment">// pred是在hashmap链表中的前一个节点</span></span><br><span class="line">           TreeNode&lt;K,V&gt; first = (TreeNode&lt;K,V&gt;)tab[index], root = first, rl;</span><br><span class="line">           TreeNode&lt;K,V&gt; succ = (TreeNode&lt;K,V&gt;)next, pred = prev;</span><br><span class="line">           <span class="keyword">if</span> (pred == <span class="keyword">null</span>)</span><br><span class="line">           	<span class="comment">// 前一个结点为空，说明当前节点是根节点</span></span><br><span class="line">               tab[index] = first = succ;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">           	<span class="comment">// 将前一个节点的后继指向后一个节点，也即删除链表中的这个节点</span></span><br><span class="line">               pred.next = succ;</span><br><span class="line">           <span class="keyword">if</span> (succ != <span class="keyword">null</span>)</span><br><span class="line">           	<span class="comment">// 节点后继的前驱指向前一个节点，双链表删除操作完成</span></span><br><span class="line">               succ.prev = pred;</span><br><span class="line">           <span class="keyword">if</span> (first == <span class="keyword">null</span>)</span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">           <span class="keyword">if</span> (root.parent != <span class="keyword">null</span>)</span><br><span class="line">               root = root.root();</span><br><span class="line">           <span class="keyword">if</span> (root == <span class="keyword">null</span></span><br><span class="line">               || (movable</span><br><span class="line">                   &amp;&amp; (root.right == <span class="keyword">null</span></span><br><span class="line">                       || (rl = root.left) == <span class="keyword">null</span></span><br><span class="line">                       || rl.left == <span class="keyword">null</span>))) &#123;</span><br><span class="line">               tab[index] = first.untreeify(map);  <span class="comment">// too small</span></span><br><span class="line">               <span class="keyword">return</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           TreeNode&lt;K,V&gt; p = <span class="keyword">this</span>, pl = left, pr = right, replacement;</span><br><span class="line">           <span class="keyword">if</span> (pl != <span class="keyword">null</span> &amp;&amp; pr != <span class="keyword">null</span>) &#123;<span class="comment">// 左右子树均不为空</span></span><br><span class="line">               TreeNode&lt;K,V&gt; s = pr, sl;</span><br><span class="line">               <span class="keyword">while</span> ((sl = s.left) != <span class="keyword">null</span>) <span class="comment">// 右子树的最左节点</span></span><br><span class="line">                   s = sl;</span><br><span class="line">               <span class="keyword">boolean</span> c = s.red; s.red = p.red; p.red = c; <span class="comment">// swap colors</span></span><br><span class="line">               TreeNode&lt;K,V&gt; sr = s.right;</span><br><span class="line">               TreeNode&lt;K,V&gt; pp = p.parent;</span><br><span class="line">               <span class="keyword">if</span> (s == pr) &#123; <span class="comment">// p was s's direct parent</span></span><br><span class="line">                   p.parent = s;</span><br><span class="line">                   s.right = p;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">else</span> &#123;</span><br><span class="line">                   TreeNode&lt;K,V&gt; sp = s.parent;</span><br><span class="line">                   <span class="keyword">if</span> ((p.parent = sp) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                       <span class="keyword">if</span> (s == sp.left)</span><br><span class="line">                           sp.left = p;</span><br><span class="line">                       <span class="keyword">else</span></span><br><span class="line">                           sp.right = p;</span><br><span class="line">                   &#125;</span><br><span class="line">                   <span class="keyword">if</span> ((s.right = pr) != <span class="keyword">null</span>)</span><br><span class="line">                       pr.parent = s;</span><br><span class="line">               &#125;</span><br><span class="line">               p.left = <span class="keyword">null</span>;</span><br><span class="line">               <span class="keyword">if</span> ((p.right = sr) != <span class="keyword">null</span>)</span><br><span class="line">                   sr.parent = p;</span><br><span class="line">               <span class="keyword">if</span> ((s.left = pl) != <span class="keyword">null</span>)</span><br><span class="line">                   pl.parent = s;</span><br><span class="line">               <span class="keyword">if</span> ((s.parent = pp) == <span class="keyword">null</span>)</span><br><span class="line">                   root = s;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (p == pp.left)</span><br><span class="line">                   pp.left = s;</span><br><span class="line">               <span class="keyword">else</span></span><br><span class="line">                   pp.right = s;</span><br><span class="line">               <span class="keyword">if</span> (sr != <span class="keyword">null</span>)</span><br><span class="line">                   replacement = sr;</span><br><span class="line">               <span class="keyword">else</span></span><br><span class="line">                   replacement = p;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">else</span> <span class="keyword">if</span> (pl != <span class="keyword">null</span>)</span><br><span class="line">               replacement = pl;</span><br><span class="line">           <span class="keyword">else</span> <span class="keyword">if</span> (pr != <span class="keyword">null</span>)</span><br><span class="line">               replacement = pr;</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">               replacement = p;</span><br><span class="line">           <span class="comment">//p是待删除节点</span></span><br><span class="line">           <span class="keyword">if</span> (replacement != p) &#123;</span><br><span class="line">               TreeNode&lt;K,V&gt; pp = replacement.parent = p.parent;</span><br><span class="line">               <span class="keyword">if</span> (pp == <span class="keyword">null</span>)</span><br><span class="line">                   (root = replacement).red = <span class="keyword">false</span>;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (p == pp.left)</span><br><span class="line">                   pp.left = replacement;</span><br><span class="line">               <span class="keyword">else</span></span><br><span class="line">                   pp.right = replacement;</span><br><span class="line">               p.left = p.right = p.parent = <span class="keyword">null</span>;</span><br><span class="line">           &#125;</span><br><span class="line">		<span class="comment">// 删除节点为红色，红黑树平衡违背破坏</span></span><br><span class="line">           TreeNode&lt;K,V&gt; r = p.red ? root : balanceDeletion(root, replacement);</span><br><span class="line">		<span class="comment">// 删除节点p</span></span><br><span class="line">           <span class="keyword">if</span> (replacement == p) &#123;  <span class="comment">// detach</span></span><br><span class="line">               TreeNode&lt;K,V&gt; pp = p.parent;</span><br><span class="line">               p.parent = <span class="keyword">null</span>;</span><br><span class="line">               <span class="keyword">if</span> (pp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                   <span class="keyword">if</span> (p == pp.left)</span><br><span class="line">                       pp.left = <span class="keyword">null</span>;</span><br><span class="line">                   <span class="keyword">else</span> <span class="keyword">if</span> (p == pp.right)</span><br><span class="line">                       pp.right = <span class="keyword">null</span>;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> (movable)</span><br><span class="line">               moveRootToFront(tab, r);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法是删除二叉查找树中的节点，平衡红黑树在balanceDeletion方法中。<br>就先到这里，具体逻辑下一次再分析。</p>
+<hr>
+<p>学疏才浅，有不当之处，望指出。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">自定义View</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java集合</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        			<a href="/categories/java//" class="article-tag-list-link color5">java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/02/13/HashMap源码分析-红黑树/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/07/04/Android自定义View/" class="archive-article-date">
-        <time datetime="2019-07-05T05:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
 
+
+<nav id="article-nav">
+  
+    <a href="/2019/05/23/Nginx加uWSGi部署Django服务器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Nginx加uWSGi部署Django服务器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/02/10/HashMap源码分析 (2)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HashMap源码分析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/07/04/Android自定义View/" target="_blank">Android自定义View</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">自定义View</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-红黑树的特性"><span class="toc-number">1.</span> <span class="toc-text">1. 红黑树的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-链表转红黑树"><span class="toc-number">2.</span> <span class="toc-text">2. 链表转红黑树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-红黑树删除节点"><span class="toc-number">3.</span> <span class="toc-text">3. 红黑树删除节点</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
   
+  <div id="gitment-ctn"></div>
   
-    </div></section>
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "HashMap源码分析-红黑树" -->
+    var gitment = new Gitment({
+      id: "20190213102524",
+      owner: 'possibleit',
+      repo: 'possibleit-githib-io-comment',
+      oauth: {
+        client_id: '53b4e5237efe492395c7',
+        client_secret: '2d229af5b6fbe09e811ef9446bbe1ccfb842c7ff',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
   
 
-    
 
 
           </div>
@@ -360,9 +513,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

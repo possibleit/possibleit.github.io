@@ -6,17 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 自定义View | Qian的博客</title>
+  <title>Tensorflow反卷积 | Qian的博客</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Qian的博客">
-<meta property="og:url" content="http://yoursite.com/tags/自定义View/index.html">
+  <meta name="description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow反卷积">
+<meta property="og:url" content="http://yoursite.com/2020/03/22/tensorflow反卷积/index.html">
 <meta property="og:site_name" content="Qian的博客">
+<meta property="og:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-03-28T05:13:25.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Qian的博客">
+<meta name="twitter:title" content="Tensorflow反卷积">
+<meta name="twitter:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -196,130 +201,261 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tensorflow反卷积" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/07/04/Android自定义View--ClockView/" class="archive-article-date">
-        <time datetime="2019-07-05T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/07/04/Android自定义View--ClockView/" target="_blank">Android自定义View--ClockView</a>
   
+    <h1 class="article-title" itemprop="name">
+      Tensorflow反卷积
     </h1>
   
 
 
-        <div class="article-info info-on-right">
-          
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/03/22/tensorflow反卷积/" class="archive-article-date">
+        <time datetime="2020-03-22T20:07:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-22</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">775字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h3 id="反卷积"><a href="#反卷积" class="headerlink" title="反卷积"></a>反卷积</h3><hr>
+<ol>
+<li>反卷积计算</li>
+</ol>
+<p>假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel</p>
+<p>当卷积参数为步长为1，填充为0时，输出为Y=2x2</p>
+<p>此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,<br>C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复<br>它的每个元素的值。</p>
+<ol start="2">
+<li>反卷积输出的shape</li>
+</ol>
+<p>首先对于正向卷积，输出shape计算公式<code>output = (input - kernelsize + 2padding) / strides + 1</code>，举例，input=6x6，kernel=3x3，<br>stride=2，padding=1，则它的输出shape=3x3</p>
+<p>对于反卷积，第一种情况，(output + 2padding - kernel) % s = 0（注意这里的output是卷积的输出），此时的反卷积输出为o = strides(input - 1) - 2padding + kernel，即<br>此时反卷积输出为5x5.</p>
+<p>第二种情况，(output + 2padding - kernel) % s != 0</p>
+<p>此时反卷积输出尺寸为o = strides(input - 1) - 2padding + kernel + (output + 2padding - kernel) % s，即对于上述的正向卷积，<br>做反向卷积是输出为6x6。</p>
+<ol start="3">
+<li>tensorflow实验</li>
+</ol>
+<p>反卷积<br>第一种情况，输出的shape为5x5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">img = tf.Variable(tf.constant([[<span class="number">1.</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]], shape=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>]))</span><br><span class="line">kernel = tf.Variable(tf.constant([[<span class="number">1.0</span>,<span class="number">0.</span>,<span class="number">0.</span>],[<span class="number">0</span>,<span class="number">1.0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1.0</span>]],shape=[<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>]))</span><br><span class="line">conts = tf.nn.conv2d_transpose(img,kernel,[<span class="number">1</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(<span class="string">'conts:\n'</span>, sess.run(conts))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为5x5</span></span><br><span class="line"><span class="string">1 0 2 0 3</span></span><br><span class="line"><span class="string">0 6 0 8 0</span></span><br><span class="line"><span class="string">4 0 5 0 6</span></span><br><span class="line"><span class="string">0 12 0 14 0</span></span><br><span class="line"><span class="string">7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种情况，输出shape为6x6</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代码同上，conts = tf.nn.conv2d_transpose(img,kernel,[1,5,5,1],strides=[1,2,2,1],padding='SAME')中【1,5,5,1】改为【1,6,6,1】</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为</span></span><br><span class="line"><span class="string">1 0 2 0 3 0</span></span><br><span class="line"><span class="string">0 1 0 2 0 3</span></span><br><span class="line"><span class="string">4 0 6 0 8 0</span></span><br><span class="line"><span class="string">0 4 0 5 0 6</span></span><br><span class="line"><span class="string">7 0 12 0 14 0</span></span><br><span class="line"><span class="string">0 7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>tensorflow计算规则</li>
+</ol>
+<p>tensorflow执行反卷积时，会首先根据输入的参数计算卷积结果是否成立，也即shape是否合法。</p>
+<p>对于第一种情况，计算时先对输入的矩阵中间补0，每两个元素之间补0的个数由strides确定，即补strides-1个0，对于3x3矩阵，补零之后变为5x5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">         <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span>                       <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">6</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span></span><br><span class="line">4 5 6 -&gt; 4 0 5 0 6 -&gt; 卷积核转置 -&gt;        4 0 5 0 6</span><br><span class="line"><span class="number">7</span> <span class="number">8</span> <span class="number">9</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">12</span> <span class="number">0</span> <span class="number">14</span> <span class="number">0</span></span><br><span class="line">         <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span>                       <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种情况，计算时除了对矩阵元素中间补零之外，还在外围填充0（也就是same填充），此时input从3x3变为了5x5，padding=1，但此时通过卷积公式计算<br>output = (input - kernelsize + 2padding) / strides + 1 = （5 - 3 + 2）/ 1 + 1 = 5，不等于6，所以继续在外围填充0，<br>tensorflow优先在左侧和上侧填充，此时输出的shape就变为6x6了。</p>
+<p>注：这一步有的分析上也说是上下左右都补零，但是输出结果对下方和右方的最后一列进行裁剪操作，但实际上效果是一样的。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">自定义View</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tensorflow</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/22/tensorflow反卷积/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2019/07/04/Android自定义View/" class="archive-article-date">
-        <time datetime="2019-07-05T05:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-04</time>
-</a>
 
+
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/10/VSCode常用插件/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VSCode常用插件</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2019/07/04/Android自定义View/" target="_blank">Android自定义View</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">自定义View</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Android//" class="article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#反卷积"><span class="toc-number">1.</span> <span class="toc-text">反卷积</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
   
+  <div id="gitment-ctn"></div>
   
-    </div></section>
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "Tensorflow反卷积" -->
+    var gitment = new Gitment({
+      id: "20200322130724",
+      owner: 'possibleit',
+      repo: 'possibleit-githib-io-comment',
+      oauth: {
+        client_id: '53b4e5237efe492395c7',
+        client_secret: '2d229af5b6fbe09e811ef9446bbe1ccfb842c7ff',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
   
 
-    
 
 
           </div>
@@ -360,9 +496,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

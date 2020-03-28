@@ -203,6 +203,134 @@
             
 
   
+    <article id="post-tensorflow反卷积" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2020/03/22/tensorflow反卷积/" target="_blank">Tensorflow反卷积</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2020/03/22/tensorflow反卷积/" class="archive-article-date">
+        <time datetime="2020-03-22T20:07:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-22</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h3 id="反卷积"><a href="#反卷积" class="headerlink" title="反卷积"></a>反卷积</h3><hr>
+<ol>
+<li>反卷积计算</li>
+</ol>
+<p>假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel</p>
+<p>当卷积参数为步长为1，填充为0时，输出为Y=2x2</p>
+<p>此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,<br>C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复<br>它的每个元素的值。</p>
+<ol start="2">
+<li>反卷积输出的shape</li>
+</ol>
+<p>首先对于正向卷积，输出shape计算公式<code>output = (input - kernelsize + 2padding) / strides + 1</code>，举例，input=6x6，kernel=3x3，<br>stride=2，padding=1，则它的输出shape=3x3</p>
+<p>对于反卷积，第一种情况，(output + 2padding - kernel) % s = 0（注意这里的output是卷积的输出），此时的反卷积输出为o = strides(input - 1) - 2padding + kernel，即<br>此时反卷积输出为5x5.</p>
+<p>第二种情况，(output + 2padding - kernel) % s != 0</p>
+<p>此时反卷积输出尺寸为o = strides(input - 1) - 2padding + kernel + (output + 2padding - kernel) % s，即对于上述的正向卷积，<br>做反向卷积是输出为6x6。</p>
+<ol start="3">
+<li>tensorflow实验</li>
+</ol>
+<p>反卷积<br>第一种情况，输出的shape为5x5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">img = tf.Variable(tf.constant([[<span class="number">1.</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]], shape=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>]))</span><br><span class="line">kernel = tf.Variable(tf.constant([[<span class="number">1.0</span>,<span class="number">0.</span>,<span class="number">0.</span>],[<span class="number">0</span>,<span class="number">1.0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1.0</span>]],shape=[<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>]))</span><br><span class="line">conts = tf.nn.conv2d_transpose(img,kernel,[<span class="number">1</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(<span class="string">'conts:\n'</span>, sess.run(conts))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为5x5</span></span><br><span class="line"><span class="string">1 0 2 0 3</span></span><br><span class="line"><span class="string">0 6 0 8 0</span></span><br><span class="line"><span class="string">4 0 5 0 6</span></span><br><span class="line"><span class="string">0 12 0 14 0</span></span><br><span class="line"><span class="string">7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种情况，输出shape为6x6</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代码同上，conts = tf.nn.conv2d_transpose(img,kernel,[1,5,5,1],strides=[1,2,2,1],padding='SAME')中【1,5,5,1】改为【1,6,6,1】</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为</span></span><br><span class="line"><span class="string">1 0 2 0 3 0</span></span><br><span class="line"><span class="string">0 1 0 2 0 3</span></span><br><span class="line"><span class="string">4 0 6 0 8 0</span></span><br><span class="line"><span class="string">0 4 0 5 0 6</span></span><br><span class="line"><span class="string">7 0 12 0 14 0</span></span><br><span class="line"><span class="string">0 7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>tensorflow计算规则</li>
+</ol>
+<p>tensorflow执行反卷积时，会首先根据输入的参数计算卷积结果是否成立，也即shape是否合法。</p>
+<p>对于第一种情况，计算时先对输入的矩阵中间补0，每两个元素之间补0的个数由strides确定，即补strides-1个0，对于3x3矩阵，补零之后变为5x5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">         <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span>                       <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">6</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span></span><br><span class="line">4 5 6 -&gt; 4 0 5 0 6 -&gt; 卷积核转置 -&gt;        4 0 5 0 6</span><br><span class="line"><span class="number">7</span> <span class="number">8</span> <span class="number">9</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">12</span> <span class="number">0</span> <span class="number">14</span> <span class="number">0</span></span><br><span class="line">         <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span>                       <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种情况，计算时除了对矩阵元素中间补零之外，还在外围填充0（也就是same填充），此时input从3x3变为了5x5，padding=1，但此时通过卷积公式计算<br>output = (input - kernelsize + 2padding) / strides + 1 = （5 - 3 + 2）/ 1 + 1 = 5，不等于6，所以继续在外围填充0，<br>tensorflow优先在左侧和上侧填充，此时输出的shape就变为6x6了。</p>
+<p>注：这一步有的分析上也说是上下左右都补零，但是输出结果对下方和右方的最后一列进行裁剪操作，但实际上效果是一样的。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tensorflow</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2020/03/22/tensorflow反卷积/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-VSCode常用插件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1080,114 +1208,9 @@
 
 
   
-    <article id="post-ArrayList源码分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2019/08/04/ArrayList源码分析/" target="_blank">ArrayList源码分析</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2019/08/04/ArrayList源码分析/" class="archive-article-date">
-        <time datetime="2019-08-05T05:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-04</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="ArrayList源码分析"><a href="#ArrayList源码分析" class="headerlink" title="ArrayList源码分析"></a>ArrayList源码分析</h1><hr>
-<p>java version ： 10.0.1</p>
-<hr>
-<h3 id="1-概览"><a href="#1-概览" class="headerlink" title="1. 概览"></a>1. 概览</h3><p>在IDEA中双击Shift键，调出search everywhere框，搜索ArrayList，点击进去即可阅读源码。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">RandomAccess</span>, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
-
-<p>ArrayList是基于数组实现的，因此支持快速访问。继承自AbstractList类，并实现了RandomAccess，Cloneable，Serializable接口。<br>ArrayList的默认大小是10。<code>private static final int DEFAULT_CAPACITY = 10</code></p>
-    
-    <a class="article-more-a" href="/2019/08/04/ArrayList源码分析/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java集合</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java//" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2019/08/04/ArrayList源码分析/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1363,10 +1386,6 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
@@ -1396,6 +1415,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
               </li>
             
             <div class="clearfix"></div>
