@@ -6,22 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>ArrayList源码分析 | Qian的博客</title>
+  <title>HashMap源码分析 | Qian的博客</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8  1. 构造方法惯例，先看">
+  <meta name="description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8">
 <meta name="keywords" content="java集合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ArrayList源码分析">
+<meta property="og:title" content="HashMap源码分析">
 <meta property="og:url" content="http://yoursite.com/2019/02/10/HashMap源码分析 (2)/index.html">
 <meta property="og:site_name" content="Qian的博客">
-<meta property="og:description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8  1. 构造方法惯例，先看">
+<meta property="og:description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-10T07:58:06.390Z">
+<meta property="og:updated_time" content="2020-03-28T05:03:00.273Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ArrayList源码分析">
-<meta name="twitter:description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8  1. 构造方法惯例，先看">
+<meta name="twitter:title" content="HashMap源码分析">
+<meta name="twitter:description" content="HashMap源码分析（2） 这几天因为疫情问题，一直待在家里，前几天还得了流感，咳嗽咽痛，提心吊胆的。昨天终于好转，也接到通知延迟开学。想着在家也要保持好状态，好好学习，就想给自己找点事干。刚好之前的一篇博客对hashmap分析的不是很透彻，刚好趁现在的时间，好好写写博客，同时也提高一下自己。学疏才浅，有不当之处，望指出。  java version ：jdk 1.8">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -208,7 +208,7 @@
   
   
     <h1 class="article-title" itemprop="name">
-      ArrayList源码分析
+      HashMap源码分析
     </h1>
   
 
@@ -259,6 +259,7 @@
 <hr>
 <p>java version ：jdk 1.8</p>
 <hr>
+<a id="more"></a>
 <h3 id="1-构造方法"><a href="#1-构造方法" class="headerlink" title="1. 构造方法"></a>1. 构造方法</h3><p>惯例，先看源码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">float</span> loadFactor)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal initial capacity: "</span> +</span><br><span class="line">                                           initialCapacity);</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">    <span class="keyword">if</span> (loadFactor &lt;= <span class="number">0</span> || Float.isNaN(loadFactor))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal load factor: "</span> +</span><br><span class="line">                                           loadFactor);</span><br><span class="line">    <span class="keyword">this</span>.loadFactor = loadFactor;</span><br><span class="line">    <span class="keyword">this</span>.threshold = tableSizeFor(initialCapacity);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(initialCapacity, DEFAULT_LOAD_FACTOR);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.loadFactor = DEFAULT_LOAD_FACTOR; <span class="comment">// all other fields defaulted</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">(Map&lt;? extends K, ? extends V&gt; m)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.loadFactor = DEFAULT_LOAD_FACTOR;</span><br><span class="line">    putMapEntries(m, <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -462,7 +463,7 @@
     <script src="/lib/gitment.js"></script>
   
   <script>
-    <!-- id: "ArrayList源码分析" -->
+    <!-- id: "HashMap源码分析" -->
     var gitment = new Gitment({
       id: "20190210221424",
       owner: 'possibleit',
@@ -647,27 +648,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">django</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,11 +664,27 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java集合</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
             
             <div class="clearfix"></div>
