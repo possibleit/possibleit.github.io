@@ -10,18 +10,18 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
+  <meta name="description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。">
 <meta name="keywords" content="tensorflow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tensorflow反卷积">
 <meta property="og:url" content="http://yoursite.com/2020/03/22/tensorflow反卷积/index.html">
 <meta property="og:site_name" content="Qian的博客">
-<meta property="og:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
+<meta property="og:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-28T05:13:25.863Z">
+<meta property="og:updated_time" content="2020-04-12T02:49:23.770Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow反卷积">
-<meta name="twitter:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。  反卷积输出的shape">
+<meta name="twitter:description" content="反卷积  反卷积计算  假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel 当卷积参数为步长为1，填充为0时，输出为Y=2x2 此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复它的每个元素的值。">
   
     <link rel="alternative" href="/atom.xml" title="Qian的博客" type="application/atom+xml">
   
@@ -261,6 +261,8 @@
 <p>假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel</p>
 <p>当卷积参数为步长为1，填充为0时，输出为Y=2x2</p>
 <p>此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,<br>C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复<br>它的每个元素的值。</p>
+<a id="more"></a>
+
 <ol start="2">
 <li>反卷积输出的shape</li>
 </ol>
@@ -617,11 +619,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
+                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -633,6 +639,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
               </li>
              
@@ -641,23 +651,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">

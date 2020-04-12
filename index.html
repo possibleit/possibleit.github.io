@@ -239,32 +239,9 @@
 <p>假设有一个输入为4x4的矩阵X，和一个3x3的矩阵kernel</p>
 <p>当卷积参数为步长为1，填充为0时，输出为Y=2x2</p>
 <p>此时我们将X展开为16x1的列向量，Y展开为4x1的列向量，则存在矩阵C，有Y = CX,<br>C的shape为4x16。稀疏矩阵可以推导出来，从而根据C和Y我们可以求的X。但是这个操作只能恢复X的shape，而不能恢复<br>它的每个元素的值。</p>
-<ol start="2">
-<li>反卷积输出的shape</li>
-</ol>
-<p>首先对于正向卷积，输出shape计算公式<code>output = (input - kernelsize + 2padding) / strides + 1</code>，举例，input=6x6，kernel=3x3，<br>stride=2，padding=1，则它的输出shape=3x3</p>
-<p>对于反卷积，第一种情况，(output + 2padding - kernel) % s = 0（注意这里的output是卷积的输出），此时的反卷积输出为o = strides(input - 1) - 2padding + kernel，即<br>此时反卷积输出为5x5.</p>
-<p>第二种情况，(output + 2padding - kernel) % s != 0</p>
-<p>此时反卷积输出尺寸为o = strides(input - 1) - 2padding + kernel + (output + 2padding - kernel) % s，即对于上述的正向卷积，<br>做反向卷积是输出为6x6。</p>
-<ol start="3">
-<li>tensorflow实验</li>
-</ol>
-<p>反卷积<br>第一种情况，输出的shape为5x5</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">img = tf.Variable(tf.constant([[<span class="number">1.</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]], shape=[<span class="number">1</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>]))</span><br><span class="line">kernel = tf.Variable(tf.constant([[<span class="number">1.0</span>,<span class="number">0.</span>,<span class="number">0.</span>],[<span class="number">0</span>,<span class="number">1.0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1.0</span>]],shape=[<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>]))</span><br><span class="line">conts = tf.nn.conv2d_transpose(img,kernel,[<span class="number">1</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(<span class="string">'conts:\n'</span>, sess.run(conts))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为5x5</span></span><br><span class="line"><span class="string">1 0 2 0 3</span></span><br><span class="line"><span class="string">0 6 0 8 0</span></span><br><span class="line"><span class="string">4 0 5 0 6</span></span><br><span class="line"><span class="string">0 12 0 14 0</span></span><br><span class="line"><span class="string">7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
-
-<p>第二种情况，输出shape为6x6</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 代码同上，conts = tf.nn.conv2d_transpose(img,kernel,[1,5,5,1],strides=[1,2,2,1],padding='SAME')中【1,5,5,1】改为【1,6,6,1】</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出为</span></span><br><span class="line"><span class="string">1 0 2 0 3 0</span></span><br><span class="line"><span class="string">0 1 0 2 0 3</span></span><br><span class="line"><span class="string">4 0 6 0 8 0</span></span><br><span class="line"><span class="string">0 4 0 5 0 6</span></span><br><span class="line"><span class="string">7 0 12 0 14 0</span></span><br><span class="line"><span class="string">0 7 0 8 0 9</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>tensorflow计算规则</li>
-</ol>
-<p>tensorflow执行反卷积时，会首先根据输入的参数计算卷积结果是否成立，也即shape是否合法。</p>
-<p>对于第一种情况，计算时先对输入的矩阵中间补0，每两个元素之间补0的个数由strides确定，即补strides-1个0，对于3x3矩阵，补零之后变为5x5</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">         <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span>                       <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">3</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">6</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span></span><br><span class="line">4 5 6 -&gt; 4 0 5 0 6 -&gt; 卷积核转置 -&gt;        4 0 5 0 6</span><br><span class="line"><span class="number">7</span> <span class="number">8</span> <span class="number">9</span>    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>                       <span class="number">0</span> <span class="number">12</span> <span class="number">0</span> <span class="number">14</span> <span class="number">0</span></span><br><span class="line">         <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span>                       <span class="number">7</span> <span class="number">0</span> <span class="number">8</span> <span class="number">0</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
-
-<p>第二种情况，计算时除了对矩阵元素中间补零之外，还在外围填充0（也就是same填充），此时input从3x3变为了5x5，padding=1，但此时通过卷积公式计算<br>output = (input - kernelsize + 2padding) / strides + 1 = （5 - 3 + 2）/ 1 + 1 = 5，不等于6，所以继续在外围填充0，<br>tensorflow优先在左侧和上侧填充，此时输出的shape就变为6x6了。</p>
-<p>注：这一步有的分析上也说是上下左右都补零，但是输出结果对下方和右方的最后一列进行裁剪操作，但实际上效果是一样的。</p>
-
+    
+    <a class="article-more-a" href="/2020/03/22/tensorflow反卷积/#more">more >></a>
+    
     
 
     
@@ -1374,11 +1351,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
+                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1390,6 +1371,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
               </li>
              
@@ -1398,23 +1383,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">

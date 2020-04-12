@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006WUTFIly1gard413w9pj30r00bq0tr.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006WUTFIly1gard6g8wuqj30r70btab5.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006WUTFIly1garixi6xmtj30re07d0t3.jpg">
-<meta property="og:updated_time" content="2020-04-12T02:07:37.631Z">
+<meta property="og:updated_time" content="2020-04-12T02:48:04.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="误差的反向传播">
 <meta name="twitter:description" content="误差的反向传播12345import os,sysimport numpy as npsys.path.append(os.pardir)from common.functions import *from common.gradient import numerical_gradient  反向传播的依据是复合函数的链式求导法则如函数   z = (x + y) ^ 2">
@@ -240,7 +240,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">607字</span>
+      <span class="post-count">635字</span>
     </span>
   </span>
 
@@ -249,7 +249,7 @@
     <span class="post-meta-item-icon">
       <i class="icon-book icon"></i>
       <span class="post-meta-item-text"> 阅读时长≈</span>
-      <span class="post-count">2分</span>
+      <span class="post-count">3分</span>
     </span>
   </span>
 </div>
@@ -287,7 +287,9 @@
 <img src="http://ww1.sinaimg.cn/large/006WUTFIly1garixi6xmtj30re07d0t3.jpg" width="600" height="600" div align="center">
 
 
-<p><code>/</code>节点表示 $ y \ = \  \frac {1} {x} $，他的导数式为 $ \frac { \partial {y}} {\partial {x}} = - \frac {1} {x^2} = -y^2 $。反向传播时，会将上游的值乘以$ - y^2 $（也就是正向传播的输出的值的平方乘以-1的值）后，再传给下游。同理，<figure class="highlight plain"><figcaption><span>\frac &#123;\partial &#123;y&#125;&#125; &#123;\partial&#123;x&#125;&#125; </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Sigmoid:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.out = None</span><br><span class="line">    </span><br><span class="line">    def forward(self,x):</span><br><span class="line">        out = 1 / (1 + np.exp(-x))</span><br><span class="line">        self.out = out</span><br><span class="line">        </span><br><span class="line">        return out</span><br><span class="line">    </span><br><span class="line">    def backward(self,dout):</span><br><span class="line">        dx = dout * (1.0 - self.out) * self.out</span><br><span class="line">        </span><br><span class="line">        return dx</span><br></pre></td></tr></table></figure></p>
+<p><code>/</code>节点表示 $ y \ = \  \frac {1} {x} $，他的导数式为 $ \frac { \partial {y}} {\partial {x}} = - \frac {1} {x^2} = -y^2 $。反向传播时，会将上游的值乘以$ - y^2 $（也就是正向传播的输出的值的平方乘以-1的值）后，再传给下游。同理， <code>exp</code> 节点的导数式为$ \frac {\partial {y}} {\partial{x}} = exp(x) $，他的传输过程是将上游的值乘以正向传播的输出后，再传给下游。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sigmoid</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.out = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        out = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line">        self.out = out</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self,dout)</span>:</span></span><br><span class="line">        dx = dout * (<span class="number">1.0</span> - self.out) * self.out</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Affine</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,W,b)</span>:</span></span><br><span class="line">        self.W = W</span><br><span class="line">        self.b = b</span><br><span class="line">        self.x = <span class="literal">None</span></span><br><span class="line">        sef.dW = <span class="literal">None</span></span><br><span class="line">        self.db = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        out = np.dot(x,self.W) + self.b</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self,dout)</span>:</span></span><br><span class="line">        dx = np.dot(dout,self.W.T)</span><br><span class="line">        self.dW = np.dot(self.x.T,dout)</span><br><span class="line">        self.db = np.sum(dout,axis=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SoftmaxWithLoss</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.loss = <span class="literal">None</span></span><br><span class="line">        self.y = <span class="literal">None</span></span><br><span class="line">        self.t = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x,t)</span>:</span></span><br><span class="line">        self.t = t</span><br><span class="line">        self.y = softmax(x)</span><br><span class="line">        self.loss = cross_entropy_error(self.y,self.t)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.loss</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backward</span><span class="params">(self,dout=<span class="number">1</span>)</span>:</span></span><br><span class="line">        batch_size = self.t.shape[<span class="number">0</span>]</span><br><span class="line">        dx = (self.y - self.t) / batch_size</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
@@ -632,11 +634,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
+                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -648,6 +654,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
               </li>
              
@@ -656,23 +666,15 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">vscode</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
