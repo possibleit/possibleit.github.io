@@ -203,6 +203,112 @@
             
 
   
+    <article id="post-keras实现语义分割网络-UNet" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2020/06/06/keras实现语义分割网络-UNet/" target="_blank">Android自定义View</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2020/06/06/keras实现语义分割网络-UNet/" class="archive-article-date">
+        <time datetime="2020-06-07T00:09:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-06</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h4 id="Keras实现语义分割网络-UNet"><a href="#Keras实现语义分割网络-UNet" class="headerlink" title="Keras实现语义分割网络-UNet"></a>Keras实现语义分割网络-UNet</h4><hr>
+<p>keras是一个用于构造神经网络的高级API，其设计将用户体验放在了首要位置， api 简单且一<br>致，反馈清晰，能够帮用户在最短时间内将想法转化为结果。使用 keras 构建的模型由完全独立可配置的模块组成，这些模块可以以尽可能少的限制组装到一起，这些模块包括如网络层，损失函数，优化器等。 </p>
+<p>总之，keras适合新手快速的构建并训练自己的深度神经网络模型。</p>
+<hr>
+<p>UNet是一个经典的语义分割神经网络，其架构基于FCN网络架构，通常用于医学图像分割。对于UNet，当数据集的图像很少时，网络也能训练出较好的性能，因此也被用于其他领域的语义分割问题。</p>
+<p><img src="http://ww1.sinaimg.cn/large/006WUTFIly1gfiokzv93yj30ox0gctak.jpg" alt="UNet.png"></p>
+<p>上图时UNet的网络结构图。它是经典的编码器解码器架构，其使用VGGNet的卷积层作为特征提取网络，解码器与编码器是精准镜像。UNet的解码器中使用了编码器的中间特征图，经过拼接，进行融合，对融合后的特征进行上采样。（拼接，即两个224x224x512的特征图拼接之后得到224x224x1024的特征图）。</p>
+<p>如下为UNet的keras实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> ModelCheckpoint, LearningRateScheduler</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> keras</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> plot_model</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_upsampling</span><span class="params">(x, resize_factor=<span class="number">8</span>, method=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="comment"># 0：双线性插值。1：最近邻居法。2：双三次插值法。3：面积插值法</span></span><br><span class="line">    <span class="comment"># NHWC</span></span><br><span class="line">    img_h = x.shape[<span class="number">1</span>] * resize_factor</span><br><span class="line">    img_w = x.shape[<span class="number">2</span>] * resize_factor</span><br><span class="line">    <span class="keyword">return</span> tf.image.resize_images(x, (img_h, img_w), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_unet</span><span class="params">(input_size=<span class="params">(<span class="number">256</span>, <span class="number">256</span>, <span class="number">1</span>)</span>)</span>:</span></span><br><span class="line">    inputs = Input(input_size)</span><br><span class="line">    conv1 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(inputs)</span><br><span class="line">    conv1 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv1)</span><br><span class="line">    pool1 = MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>))(conv1)</span><br><span class="line">    conv2 = Conv2D(<span class="number">128</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(pool1)</span><br><span class="line">    conv2 = Conv2D(<span class="number">128</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv2)</span><br><span class="line">    pool2 = MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>))(conv2)</span><br><span class="line">    conv3 = Conv2D(<span class="number">256</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(pool2)</span><br><span class="line">    conv3 = Conv2D(<span class="number">256</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv3)</span><br><span class="line">    pool3 = MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>))(conv3)</span><br><span class="line">    conv4 = Conv2D(<span class="number">512</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(pool3)</span><br><span class="line">    conv4 = Conv2D(<span class="number">512</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv4)</span><br><span class="line">    drop4 = Dropout(<span class="number">0.5</span>)(conv4)</span><br><span class="line">    pool4 = MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>))(drop4)</span><br><span class="line"></span><br><span class="line">    conv5 = Conv2D(<span class="number">1024</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(pool4)</span><br><span class="line">    conv5 = Conv2D(<span class="number">1024</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv5)</span><br><span class="line">    drop5 = Dropout(<span class="number">0.5</span>)(conv5)</span><br><span class="line"></span><br><span class="line">    up6 = Lambda(my_upsampling, arguments=&#123;</span><br><span class="line">        <span class="string">'resize_factor'</span>: <span class="number">2</span>&#125;)(drop5)</span><br><span class="line">    up6 = Conv2D(<span class="number">512</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                 kernel_initializer=<span class="string">'he_normal'</span>)(up6)</span><br><span class="line">    merge6 = concatenate([drop4, up6], axis=<span class="number">3</span>)</span><br><span class="line">    conv6 = Conv2D(<span class="number">512</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(merge6)</span><br><span class="line">    conv6 = Conv2D(<span class="number">512</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv6)</span><br><span class="line"></span><br><span class="line">    up7 = Lambda(my_upsampling, arguments=&#123;</span><br><span class="line">        <span class="string">'resize_factor'</span>: <span class="number">2</span>&#125;)(conv6)</span><br><span class="line">    up7 = Conv2D(<span class="number">256</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                 kernel_initializer=<span class="string">'he_normal'</span>)(up7)</span><br><span class="line">    merge7 = concatenate([conv3, up7], axis=<span class="number">3</span>)</span><br><span class="line">    conv7 = Conv2D(<span class="number">256</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(merge7)</span><br><span class="line">    conv7 = Conv2D(<span class="number">256</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv7)</span><br><span class="line"></span><br><span class="line">    up8 = Lambda(my_upsampling, arguments=&#123;</span><br><span class="line">        <span class="string">'resize_factor'</span>: <span class="number">2</span>&#125;)(conv7)</span><br><span class="line">    up8 = Conv2D(<span class="number">128</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                 kernel_initializer=<span class="string">'he_normal'</span>)(up8)</span><br><span class="line">    merge8 = concatenate([conv2, up8], axis=<span class="number">3</span>)</span><br><span class="line">    conv8 = Conv2D(<span class="number">128</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(merge8)</span><br><span class="line">    conv8 = Conv2D(<span class="number">128</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv8)</span><br><span class="line">    up9 = Lambda(my_upsampling, arguments=&#123;</span><br><span class="line">        <span class="string">'resize_factor'</span>: <span class="number">2</span>&#125;)(conv8)</span><br><span class="line">    up9 = Conv2D(<span class="number">64</span>, <span class="number">2</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                 kernel_initializer=<span class="string">'he_normal'</span>)(up9)</span><br><span class="line">    merge9 = concatenate([conv1, up9], axis=<span class="number">3</span>)</span><br><span class="line">    conv9 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(merge9)</span><br><span class="line">    conv9 = Conv2D(<span class="number">64</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>,</span><br><span class="line">                   kernel_initializer=<span class="string">'he_normal'</span>)(conv9)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> inputs, conv9</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Unet</span><span class="params">(input_shape, num_class)</span>:</span></span><br><span class="line">    inputs, output = build_unet(input_shape)</span><br><span class="line">    output = Conv2D(filters=num_class, kernel_size=<span class="number">1</span>,</span><br><span class="line">                    activation=<span class="string">'softmax'</span>, padding=<span class="string">'SAME'</span>)(output)</span><br><span class="line">    model = Model(inputs, output)</span><br><span class="line">    model.name = <span class="string">'Unet'</span></span><br><span class="line">    model.summary()</span><br><span class="line">    <span class="keyword">return</span> model</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = Unet((<span class="number">512</span>, <span class="number">512</span>, <span class="number">3</span>), <span class="number">21</span>)</span><br></pre></td></tr></table></figure>
+
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">语义分割</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2020/06/06/keras实现语义分割网络-UNet/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-tensorflow反卷积" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1079,112 +1185,6 @@
 
 
   
-    <article id="post-排序算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2019/10/23/排序算法/" target="_blank">排序算法比较</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2019/10/23/排序算法/" class="archive-article-date">
-        <time datetime="2019-10-24T05:24:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-23</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h3 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h3><ol>
-<li>直接插入排序<center>有序序列L[1...i-1]L[i]L[i+1...n]无序序列</center>
-查找出L[i]在前半部分有序序列中的位置，插入。重复这个步骤直到全部序列有序。
-
-</li>
-</ol>
-<p>直接插入排序的时间复杂度是O(n<sup>2</sup>)。直接插入排序是一个稳定的排序方法。</p>
-<p>设置哨兵的作用是：避免数组下标越界，提高效率。</p>
-    
-    <a class="article-more-a" href="/2019/10/23/排序算法/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2019/10/23/排序算法/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1355,11 +1355,15 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">django</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">vscode</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1371,10 +1375,6 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">django</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
               </li>
              
@@ -1383,15 +1383,19 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
